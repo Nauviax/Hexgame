@@ -1,0 +1,85 @@
+Contents: (Base HexCasting)
+
+!!! WORRIED ABOUT CLONING LISTS, REFERENCES AND ALL THAT !!!
+Add stack scan check for same list reference in stack warning
+!!! Include metalist for patterns !!!
+Most cloning happens in Stack Manipulation, also check list manip tho
+
+Basic Patterns
+Number Literals
+Mathematics
+	!!! division_distillation.gd * Untested
+Constants
+Stack Manipulation
+Logical Operators
+Entities
+List Manipulation
+Patterns as Iotas
+Reading and Writing
+Advanced Mathematics
+Sets
+Meta-evaluation
+
+--Spell Circle Patterns--
+--Akashic Patterns--
+
+------------------------------------------------------------
+
+Basic Patterns
+
+	Compass' Purification II (entity → vector) REMOVED
+		Removed due to 2D. Eye vs feet has no difference.
+
+	Stadiometer's Prfn. (entity → num) REMOVED
+		Height of entity seems irrelevant in 2D
+
+
+Number Literals
+	
+	- None -
+
+Mathematics
+
+	Vector Exaltation -> Vector Distillation
+	Vector Disintegration -> Vector Decomposition
+		2D coords instead of 3D
+	Division Distillation
+		Vector2 on Vector2 returns Z of resulting vector assuming Z = 0 for input Vector"3"s
+
+Constants
+
+	Vector Reflections
+		All now return 2 long vectors (2D)
+		Pattern for y REMOVED (The straight one)
+		Pattern for z now gives [0,1] (Effectively now y)
+
+Stack Manipulation
+
+	- None - (Swindler's Gambit sucks tho, hexbook has github code)
+
+Logical Operators
+
+	- None -
+
+Entities* ???
+
+	_ NOT SURE HOW TO TACKLE THIS, COME BACK TO LATER IN DEVELOPMENT _
+
+List Manipulation*
+	!!! WORRIED ABOUT CLONING LISTS, REFERENCES AND ALL THAT !!!
+
+	Note that Pattern_Metalist should support many of these operations, so check for is Vector2 AND is Pattern_Metalist
+	LOTS OF DUPES, consider manual creation of files.
+
+Escaping Patterns
+
+	Consideration no longer pushes a single pattern, but a one long list containing it's pattern
+
+	(This change of representing single pattern iotas will be present everywhere)
+
+
+
+Reading and Writing
+Advanced Mathematics
+Sets
+Meta-Evaluation

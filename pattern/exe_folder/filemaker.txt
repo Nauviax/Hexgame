@@ -1,0 +1,14 @@
+integration_distillation.gd
+derivation_distillation.gd
+speakers_distillation.gd
+speakers_decomposition.gd
+vacant_reflection.gd
+selection_distillation.gd
+locators_distillation.gd
+flocks_gambit.gd
+excisors_distillation.gd
+surgeons_exaltation.gd
+retrograde_purification.gd
+singles_purification.gd
+selection_exaltation.gd
+flocks_disintegration.gd

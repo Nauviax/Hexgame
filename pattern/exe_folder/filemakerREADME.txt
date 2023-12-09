@@ -1,0 +1,1 @@
+for /f "delims=" %F in (filemaker.txt) do copy nul "%F"

@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://u3r2gwwoxdqx"]
+
+[ext_resource type="Script" path="res://hexlogic/hexlogic.gd" id="1_5xqro"]
+[ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="2_pwc8q"]
+[ext_resource type="PackedScene" uid="uid://b4vtjhtxnt21i" path="res://grid/stack_disp.tscn" id="3_vuma4"]
+
+[node name="Hexlogic" type="Node2D"]
+script = ExtResource("1_5xqro")
+
+[node name="Grid" parent="." instance=ExtResource("2_pwc8q")]
+position = Vector2(0, 100)
+
+[node name="StackDisp" parent="." instance=ExtResource("3_vuma4")]
