@@ -23,11 +23,18 @@ var consideration_mode = false
 # Incremented/Decremented via Introspection and Retrospection respectively.
 var introspection_depth = 0
 
-
-
 # The entity casting this hex (Normally the player)
-# In the future, this *could* be dynamic
-var caster = Entity.new("Player")
+# This should be set after instantiation of the hexlogic scene!
+var caster = null
+
+# A reference to the map the caster is a part of. Specifically, the Map_Info object.
+# Used to get entities and other map data for certian patterns.
+var map = null
+
+# Handle initialization (More manual than _init but oh well.)
+func init(caster, map):
+	self.caster = caster
+	self.map = map
 
 # Handle input
 func _input(event):
@@ -67,14 +74,15 @@ func execute_pattern(pattern):
 			return
 	else: # Default mode, just execute the pattern
 		return_string = pattern.execute(self)
-	stack_disp.update_stack(stack, return_string) # Update stack display
-	scan_stack() # Debugging, remove after all patterns complete !!!
+	stack_disp.update_stack(return_string) # Update stack display
+	scan_stack() # Debugging, comment out when not needed anymore
 
 # Clear all patterns and reset stack
 func clear():
 	# Stack
 	stack = []
-	stack_disp.update_stack(stack, "Grid and stack cleared!") # Update stack display
+	caster.ravenmind = null # Clear ravenmind
+	stack_disp.update_stack("Grid and stack cleared!") # Update stack display
 	# Meta-state
 	introspection_depth = 0
 	consideration_mode = false
@@ -87,8 +95,15 @@ func clear():
 
 # Debugging function, should not run in final product.
 # Ensures no ints enter the stack. Will warn in console and throw if it does.
+# Also ensures no duplicate array references are in the stack.
 func scan_stack():
+	var array_list = []
 	for item in stack:
 		if item is int:
 			printerr("WARNING: Int found in stack!")
+		if item is Array:
+			for arr in array_list:
+				if is_same(arr, item): # By reference, not the same as ==
+					printerr("WARNING: Duplicate array reference found in stack!")
+			array_list.append(item)
 

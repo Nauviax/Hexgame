@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://de8mh783pdkbd"]
 
-[ext_resource type="Script" path="res://grid/grid.gd" id="1_52bpu"]
+[ext_resource type="Script" path="res://hexlogic/grid/grid.gd" id="1_3evjo"]
 
 [node name="Grid" type="Node2D"]
-script = ExtResource("1_52bpu")
+script = ExtResource("1_3evjo")
 
 [node name="TempBackdrop" type="Polygon2D" parent="."]
 position = Vector2(-8, -8)

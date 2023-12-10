@@ -1,10 +1,13 @@
-# Floors the top num of the stack
+# Floors the top iota of the stack
+# For vectors, floors each element
 static var iota_count = 1
 static func execute(hexlogic, _pattern):
 	var stack = hexlogic.stack
-	var num = stack.pop_back()
-	if num is float:
-		stack.push_back(floor(num))
+	var iota = stack.pop_back()
+	if iota is float:
+		stack.push_back(floor(iota))
+	elif iota is Vector2:
+		stack.push_back(Vector2(floor(iota.x), floor(iota.y)))
 	else:
 		stack.push_back(Bad_Iota.new())
 		return "Error: Invalid iota type"

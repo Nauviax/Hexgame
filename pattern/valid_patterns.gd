@@ -97,29 +97,53 @@ static var static_patterns = {
 	"sLs": "Disjunction Distillation",
 	"RsL": "Exclusion Distillation",
 	
-	# Entities (Not implemented yet)
+	# Entities
+	"lllllRLlL": "Entity Purification",
+	"lllllRLlLLss": "Entity Purification: Neutral",
+	"lllllRLlLLsl": "Entity Purification: Hostile",
+	"lllllRLlLLsr": "Entity Purification: Friendly",
+	"lllllsRrR": "Zone Distillation: Any",
+	"lllllsRrRRss": "Zone Distillation: Neutral",
+	"lllllsRrRRsl": "Zone Distillation: Hostile",
+	"lllllsRrRRsr": "Zone Distillation: Friendly",
+	"rrrrrsLlLLss": "Zone Distillation: Non-Neutral",
+	"rrrrrsLlLLsl": "Zone Distillation: Non-Hostile",
+	"rrrrrsLlLLsr": "Zone Distillation: Non-Friendly",
 
 	# List Manipulation
 	"rRlRr": "Integration Distillation",
-	"lLrLl": "Derivation Distillation",
+	"lLrLl": "Derivation Decomposition",
 	"RRrsrRR": "Speaker's Distillation",
 	"LLlslLL": "Speaker's Decomposition",
 	"llLrLLr": "Vacant Reflection",
 	"RrrrR": "Selection Distillation",
+	"lLrLlsRrR": "Selection Exaltation",
 	"RrRlRr": "Locator's Distillation",
 	"rsRlRsr": "Flock's Gambit",
+	"lsLrLsl": "Flock's Disintegration",
 	"rRlRrsLlL": "Excisor's Distillation",
 	"slLrLls": "Surgeon's Exaltation",
 	"lllLrRr": "Retrograde Purification",
 	"LRrrrR": "Single's Purification",
-	"lLrLlsRrR": "Selection Exaltation",
-	"lsLrLsl": "Flock's Disintegration",
 
 	# Escaping Patterns
 	"lllLs": "Consideration",
 	"lll": "Introspection",
 	"rrr": "Retrospection",
 	"rrrRs": "Evanition",
+
+	# Reading and Writing
+	"Llllll": "Scribe's Reflection",
+	"sLslslslslsls": "Chronicler's Purification",
+	"lrrsRsrRRs": "Muninn's Reflection",
+	"Llllllr": "Auditor's Reflection",
+	"sLslslslslslsrs": "Auditor's Purification",
+	"Rrrrrrl": "Assessor's Reflection",
+	"sRsrsrsrsrsrsls": "Assessor's Purification",
+	"Rrrrrr": "Scribe's Gambit",
+	"sRsrsrsrsrsrs": "Chronicler's Gambit",
+	"rllsLslLLs": "Huginn's Gambit",
+
 }
 
 # ---------------------- #

@@ -18,14 +18,19 @@ static func execute(hexlogic, _pattern):
 			stack.push_back(Bad_Iota.new())
 			return "Error: Index out of bounds"
 		var iota = stack[-1]
-		stack.insert(stack.size() - 1 + num, iota) # -1 as stack size is larger than normal fisherman's gambit
+		if iota is Array:
+			stack.insert(stack.size() - 1 + num, iota.duplicate(true)) # Deep copy
+		else:
+			stack.insert(stack.size() - 1 + num, iota) # -1 as stack size is larger than normal fisherman's gambit
+		
 	else: # Positive number, copy element at index to top
 		if num > stack.size(): # Can't get non-existent index
 			stack.push_back(Bad_Iota.new())
 			return "Error: Index out of bounds"
 		var iota = stack[stack.size() - num]
-		stack.push_back(iota)
+		if iota is Array:
+			stack.push_back(iota.duplicate(true)) # Deep copy
+		else:
+			stack.push_back(iota)
 	return ""
-
-### CLONE MADE ### !!!
 

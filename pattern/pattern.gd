@@ -38,7 +38,7 @@ func _init(point_init, line_init):
 	p_code = Pattern.calc_p_code(points)
 	# Get pattern name and validity, then get executable code.
 	Valid_Patterns.set_pattern_name(self)
-	p_exe_name = name.to_lower().replace(" ", "_").replace("'", "")
+	p_exe_name = name.to_lower().replace(" ", "_").replace("'", "").replace(":", "")
 	p_exe = load("res://pattern/exe_folder/" + p_exe_name + ".gd")
 
 # Execute the pattern on the given stack

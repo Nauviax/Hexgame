@@ -1,12 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://qir8003u2t7e"]
 
-[ext_resource type="PackedScene" uid="uid://u3r2gwwoxdqx" path="res://hexlogic/hexlogic.tscn" id="1_44vm2"]
+[ext_resource type="Script" path="res://main_scene.gd" id="1_2ajl7"]
 
 [node name="MainScene" type="Node2D"]
+script = ExtResource("1_2ajl7")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 zoom = Vector2(2, 2)
-
-[node name="Hexlogic" parent="." instance=ExtResource("1_44vm2")]
-position = Vector2(20, 0)

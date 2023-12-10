@@ -9,7 +9,11 @@ static func execute(hexlogic, _pattern):
 		return "Error: Iota was not a number."
 	var iota = stack.pop_back()
 	for ii in range(num):
-		stack.push_back(iota)
+		if iota is Array:
+			stack.push_back(iota.duplicate(true)) # Deep copy
+		else:
+			stack.push_back(iota)
 	return ""
 
-### CLONE MADE ### !!!
+# This pattern has a side effect of creating only duplicates, the original array is lost.
+# Shouldn't ever be a problem, but it's worth noting.

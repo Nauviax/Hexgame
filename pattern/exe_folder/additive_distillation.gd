@@ -1,4 +1,5 @@
 # Takes the top two iotas in stack, returns the sum
+# For Arrays, appends list a to the end of list b
 static var iota_count = 2
 static func execute(hexlogic, _pattern):
 	var stack = hexlogic.stack
@@ -17,6 +18,15 @@ static func execute(hexlogic, _pattern):
 	elif a is Vector2 and b is float:
 		a.x += b
 		a.y += b
+		stack.push_back(a)
+	elif a is Array and b is Array:
+		b += a
+		stack.push_back(b)
+	elif a is Array and b is Vector2:
+		b.append(a)
+		stack.push_back(b)
+	elif a is Vector2 and b is Array:
+		a.append(b)
 		stack.push_back(a)
 	else:
 		stack.push_back(Bad_Iota.new())

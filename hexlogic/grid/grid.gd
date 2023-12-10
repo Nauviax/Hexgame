@@ -1,7 +1,7 @@
 @tool
 extends Node2D
 
-var PointScene = preload("res://grid/point.tscn")
+var PointScene = preload("res://hexlogic/grid/point.tscn")
 @onready var parent_hexlogic = get_parent()
 
 const GRIDSIZE = 16 # Amount of points in given direction
@@ -123,7 +123,7 @@ func on_point(point):
 
 # Sends the created pattern to parent hexlogic (Unless it's a single point)
 func send_pattern():
-	if len(cur_points) <= 1:
+	if cur_points.size() <= 1:
 		line.clear_points()
 		hex_border.undo() # Initial click could have changed border
 	else: # Send pattern and prepare new line.

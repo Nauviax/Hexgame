@@ -156,7 +156,9 @@ func redraw():
 # Revert to the previous border, warning in logs if empty
 func undo():
 	if history.size() == 0:
-		reset() # Should only happen when border just been made
+		# Check if points are all the same. If they are, then reset border (No patterns on screen)
+		if p1 == p2 and p2 == p3 and p3 == p4: # 1-4 are same, so 5-6 are too (Should be anyway)
+			reset() # Should only happen when border just been made
 		return
 	var prev = history.pop_back()
 
