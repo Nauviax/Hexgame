@@ -49,6 +49,14 @@ func set_iota(iota):
 	if sb_write:
 		sb[sb_sel] = iota
 
+# Increment the currently selected iota in the spellbook.
+func inc_sb():
+	sb_sel = (sb_sel + 1) % sb.size()
+
+# Decrement the currently selected iota in the spellbook.
+func dec_sb():
+	sb_sel = (sb_sel - 1) % sb.size()
+
 # Display string for entity.
 func _to_string():
 	return "Entity: " + disp_name

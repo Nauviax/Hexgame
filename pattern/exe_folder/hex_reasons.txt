@@ -1,10 +1,5 @@
 Contents: (Base HexCasting)
 
-!!! WORRIED ABOUT CLONING LISTS, REFERENCES AND ALL THAT !!!
-Add stack scan check for same list reference in stack warning
-!!! Include metalist for patterns !!!
-Most cloning happens in Stack Manipulation, also check list manip tho
-
 Basic Patterns
 Number Literals
 Mathematics
@@ -97,10 +92,15 @@ Reading and Writing
 		- As this feature normally existed to prevent players abusing truenames, it isn't needed in this singleplayer game.
 		- Entity references will still become <null> when they become invalid, such as leaving a level, or killing said entity. (!!!)
 
+Advanced Mathematics
 
+	- None -
 
-Advanced Mathematics*
-Sets*
+Sets
+
+	Outputs from set patterns are now sets. 
+	- This differs from base hexcasting where a specific input with duplicates causes the output to also contain duplicates.
+
 Meta-Evaluation*
 
 && Spellbook slot selection* (Not base Hexcasting or addons)

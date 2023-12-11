@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://u3r2gwwoxdqx"]
+[gd_scene load_steps=7 format=3 uid="uid://u3r2gwwoxdqx"]
 
 [ext_resource type="Script" path="res://hexlogic/hexlogic.gd" id="1_5xqro"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://hexlogic/grid/grid.tscn" id="2_pwc8q"]
-[ext_resource type="PackedScene" uid="uid://b4vtjhtxnt21i" path="res://hexlogic/grid/stack_disp.tscn" id="3_vuma4"]
+[ext_resource type="PackedScene" uid="uid://b4vtjhtxnt21i" path="res://hexlogic/HexDisp/hex_disp.tscn" id="3_vsv6l"]
+[ext_resource type="AudioStream" uid="uid://5h6osnw5061h" path="res://hexlogic/sounds/casting_ambiance.ogg" id="4_6iy68"]
+[ext_resource type="AudioStream" uid="uid://da2lkiyhiq61a" path="res://hexlogic/sounds/normal.ogg" id="5_ino3u"]
+[ext_resource type="AudioStream" uid="uid://cftdivxtbl1la" path="res://hexlogic/sounds/fail.ogg" id="6_gxt07"]
 
 [node name="Hexlogic" type="Node2D"]
 script = ExtResource("1_5xqro")
@@ -10,4 +13,17 @@ script = ExtResource("1_5xqro")
 [node name="Grid" parent="." instance=ExtResource("2_pwc8q")]
 position = Vector2(0, 100)
 
-[node name="StackDisp" parent="." instance=ExtResource("3_vuma4")]
+[node name="HexDisp" parent="." instance=ExtResource("3_vsv6l")]
+
+[node name="Ambiance" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_6iy68")
+volume_db = -10.0
+autoplay = true
+
+[node name="Normal" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ino3u")
+volume_db = -10.0
+
+[node name="Fail" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_gxt07")
+volume_db = -10.0

@@ -1,7 +1,7 @@
 # Remove the two numbers at the top of the stack, then take a sublist of the list at the top of the stack between those indices.
 # Lower bound inclusive, upper bound exclusive. For example, the 0, 2 sublist of [0, 1, 2, 3, 4] would be [0, 1].
 # The top iota, num2, is the upper bound.
-# Nums must be in range, though can be ordered backwards to return []. #!!! THIS MATCHES HEX STUDIO BUT NOT HEXCASTING !!!
+# Nums must be in range, though can be ordered backwards to return [].
 static var iota_count = 3
 static func execute(hexlogic, _pattern):
 	var stack = hexlogic.stack

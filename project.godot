@@ -22,4 +22,5 @@ gdscript/warnings/integer_division=0
 
 [display]
 
+window/size/mode=2
 window/stretch/mode="canvas_items"

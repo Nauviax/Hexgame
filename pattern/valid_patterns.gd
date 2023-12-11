@@ -144,6 +144,27 @@ static var static_patterns = {
 	"sRsrsrsrsrsrs": "Chronicler's Gambit",
 	"rllsLslLLs": "Huginn's Gambit",
 
+	# Advanced Mathematics
+	"lllllLR": "Cosine Purification",
+	"lllllLL": "Sine Purification",
+	"slllllLRl": "Tangent Purification",
+	"LRrrrrr": "Inverse Cosine Purification",
+	"RRrrrrr": "Inverse Sine Purification",
+	"rLRrrrrrs": "Inverse Tangent Purification",
+	"RrLRrrrrrsR": "Inverse Tangent Purification II",
+	"rlLlr": "Logarithmic Distillation",
+
+	# Sets (Mainly in Logical Operators now)
+	"LsrLlL" : "Uniqueness Purification",
+
+
+	### NEW PATTERNS ###
+
+	# Spellbook
+	"RsrsRsr": "Verso's Gambit",
+	"lsLslsL": "Recto's Gambit",
+	"RsrsRsrRs": "Tome's Reflection",
+	"lsLslsLls": "Tome's Gambit",
 }
 
 # ---------------------- #

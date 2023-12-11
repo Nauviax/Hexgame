@@ -3,13 +3,22 @@ extends Node2D
 
 # Children
 @onready var grid = $Grid
-@onready var stack_disp = $StackDisp
+@onready var hex_disp = $HexDisp
 
 # The stack
 var stack = []
 
 # List of patterns
 var patterns = []
+
+# Various gradients for pattern lines, to be set depending on state.
+@onready var normal_gradient = preload("res://hexlogic/gradients/normal.tres")
+@onready var fail_gradient = preload("res://hexlogic/gradients/fail.tres")
+@onready var meta_gradient = preload("res://hexlogic/gradients/meta.tres")
+
+# Sound effects
+@onready var normal_sound = $Normal
+@onready var fail_sound = $Fail
 
 # Consideration Mode
 # If true, the next executed pattern will be saved to the stack as a pattern.
@@ -51,11 +60,25 @@ func _input(event):
 			return
 		
 # Recieve a list of points from the grid, along with a Line2D
-# Creates a new pattern from the points, tries to validate it, then executes it
+# Creates a new pattern from the points, tries to validate it, colors it, then executes it
 func new_pattern(points, line):
 	var pattern = Pattern.new(points, line)
 	patterns.append(pattern)
-	execute_pattern(pattern)
+	var is_meta = consideration_mode or introspection_depth > 0 # For coloring patterns
+	var success = execute_pattern(pattern)
+	# Splash of color and sound
+	if is_meta:
+		normal_sound.play()
+		if pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
+			pattern.line.gradient = normal_gradient
+		else:
+			pattern.line.gradient = meta_gradient
+	elif success: # Pattern is valid and executed successfully
+		normal_sound.play()
+		pattern.line.gradient = normal_gradient
+	else: # Pattern is invalid or failed to execute
+		fail_sound.play()
+		pattern.line.gradient = fail_gradient
 
 # Executes a given pattern
 func execute_pattern(pattern):
@@ -74,15 +97,17 @@ func execute_pattern(pattern):
 			return
 	else: # Default mode, just execute the pattern
 		return_string = pattern.execute(self)
-	stack_disp.update_stack(return_string) # Update stack display
+	hex_disp.update_all(return_string) # Update stack display
 	scan_stack() # Debugging, comment out when not needed anymore
+	# Report success (Check if return string contains "Error")
+	return return_string.left(5) != "Error"
 
 # Clear all patterns and reset stack
 func clear():
 	# Stack
 	stack = []
 	caster.ravenmind = null # Clear ravenmind
-	stack_disp.update_stack("Grid and stack cleared!") # Update stack display
+	hex_disp.update_all("Grid and stack cleared!") # Update stack display
 	# Meta-state
 	introspection_depth = 0
 	consideration_mode = false

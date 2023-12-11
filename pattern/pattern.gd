@@ -24,7 +24,7 @@ var p_exe = null
 
 # The value of this pattern. Relevant only for dynamic patterns.
 # For numerical reflection, this is just the number.
-# For bookkeeper's gambit, treat as binary where 1 is keep and 0 is discard. (TEMP?!!!)
+# For bookkeeper's gambit, treat as binary where 1 is keep and 0 is discard.
 #	(And a reminder, the last bit (1s column) is the top of the stack)
 var value = 0.0
 

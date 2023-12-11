@@ -11,9 +11,11 @@ const ROWSPACING = GRIDSPACING * 0.866  # Distance between each row, based on X 
 var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
 var line = null # The line being drawn
-var line_gradient = null # The gradient used for the line
+# The gradient used for the line being cast
+@onready var line_gradient = preload("res://hexlogic/gradients/casting.tres")
 var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
+@onready var seg_sound = $Add_Seg # Sound effect
 
 
 # Prepare *stuff*
@@ -30,13 +32,6 @@ func _ready():
 				point.set_id(ii - (jj/2), jj) # Set the id of the point
 			add_child(point)
 			points.append(point)
-
-	# Setup line_gradient
-	line_gradient = Gradient.new()
-	var colors = []
-	colors.append(Color(0.5, 0, 0.5)) # Dark purple
-	colors.append(Color(0.75, 0.5, 0.75)) # Light purple
-	line_gradient.set_colors(colors)
 
 	# Prepare Line2D
 	new_line()
@@ -55,8 +50,8 @@ func _process(_delta):
 		if mouse_line == null:
 			mouse_line = Line2D.new()
 			mouse_line.width = 1
-			# Set line color to Color(0.75, 0.5, 0.75), no gradient
-			mouse_line.set_default_color(Color(0.75, 0.5, 0.75))
+			# Set line color last color of line_gradient
+			mouse_line.set_default_color(line_gradient.get_color(line_gradient.get_point_count() - 1))
 			add_child(mouse_line)
 			mouse_line.add_point(cur_points[-1].position)
 			mouse_line.add_point(mouse_line.to_local(get_global_mouse_position()))
@@ -94,6 +89,7 @@ func on_point(point):
 	if cur_length >= 2:
 		# Check if the point is the previous point (Go back one)
 		if cur_points[-2] == point:
+			seg_sound.play() # Sound effect
 			cur_points.pop_back() # Remove the latest point from cur_points
 			line.remove_point(line.get_point_count() - 1)
 			hex_border.undo() # Revert to previous border
@@ -110,6 +106,7 @@ func on_point(point):
 					return
 
 	# All checks done. Add point to cur_points and line
+	seg_sound.play() # Sound effect
 	cur_points.append(point)
 	line.add_point(point.position)
 	#print("X = %d, Y = %d" % [point.x_id, point.y_id])	
