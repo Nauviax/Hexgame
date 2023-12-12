@@ -161,6 +161,14 @@ static var static_patterns = {
 	"RrLll" : "Hermes' Gambit",
 
 
+	## ADDONS ##
+
+	# Hexal Math
+	"sLsRrRsLs" : "Factorial Purification",
+	"LrL" : "Running Sum Purification",
+	"lLLsLLl" : "Running Product Purification",
+
+
 	### NEW PATTERNS ###
 
 	# Spellbook

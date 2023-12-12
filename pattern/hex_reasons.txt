@@ -15,8 +15,11 @@ Advanced Mathematics
 Sets
 Meta-evaluation
 
+Addons
+My Patterns
+
 --Spell Circle Patterns--
---Akashic Patterns--
+--Akashic Patterns-- (Maybe?)
 
 ------------------------------------------------------------
 
@@ -103,4 +106,27 @@ Sets
 
 Meta-Evaluation*
 
-&& Spellbook slot selection* (Not base Hexcasting or addons)
+
+------------------------------------------------------------
+
+Addons
+
+	Hexal Math (3)
+		Factorial Purification
+		Running Sum Purification
+		Running Product Purification
+
+		Mainly for the running sum as it makes getting a list 1-10 very easy.
+		The others to form the full set really. Someone might use them.	
+
+	-- Considering adding Particles (vec | [vec] →) from Hexal, purely for fun --
+	-- Wisps? Long term goal? --
+
+
+My Patterns
+	Spellbook slot selection (4)
+	Added to interact with spellbook (As it is permanently in "offhand")
+		Verso's Gambit, Turn spellbook left
+		Recto's Gambit, Turn spellbook right
+		Tome's Reflection, See spellbook size (ret num)
+		Tome's Gambit, Goto spellbook page (num)

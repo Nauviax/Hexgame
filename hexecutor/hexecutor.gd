@@ -23,8 +23,8 @@ var level_info = null
 var caster = null
 
 # Consideration Mode
-# If true, the next executed pattern will be saved to the stack as a pattern.
-# This takes priority over introspection mode, though still appends to Metalist. It can be used to add retrospection to a list.
+# If true, the next executed pattern will be saved to the stack as a pattern. (Metalist or just on it's own)
+# This takes priority over introspection mode, though still appends to Metalist. It can be used to add intro/retrospection to a list.
 # Adding consideration to the list requires two considerations in a row.
 var consideration_mode = false
 
