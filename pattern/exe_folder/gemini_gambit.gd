@@ -1,5 +1,6 @@
 # Takes a number (top) and an iota, then pushes a copies of b onto the stack.
 # (A count of 2 results in two of the iota on the stack, not three.)
+# num > 1000 will fail.
 static var iota_count = 2
 static func execute(hexlogic, _pattern):
 	var stack = hexlogic.stack
@@ -7,6 +8,9 @@ static func execute(hexlogic, _pattern):
 	if not num is float:
 		stack.push_back(Bad_Iota.new())
 		return "Error: Iota was not a number."
+	if num > 1000:
+		stack.push_back(Bad_Iota.new())
+		return "Error: Iota was too large. (Shame on you)"
 	var iota = stack.pop_back()
 	if iota is Array:
 		for ii in range(num):
