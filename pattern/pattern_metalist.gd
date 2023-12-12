@@ -6,7 +6,7 @@ var patterns = []
 # Add a pattern to this metalist
 # Special case for Retrospection, will instead complete the metalist.
 # Special case for Evanition, will remove the last pattern added. (If list is empty, just complete list.)
-func add_pattern(hexlogic, pattern):
+func add_pattern(hexlogic: Hexecutor, pattern: Pattern): # Defined type
 	if pattern.name == "Introspection": # Nested metalist. Add as normal and increment depth
 		hexlogic.introspection_depth += 1
 		patterns.push_back(pattern)

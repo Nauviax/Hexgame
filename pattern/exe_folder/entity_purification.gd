@@ -6,7 +6,7 @@ static func execute(hexlogic, _pattern):
 	if not pos is Vector2:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not vector"
-	var entities = hexlogic.map.entities
+	var entities = hexlogic.level_info.entities
 	for entity in entities:
 		if entity.position.x == pos.x and entity.position.y == pos.y:
 			stack.push_back(entity)

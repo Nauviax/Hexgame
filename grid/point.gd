@@ -9,13 +9,13 @@ var x_id = 0
 var y_id = 0
 
 # in_use means the point is part of a previous pattern
-var in_use = false #:
-	# set(val):
-	# 	in_use = val
-	# 	if in_use:
-	# 		polygon.color = Color(1, 0, 0, 1) # Red when in use
-	# 	else:
-	# 		polygon.color = Color(1, 1, 1, 1) # White when not in use
+var in_use = false:
+	set(val):
+		in_use = val
+		if in_use:
+			polygon.color = Color(1, 0, 0, 1) # Red when in use
+		else:
+			polygon.color = Color(1, 1, 1, 1) # White when not in use
 
 # Had issues when not using this method. This works anyway.
 func set_id(x, y):

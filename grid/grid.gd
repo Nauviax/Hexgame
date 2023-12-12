@@ -1,8 +1,8 @@
 @tool
 extends Node2D
 
-var PointScene = preload("res://hexlogic/grid/point.tscn")
-@onready var parent_hexlogic = get_parent()
+var PointScene = preload("res://grid/point.tscn")
+@onready var main_scene = get_parent()
 
 const GRIDSIZE = 16 # Amount of points in given direction
 const GRIDSPACING = 16.0 # Distance between points
@@ -12,10 +12,10 @@ var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
 var line = null # The line being drawn
 # The gradient used for the line being cast
-static var line_gradient = preload("res://hexlogic/gradients/casting.tres")
+static var line_gradient = preload("res://resources/gradients/casting.tres")
 var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
-@onready var seg_sound = $Add_Seg # Sound effect
+var patterns = [] # List of patterns (Mainly for deletion afterwards)
 
 
 # Prepare *stuff*
@@ -89,7 +89,7 @@ func on_point(point):
 	if cur_length >= 2:
 		# Check if the point is the previous point (Go back one)
 		if cur_points[-2] == point:
-			seg_sound.play() # Sound effect
+			SoundManager.play_segment() # Sound effect
 			cur_points.pop_back() # Remove the latest point from cur_points
 			line.remove_point(line.get_point_count() - 1)
 			hex_border.undo() # Revert to previous border
@@ -106,7 +106,7 @@ func on_point(point):
 					return
 
 	# All checks done. Add point to cur_points and line
-	seg_sound.play() # Sound effect
+	SoundManager.play_segment() # Sound effect
 	cur_points.append(point)
 	line.add_point(point.position)
 	#print("X = %d, Y = %d" % [point.x_id, point.y_id])	
@@ -118,13 +118,15 @@ func on_point(point):
 	else:
 		hex_border.expand_border(point)
 
-# Sends the created pattern to parent hexlogic (Unless it's a single point)
+# Sends the created pattern to hexecutor via main_scene (Unless it's a single point)
 func send_pattern():
 	if cur_points.size() <= 1:
 		line.clear_points()
 		hex_border.undo() # Initial click could have changed border
-	else: # Send pattern and prepare new line.
-		parent_hexlogic.new_pattern(cur_points, line)
+	else: # Create and send pattern, (And save result to list here) then prepare new line.
+		var pattern = Pattern_Ongrid.new(cur_points, line)
+		patterns.push_back(pattern)
+		main_scene.new_pattern_drawn(pattern)
 		new_line()
 	cur_points = [] # New list, don't clear the old one
 	hex_border.clear_history() # Clear history

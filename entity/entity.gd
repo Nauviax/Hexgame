@@ -55,7 +55,7 @@ func inc_sb():
 
 # Decrement the currently selected iota in the spellbook.
 func dec_sb():
-	sb_sel = (sb_sel - 1) % sb.size()
+	sb_sel = (sb_sel - 1 + sb.size()) % sb.size()
 
 # Display string for entity.
 func _to_string():

@@ -7,7 +7,7 @@ static func execute(hexlogic, _pattern):
 	if not dst is float or not pos is Vector2:
 		stack.push_back(Bad_Iota.new())
 		return "Error: invalid iota type recieved"
-	var entities = hexlogic.map.entities
+	var entities = hexlogic.level_info.entities
 	var result = []
 	for entity in entities:
 		if not entity.team == 1:

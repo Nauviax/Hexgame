@@ -1,10 +1,11 @@
 [gd_scene load_steps=4 format=3 uid="uid://b4vtjhtxnt21i"]
 
-[ext_resource type="Script" path="res://hexlogic/HexDisp/hex_disp.gd" id="1_aphol"]
+[ext_resource type="Script" path="res://hex_disp/hex_disp.gd" id="1_mu4qi"]
 
 [sub_resource type="SystemFont" id="SystemFont_n3k7y"]
 font_names = PackedStringArray("Monospace")
 font_weight = 999
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_ll47c"]
 default_font = SubResource("SystemFont_n3k7y")
@@ -17,7 +18,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ll47c")
-script = ExtResource("1_aphol")
+script = ExtResource("1_mu4qi")
 
 [node name="Stack" type="Label" parent="."]
 layout_mode = 0

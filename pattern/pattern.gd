@@ -1,13 +1,5 @@
 class_name Pattern
-
-# List of grid points that make up this pattern.
-# in_use should be set false before deleting this pattern.
-# (Note that points do not necessarily match line points, though they will on _init.)
-var points = []
-
-# The Line2D object that represents this pattern.
-# Held here so it can be deleted when this pattern is deleted.
-var line = null
+extends Resource # Should mean this object gets deleted automatically when not in use.
 
 # String that represents the pattern.
 # First character is the initial direction: 1-6 starting NE and going clockwise.
@@ -28,13 +20,8 @@ var p_exe = null
 #	(And a reminder, the last bit (1s column) is the top of the stack)
 var value = 0.0
 
-# Pattern constructor. Takes points and line, then calculates p_code.
-func _init(point_init, line_init):
-	points = point_init
-	# All points are now in use.
-	for pnt in points:
-		pnt.in_use = true
-	line = line_init
+# Pattern constructor. Takes list of points, then calculates p_code.
+func _init(points):
 	p_code = Pattern.calc_p_code(points)
 	# Get pattern name and validity, then get executable code.
 	Valid_Patterns.set_pattern_name(self)
@@ -42,12 +29,12 @@ func _init(point_init, line_init):
 	p_exe = load("res://pattern/exe_folder/" + p_exe_name + ".gd")
 
 # Execute the pattern on the given stack
-func execute(hexlogic):
+func execute(hexecutor):
 	var iota_count = p_exe.iota_count
-	if hexlogic.stack.size() < iota_count:
-		hexlogic.stack.push_back(Bad_Iota.new())
+	if hexecutor.stack.size() < iota_count:
+		hexecutor.stack.push_back(Bad_Iota.new())
 		return "Error: Not enough iotas in stack"
-	return p_exe.execute(hexlogic, self)
+	return p_exe.execute(hexecutor, self)
 
 # Calculates p_code from points.
 static func calc_p_code(points):
@@ -101,18 +88,6 @@ static func get_turn(a, b):
 			return "l"
 		_:
 			return null # Should never happen. (This is also the "3" case.)
-
-# Delete this pattern, freeing up all points and removing line graphic.
-# (Technically this pattern object still sticks around, but I think it'll get cleaned up. Check back if memory leaks.)
-func delete():
-	# Free up all points.
-	for pnt in points:
-		pnt.in_use = false
-	points.clear()
-	# Remove line graphic.
-	line.queue_free()
-	# Misc
-	p_exe = null
 
 # _to_string override for fancy display
 func _to_string():

@@ -8,10 +8,11 @@ static func execute(hexlogic, _pattern):
 		stack.push_back(Bad_Iota.new())
 		return "Error: Iota was not a number."
 	var iota = stack.pop_back()
-	for ii in range(num):
-		if iota is Array:
+	if iota is Array:
+		for ii in range(num):
 			stack.push_back(iota.duplicate(true)) # Deep copy
-		else:
+	else:
+		for ii in range(num):
 			stack.push_back(iota)
 	return ""
 
