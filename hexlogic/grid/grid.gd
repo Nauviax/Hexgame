@@ -12,7 +12,7 @@ var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
 var line = null # The line being drawn
 # The gradient used for the line being cast
-@onready var line_gradient = preload("res://hexlogic/gradients/casting.tres")
+static var line_gradient = preload("res://hexlogic/gradients/casting.tres")
 var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
 @onready var seg_sound = $Add_Seg # Sound effect

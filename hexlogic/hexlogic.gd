@@ -12,9 +12,9 @@ var stack = []
 var patterns = []
 
 # Various gradients for pattern lines, to be set depending on state.
-@onready var normal_gradient = preload("res://hexlogic/gradients/normal.tres")
-@onready var fail_gradient = preload("res://hexlogic/gradients/fail.tres")
-@onready var meta_gradient = preload("res://hexlogic/gradients/meta.tres")
+static var normal_gradient = preload("res://hexlogic/gradients/normal.tres")
+static var fail_gradient = preload("res://hexlogic/gradients/fail.tres")
+static var meta_gradient = preload("res://hexlogic/gradients/meta.tres")
 
 # Sound effects
 @onready var normal_sound = $Normal
@@ -81,7 +81,7 @@ func new_pattern(points, line):
 		pattern.line.gradient = fail_gradient
 
 # Executes a given pattern
-func execute_pattern(pattern):
+func execute_pattern(pattern, update_on_success = true):
 	var return_string = ""
 	if consideration_mode: # Single meta-pattern mode, see var declaration.
 		if stack.size() > 0 and stack[-1] is Pattern_Metalist:
@@ -97,10 +97,12 @@ func execute_pattern(pattern):
 			return
 	else: # Default mode, just execute the pattern
 		return_string = pattern.execute(self)
-	hex_disp.update_all(return_string) # Update stack display
-	scan_stack() # Debugging, comment out when not needed anymore
-	# Report success (Check if return string contains "Error")
-	return return_string.left(5) != "Error"
+
+	var success = return_string.left(5) != "Error" # Check if return string contains "Error"
+	if update_on_success or not success: # Can choose to not update display on success. Good for meta-patterns which run many patterns.
+		hex_disp.update_all(return_string) # Update stack display
+		scan_stack() # Debugging, comment out when not needed anymore
+	return success
 
 # Clear all patterns and reset stack
 func clear():

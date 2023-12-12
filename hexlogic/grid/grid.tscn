@@ -14,4 +14,3 @@ polygon = PackedVector2Array(0, 0, 100, 0, 100, 84.8485, 0, 84.8485)
 
 [node name="Add_Seg" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_h5jfg")
-volume_db = -10.0

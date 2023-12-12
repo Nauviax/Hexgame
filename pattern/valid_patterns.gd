@@ -157,6 +157,9 @@ static var static_patterns = {
 	# Sets (Mainly in Logical Operators now)
 	"LsrLlL" : "Uniqueness Purification",
 
+	# Meta-Evaluation
+	"RrLll" : "Hermes' Gambit",
+
 
 	### NEW PATTERNS ###
 

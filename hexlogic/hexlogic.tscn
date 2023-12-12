@@ -17,13 +17,10 @@ position = Vector2(0, 100)
 
 [node name="Ambiance" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_6iy68")
-volume_db = -10.0
 autoplay = true
 
 [node name="Normal" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_ino3u")
-volume_db = -10.0
 
 [node name="Fail" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_gxt07")
-volume_db = -10.0

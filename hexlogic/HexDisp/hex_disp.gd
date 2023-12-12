@@ -7,6 +7,9 @@ extends Control
 @onready var raven_label = $Ravenmind
 @onready var sb_label = $Spellbook
 
+# Used to keep track of past errors, to create a scrolling history of sorts.
+var error_history = ["", "", ""] # Can be made longer for longer history
+
 # On ready, clear editor text
 func _ready():
 	update_all()
@@ -28,7 +31,11 @@ func update_stack():
 
 # Error label
 func update_error_label(error):
-	error_label.text = error
+	error_history.pop_back()
+	error_history.push_front(error)
+	error_label.text = ""
+	for ii in range(error_history.size()):
+		error_label.text += " ".repeat(ii) + error_history[ii] + "\n"
 
 # Ravenmind label
 func update_ravenmind_label():
