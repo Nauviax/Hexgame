@@ -18,7 +18,7 @@ static func execute(hexlogic, _pattern):
 		var yy = iota.y
 		if xx == 0 and yy == 0:
 			stack.push_back(unitVector) # Just push 0,0.
-			return
+			return ""
 		if xx > yy:
 			unitVector.x = 1 if iota.x > 0 else -1
 		elif xx <= yy: # On tie, y wins.
