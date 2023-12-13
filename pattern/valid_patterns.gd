@@ -159,6 +159,8 @@ static var static_patterns = {
 
 	# Meta-Evaluation
 	"RrLll" : "Hermes' Gambit",
+	"LlRrr" : "Charon's Gambit",
+	"RLRLR" : "Thoth's Gambit",
 
 
 	## ADDONS ##

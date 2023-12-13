@@ -44,14 +44,8 @@ func update_hex_disp(err_str = ""):
 
 # Clear all patterns and reset stack
 func clear():
-	# Stack
-	hexecutor.stack = []
-	hexecutor.caster.ravenmind = null # Clear ravenmind
+	hexecutor.reset()
 	hex_disp.update_clear() # Update/Clear stack display
-	# Meta-state
-	hexecutor.introspection_depth = 0
-	hexecutor.consideration_mode = false
-	# Patterns and Grid
 	for pattern_og in grid.patterns:
 		pattern_og.remove()
 	grid.patterns = []

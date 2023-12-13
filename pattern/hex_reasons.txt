@@ -106,6 +106,9 @@ Sets
 
 Meta-Evaluation*
 
+	Iris's Gambit left out for now, as I don't think I properly understand it as of right now.
+	Come back to it once I get a solid definition of "Jump" iota usage. (!!!)
+
 
 ------------------------------------------------------------
 

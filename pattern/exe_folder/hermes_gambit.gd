@@ -13,11 +13,16 @@ static func execute(hexlogic, _pattern):
 		if not iota is Pattern:
 			stack.push_back(Bad_Iota.new())
 			return "Error: List contained non-pattern iota"
+			
 	hexlogic.execution_depth += 1 # Prevent infinite recursion
 	for pattern in list:
 		var success = hexlogic.execute_pattern(pattern, false) # False means don't update display on pattern success
+		if hexlogic.charon_mode:
+			hexlogic.charon_mode = false
+			hexlogic.execution_depth -= 1
+			return "" # Stop execution
 		if not success:
 			hexlogic.execution_depth -= 1
-			return null # No error message, no update.
+			return null # No error message, no update. (Not success, so previous pattern already updated display.)
 	hexlogic.execution_depth -= 1
 	return ""

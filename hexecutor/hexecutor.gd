@@ -19,7 +19,7 @@ var stack = []
 var level_info = null
 
 # The entity casting this hex (Normally the player)
-# Part of level. Required to run many patterns.
+# Should be an entity from level_info, but not *necessarily* the player.
 var caster = null
 
 # Consideration Mode
@@ -39,6 +39,11 @@ var introspection_depth = 0
 # Incremented/Decremented by the meta-patterns themselves. Just read by Hexecutor to halt early.
 # Current max depth is 128.
 var execution_depth = 0
+
+# Charon Mode
+# If true, exit the current meta-pattern. Meta-pattern should set this to false on exit.
+# If not in a meta-pattern, simply end this hex (Clear grid and stack etc)
+var charon_mode = false
 
 # Constructor
 # If not given a main_scene, will not update the stack display.
@@ -86,6 +91,12 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 		else: # Default mode, just execute the pattern
 			return_string = pattern.execute(self)
 
+	# If AFTER meta-execution, charon_mode is true, end hex.
+	if charon_mode and execution_depth == 0:
+		charon_mode = false
+		main_scene.clear() # Wipe grid and stack
+		return true # Return early
+
 	# Special case for patterns that don't want to update the display on return.
 	# Currently used when meta-executed patterns fail, to prevent error spam. Please don't return null elsewhere.
 	# (I want to change my error system, so this is somewhat temporary (!!!))
@@ -114,3 +125,11 @@ func scan_stack():
 					printerr("WARNING: Duplicate array reference found in stack!")
 			array_list.append(item)
 
+# Reset hexecutor func. Can also be called to reset hexecutor when not attached to a grid/display.
+# Does not touch execution_depth or charon_mode, as they should be reset by meta-patterns automatically.
+func reset(keep_raven = false):
+	stack = []
+	if not keep_raven: # Thoths keeps ravenmind intact.
+		caster.ravenmind = null
+	consideration_mode = false
+	introspection_depth = 0
