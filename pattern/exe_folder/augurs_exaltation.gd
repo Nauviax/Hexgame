@@ -1,8 +1,8 @@
 # If the first argument is True, keeps the second and discards the third; otherwise discards the second and keeps the third.
 # (IF)
 static var iota_count = 3
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var a = stack.pop_back()
 	if a is bool:
 		var b = stack.pop_back()

@@ -3,8 +3,8 @@
 # The top iota, num2, is the upper bound.
 # Nums must be in range, though can be ordered backwards to return [].
 static var iota_count = 3
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var num2 = stack.pop_back()
 	if not num2 is float:
 		stack.push_back(Bad_Iota.new())

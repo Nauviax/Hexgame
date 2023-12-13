@@ -1,8 +1,8 @@
 # Remove a pattern or list of patterns from the stack, then cast them.
 # Max depth 128.
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var list = stack.pop_back()
 	if list is Pattern: # Turn single pattern into list
 		list = [list]
@@ -14,15 +14,15 @@ static func execute(hexlogic, _pattern):
 			stack.push_back(Bad_Iota.new())
 			return "Error: List contained non-pattern iota"
 			
-	hexlogic.execution_depth += 1 # Prevent infinite recursion
+	hexecutor.execution_depth += 1 # Prevent infinite recursion
 	for pattern in list:
-		var success = hexlogic.execute_pattern(pattern, false) # False means don't update display on pattern success
-		if hexlogic.charon_mode:
-			hexlogic.charon_mode = false
-			hexlogic.execution_depth -= 1
+		var success = hexecutor.execute_pattern(pattern, false) # False means don't update display on pattern success
+		if hexecutor.charon_mode:
+			hexecutor.charon_mode = false
+			hexecutor.execution_depth -= 1
 			return "" # Stop execution
 		if not success:
-			hexlogic.execution_depth -= 1
+			hexecutor.execution_depth -= 1
 			return null # No error message, no update. (Not success, so previous pattern already updated display.)
-	hexlogic.execution_depth -= 1
+	hexecutor.execution_depth -= 1
 	return ""

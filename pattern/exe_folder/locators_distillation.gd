@@ -1,8 +1,8 @@
 # Remove the top iota, then replace the list at the top with the first index of that iota within the list (starting from 0).
 # Replaces the list with -1 if the iota doesn't exist in the list.
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var iota = stack.pop_back()
 	var list = stack.pop_back()
 	if not list is Array:

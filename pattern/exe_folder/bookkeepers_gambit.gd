@@ -2,8 +2,8 @@
 # Value as a binary number will look something like 10101, where 1 means remove and 0 means keep.
 # The rightmost/least significant bit is the top of the stack/last item in list.
 static var iota_count = 0
-static func execute(hexlogic, pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, pattern):
+	var stack = hexecutor.stack
 	var value = pattern.value
 	# Ensure stack is large enough to remove items
 	var count = int(log(value) / log(2)) + 1

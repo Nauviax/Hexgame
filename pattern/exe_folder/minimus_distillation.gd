@@ -1,8 +1,8 @@
 # If the first argument is less than the second, return True. Otherwise, return False.
 # (<)
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var a = stack.pop_back()
 	var b = stack.pop_back()
 	if a is float and b is float:

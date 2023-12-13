@@ -13,8 +13,8 @@
 # Note: I give up on coding this properly for now, so I'm hardcoding it with a dictionary up to 5 long.
 
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var num = stack.pop_back()
 	if not num is float:
 		stack.push_back(Bad_Iota.new())

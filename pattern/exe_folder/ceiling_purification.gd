@@ -1,8 +1,8 @@
 # Ceilings the top iota of the stack
 # For vectors, ceil each element
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var iota = stack.pop_back()
 	if iota is float:
 		stack.push_back(ceil(iota))

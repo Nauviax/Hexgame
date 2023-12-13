@@ -3,8 +3,8 @@
 # 0 refers to the top of stack, which gets removed/consumed by this pattern. Error if 0.
 # 1 effectively does nothing, as it just brings the top element to the top.
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var num = stack.pop_back()
 	if not num is float:
 		stack.push_back(Bad_Iota.new())

@@ -1,8 +1,8 @@
 # Remove an entity iota, and pushes the iota from the entity's selected spellbook page.
 # Always returns <null> if the entity can't be read from externally.
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var entity = stack.pop_back()
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new())

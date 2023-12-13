@@ -1,7 +1,7 @@
 # Turns an entity on the stack into the direction it's looking
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var entity = stack.pop_back()
 	# Check that the popped value is an entity
 	if entity is Entity:

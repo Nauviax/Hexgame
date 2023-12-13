@@ -8,8 +8,8 @@
 # Order of saving to results list is tip to tail, with bottom of first (first = list[0] iota) stack being the first element.
 
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var list = stack.pop_back()
 	if not list is Array:
 		stack.push_back(Bad_Iota.new())
@@ -23,10 +23,10 @@ static func execute(hexlogic, _pattern):
 			stack.push_back(Bad_Iota.new())
 			return "Error: List contained non-pattern iota"
 	
-	hexlogic.execution_depth += 1 # Prevent infinite recursion (!!! Should this be 8 or smth to reduce recursion for thoths? !!!)
+	hexecutor.execution_depth += 1 # Prevent infinite recursion (!!! Should this be 8 or smth to reduce recursion for thoths? !!!)
 	var results = [] # List of results from each list iota. 
-	var hexecutor2 = Hexecutor.new(hexlogic.level_info, hexlogic.caster) # New hexecutor for meta execution (New stack)
-	hexecutor2.execution_depth = hexlogic.execution_depth # Execution depth persist to prevent infinite recursion
+	var hexecutor2 = Hexecutor.new(hexecutor.level_info, hexecutor.caster) # New hexecutor for meta execution (New stack)
+	hexecutor2.execution_depth = hexecutor.execution_depth # Execution depth persist to prevent infinite recursion
 
 	for iota in list:
 		hexecutor2.stack = [iota] # Load 
@@ -42,6 +42,6 @@ static func execute(hexlogic, _pattern):
 			break # Don't execute any more list iotas
 
 	# Note to self, execution depth should be equal at this point, so copying it is redundant. (That's the idea anyway.)
-	hexlogic.execution_depth -= 1
+	hexecutor.execution_depth -= 1
 	stack.push_back(results) # Push results
 	return ""

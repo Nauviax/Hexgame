@@ -2,8 +2,8 @@
 # With a number and a vector, raises each component of the vector to the number's power.
 # With two vectors, combines them into the vector projection of a onto b.
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var a = stack.pop_back()
 	var b = stack.pop_back()
 	# Ensure that both values are floats or vectors

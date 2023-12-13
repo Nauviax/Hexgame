@@ -3,8 +3,8 @@
 # With two lists, this creates a SET with every unique element that exists in BOTH lists.
 # (AND)
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var a = stack.pop_back()
 	var b = stack.pop_back()
 	if a is bool and b is bool:

@@ -1,8 +1,8 @@
 # Takes the modulus of two numbers. (5 % 3 is 2)
 # When applied on vectors, performs the above operation elementwise
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var a = stack.pop_back()
 	var b = stack.pop_back()
 	# Ensure that both values are floats or vectors

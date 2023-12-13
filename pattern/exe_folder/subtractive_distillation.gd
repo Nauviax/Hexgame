@@ -1,7 +1,7 @@
 # Takes the top two iotas in stack, returns b - a (a being the top iota)
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var a = stack.pop_back()
 	var b = stack.pop_back()
 	# Ensure that both values are floats or vectors

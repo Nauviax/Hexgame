@@ -1,8 +1,8 @@
 # Remove the number (num) at the top of the stack, then remove the num-th element of the list at the top of the stack
 # Does nothing if the number is out of bounds
 static var iota_count = 2
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var num = stack.pop_back()
 	if not num is float:
 		stack.push_back(Bad_Iota.new())

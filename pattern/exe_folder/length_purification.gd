@@ -2,8 +2,8 @@
 # Additionally, converts boolean values to 0.0 (f) or 1.0 (t).
 # Additionallier, converts arrays to their size.
 static var iota_count = 1
-static func execute(hexlogic, _pattern):
-	var stack = hexlogic.stack
+static func execute(hexecutor, _pattern):
+	var stack = hexecutor.stack
 	var iota = stack.pop_back()
 	if iota is Vector2:
 		stack.push_back(iota.length())
