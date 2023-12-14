@@ -17,6 +17,6 @@ func play_segment():
 	segment.play()
 
 # Ambience: (Auto-play currently)
-@onready var ambience = $Ambience
+@onready var aambience = $Ambience
 
 

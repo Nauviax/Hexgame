@@ -3,12 +3,12 @@
 static var iota_count = 3
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
-	var a = stack.pop_back()
-	if a is bool:
-		var b = stack.pop_back()
+	var aa = stack.pop_back()
+	if aa is bool:
+		var bb = stack.pop_back()
 		var c = stack.pop_back()
-		if a:
-			stack.push_back(b)
+		if aa:
+			stack.push_back(bb)
 		else:
 			stack.push_back(c)
 	else:

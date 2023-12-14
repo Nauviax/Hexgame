@@ -2,16 +2,16 @@
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
-	var a = stack.pop_back()
-	var b = stack.pop_back()
-	stack.push_back(b)
-	stack.push_back(a)
-	if b is Array:
-		stack.push_back(b.duplicate(true)) # Deep copy
+	var aa = stack.pop_back()
+	var bb = stack.pop_back()
+	stack.push_back(bb)
+	stack.push_back(aa)
+	if bb is Array:
+		stack.push_back(bb.duplicate(true)) # Deep copy
 	else:
-		stack.push_back(b)
-	if a is Array:
-		stack.push_back(a.duplicate(true)) # Deep copy
+		stack.push_back(bb)
+	if aa is Array:
+		stack.push_back(aa.duplicate(true)) # Deep copy
 	else:
-		stack.push_back(a)
+		stack.push_back(aa)
 	return ""

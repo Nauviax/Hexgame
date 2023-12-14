@@ -3,11 +3,11 @@
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
-	var a = stack.pop_back()
-	var b = stack.pop_back()
+	var aa = stack.pop_back()
+	var bb = stack.pop_back()
 	# Ensure type
-	if a is float and b is float:
-		stack.push_back(Vector2(b, a))
+	if aa is float and bb is float:
+		stack.push_back(Vector2(bb, aa))
 	else:
 		stack.push_back(Bad_Iota.new())
 		return "Error: Invalid iota type"

@@ -2,9 +2,9 @@
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
-	var a = stack.pop_back()
-	var b = stack.pop_back()
-	stack.push_back(a)
-	stack.push_back(b)
-	stack.push_back(a)
+	var aa = stack.pop_back()
+	var bb = stack.pop_back()
+	stack.push_back(aa)
+	stack.push_back(bb)
+	stack.push_back(aa)
 	return ""

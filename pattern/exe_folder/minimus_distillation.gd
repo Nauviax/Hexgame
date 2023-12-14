@@ -3,10 +3,10 @@
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
-	var a = stack.pop_back()
-	var b = stack.pop_back()
-	if a is float and b is float:
-		stack.push_back(a < b)
+	var aa = stack.pop_back()
+	var bb = stack.pop_back()
+	if aa is float and bb is float:
+		stack.push_back(aa < bb)
 	else:
 		stack.push_back(Bad_Iota.new())
 		return "Error: Iota(s) was not a float."

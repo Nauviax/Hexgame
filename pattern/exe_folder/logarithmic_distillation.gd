@@ -1,14 +1,14 @@
-# Removes the top number (a), then takes the logarithm of the next number (b) using 'a' as its base.
+# Removes the top number (aa), then takes the logarithm of the next number (bb) using 'a' as its base.
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
-	var a = stack.pop_back()
-	if not a is float:
+	var aa = stack.pop_back()
+	if not aa is float:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not a number"
-	var b = stack.pop_back()
-	if not b is float:
+	var bb = stack.pop_back()
+	if not bb is float:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not a number"
-	stack.push_back(log(b) / log(a))
+	stack.push_back(log(bb) / log(aa))
 	return ""

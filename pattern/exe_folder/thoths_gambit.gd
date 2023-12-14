@@ -1,4 +1,4 @@
-# Remove a list of patterns (b) and a list (a) from the stack, then cast the given pattern over each element of the second list.
+# Remove a list of patterns (bb) and a list (aa) from the stack, then cast the given pattern over each element of the second list.
 # More specifically, for each element in the second list, it will:
 # - Create a new stack, with everything on the current stack plus that element
 # - Draw all the patterns in the first list
