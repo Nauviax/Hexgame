@@ -4,9 +4,9 @@
 
 [node name="Grid" type="Node2D"]
 script = ExtResource("1_3evjo")
+main_scene_path = NodePath("")
 
 [node name="TempBackdrop" type="Polygon2D" parent="."]
-position = Vector2(-8, -8)
-scale = Vector2(2.64, 2.64)
+scale = Vector2(6.56, 5.59)
 color = Color(0, 0, 0, 0.117647)
-polygon = PackedVector2Array(0, 0, 100, 0, 100, 84.8485, 0, 84.8485)
+polygon = PackedVector2Array(0, 0, 100, 0, 100, 100, 0, 100)

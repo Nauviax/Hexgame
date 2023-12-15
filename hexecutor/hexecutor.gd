@@ -107,7 +107,7 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 	# Can choose to only update display on fail. Good for meta-patterns which run many patterns.
 	# Additionally, if main_scene is null, will not run updates. (Useful for oneoff hexecutor instances)
 	if (update_on_success or not success) and (main_scene != null):
-		main_scene.update_hex_disp(return_string) # Update stack display
+		main_scene.update_hex_display(return_string) # Update stack display
 		scan_stack() # Debugging, comment out when not needed anymore (!!!)
 	return success
 

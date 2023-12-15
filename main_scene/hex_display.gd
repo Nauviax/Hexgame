@@ -2,10 +2,17 @@ extends Control
 
 @onready var main_scene = get_parent()
 
-@onready var stack_label = $Stack
-@onready var error_label = $Errors
-@onready var raven_label = $Ravenmind
-@onready var sb_label = $Spellbook
+@export var stack_path: NodePath # Set in Inspector
+@onready var stack_label = get_node(stack_path) # $Stack
+
+@export var error_path: NodePath # Also set (etc etc)
+@onready var error_label = get_node(error_path) # $Errors
+
+@export var raven_path: NodePath 
+@onready var raven_label = get_node(raven_path) # $Ravenmind
+
+@export var sb_path: NodePath
+@onready var sb_label = get_node(sb_path) # $Spellbook
 
 # Used to keep track of past errors, to create a scrolling history of sorts.
 var error_history = ["", "", ""] # Can be made longer for longer history, just check update_clear() also.

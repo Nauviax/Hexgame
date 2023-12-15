@@ -33,7 +33,7 @@ func _init(GRIDSPACING, ROWSPACING):
 	y_space = ROWSPACING
 
 	line = Line2D.new()
-	line.width = 0.5
+	line.width = 1.5
 	line.default_color = Color(0, 0, 0, 0.3)
 
 	# Offsets for redraw function

@@ -2,17 +2,20 @@
 extends Node2D
 
 var PointScene = preload("res://grid/point.tscn")
-@onready var main_scene = get_parent()
+@export var main_scene_path: NodePath # Set in Inspector
+@onready var main_scene = get_node(main_scene_path)
 
-const GRIDSIZE = 16 # Amount of points in given direction
-const GRIDSPACING = 16.0 # Distance between points
+const GRIDSIZE = 20 # Amount of points in given direction
+const GRIDSPACING = 32.0 # Distance between points
 const ROWSPACING = GRIDSPACING * 0.866  # Distance between each row, based on X (0.866 ~= sqrt(3)/2)
+const GRIDOFFSET = Vector2(16, 16) # Offset of the grid from the top left corner of the screen
 
 var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
 var line = null # The line being drawn
 # The gradient used for the line being cast
 static var line_gradient = preload("res://resources/gradients/casting.tres")
+static var line_size = 2 # Line width
 var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
 var patterns = [] # List of patterns (Mainly for deletion afterwards)
@@ -24,10 +27,10 @@ func _ready():
 	for ii in range(GRIDSIZE):
 		for jj in range(GRIDSIZE):
 			var point = PointScene.instantiate()
-			var offset = 0
+			var x_offset = 0
 			if jj % 2 == 1: # If the row number is odd
-				offset = GRIDSPACING / 2
-			point.position = Vector2(ii * GRIDSPACING + offset, jj * ROWSPACING) # Set the position of the point
+				x_offset = GRIDSPACING / 2
+			point.position = GRIDOFFSET + Vector2(ii * GRIDSPACING + x_offset, jj * ROWSPACING) # Set the position of the point
 			if not Engine.is_editor_hint():
 				point.set_id(ii - (jj/2), jj) # Set the id of the point
 			add_child(point)
@@ -39,6 +42,7 @@ func _ready():
 	# Prepare Hex border
 	if not Engine.is_editor_hint():
 		hex_border = Hex_Border.new(GRIDSPACING, ROWSPACING)
+		hex_border.line.position = GRIDOFFSET # Offset hex_border to match the grid
 		add_child(hex_border.line)
 
 # On every frame, update the mouse_line to go between the latest point and the mouse
@@ -49,7 +53,7 @@ func _process(_delta):
 	if len(cur_points) > 0:
 		if mouse_line == null:
 			mouse_line = Line2D.new()
-			mouse_line.width = 1
+			mouse_line.width = line_size
 			# Set line color last color of line_gradient
 			mouse_line.set_default_color(line_gradient.get_color(line_gradient.get_point_count() - 1))
 			add_child(mouse_line)
@@ -135,6 +139,6 @@ func send_pattern():
 # Set line to a new instance of Line2D
 func new_line():
 	line = Line2D.new()
-	line.width = 1
+	line.width = line_size
 	line.gradient = line_gradient
 	add_child(line)

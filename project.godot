@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Hexgame"
-run/main_scene="res://main_scene.tscn"
+run/main_scene="res://main_scene/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -26,5 +26,6 @@ gdscript/warnings/integer_division=0
 
 [display]
 
-window/size/mode=2
-window/stretch/mode="canvas_items"
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/stretch/mode="viewport"
