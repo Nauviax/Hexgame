@@ -47,12 +47,7 @@ func entity_raycast(pos, dir):
 	raycast_e.target_position = dir * raycast_dist
 	raycast_e.position = pos
 	raycast_e.force_raycast_update() # Works while disabled
-	# if not raycast_e.is_colliding():
-	# 	return null # Possibly redundant, but at least no surprises.
 	var hit = raycast_e.get_collider()
-	if hit == null:
+	if hit == null or not "entity" in hit: # If we hit something that isn't an entity (Like a wall)
 		return null # Miss
-	var hit_parent = hit.get_parent()
-	if not "entity" in hit_parent: # If we hit something that isn't an entity (Like a wall)
-		return null
-	return hit_parent.entity
+	return hit.entity

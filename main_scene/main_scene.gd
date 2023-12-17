@@ -16,6 +16,8 @@ func _ready():
 	# Load test level
 	var level = test_level.instantiate()
 	level_control.add_child(level)
+	# Offset by Entity.FAKE_SCALE / 2 (Due to tilemap offset)
+	level.position = Vector2(Entity.FAKE_SCALE / 2, Entity.FAKE_SCALE / 2)
 
 	# Prepare hexecutor with level info
 	hexecutor = Hexecutor.new(level, level.player.entity, self)

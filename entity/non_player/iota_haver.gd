@@ -1,4 +1,4 @@
-extends Node2D
+extends StaticBody2D
 
 # Information that all entities need
 var entity: Entity = Entity.new("IotaHaver", 0, self)

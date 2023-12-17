@@ -68,13 +68,13 @@ func get_fake_pos():
 
 # Coordinate conversions
 # Fake takes 0,0 as centre of top left tile, but actual positions take 0,0 as top left CORNER
-# Additionally, one tile is 64 pixels. so x64 + 32 to convert fake to real, -32 / 64 to convert real to fake
+# Additionally, one tile is 64 pixels. so x64 to convert fake to real, /64 to convert real to fake
 # Fake coordinates are for input/output, real coordinates are for mathing on and storing.
 
-static var FAKE_SCALE = 64 # Used by some patterns needing to convert fake distances to real distances. (Floats)
+static var FAKE_SCALE = 64 # This val directly used by some patterns needing to convert fake distances to real distances. (Floats)
 
 static func fake_to_real(level_pos: Vector2):
-	return Vector2(level_pos.x * 64 + 32, level_pos.y * 64 + 32)
+	return Vector2(level_pos.x * FAKE_SCALE, level_pos.y * FAKE_SCALE)
 
 static func real_to_fake(screen_pos: Vector2):
-	return Vector2((screen_pos.x - 32) / 64, (screen_pos.y - 32) / 64)
+	return Vector2(screen_pos.x / FAKE_SCALE, screen_pos.y / FAKE_SCALE)

@@ -4,15 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/ShittyEntitySprite.png" id="2_my1yg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b3m4m"]
-size = Vector2(64, 64)
+size = Vector2(56, 56)
 
-[node name="IotaHaver" type="Node2D"]
+[node name="IotaHaver" type="StaticBody2D"]
+collision_mask = 3
 script = ExtResource("1_fbb2e")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_my1yg")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_b3m4m")

@@ -16,9 +16,10 @@ enabled = false
 collision_mask = 2
 
 [node name="TileMap" type="TileMap" parent="."]
+position = Vector2(-32, -32)
 tile_set = ExtResource("1_2okn0")
 format = 2
 layer_0/tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 0, 131072, 0, 0, 196608, 0, 0, 262144, 0, 0, 327680, 0, 0, 393216, 0, 0, 458752, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 65543, 0, 0, 262151, 0, 0, 327687, 0, 0, 393223, 0, 0, 458758, 0, 0, 458757, 0, 0, 458756, 0, 0, 458755, 0, 0, 458754, 0, 0, 458753, 0, 0, 131079, 0, 0, 196615, 0, 0, 458759, 0, 0)
 
 [node name="Player" parent="." instance=ExtResource("2_avtny")]
-position = Vector2(96, 96)
+position = Vector2(64, 64)
