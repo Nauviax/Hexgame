@@ -22,18 +22,25 @@ func set_id(x, y):
 	x_id = x
 	y_id = y
 
-# Call parent when mouse entered while clicking
+# Call parent when mouse entered while clicking (If grid has control)
 func _on_mouse_area_mouse_entered():
+	if Globals.player_control:
+		return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		parent_grid.on_point(self)
 
-# Call parent when mouse starts clicking on me
+# Call parent when mouse starts clicking on me (If grid has control)
 func _on_mouse_area_input_event(_viewport, event, _shape_idx):
+	if Globals.player_control:
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		parent_grid.on_point(self)
 
 # Animate based on mouse distance
 func _process(_delta):
+	if Globals.player_control:
+		polygon.scale = Vector2.ZERO
+		return
 	var mouse_pos = get_global_mouse_position()
 	var dist = global_position.distance_to(mouse_pos)
 	var scale_factor = init_scale * exp(-dist / 40) # Adjust the div value as needed

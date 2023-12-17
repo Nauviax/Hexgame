@@ -35,7 +35,6 @@ static var static_patterns = {
 	"LL": "Compass' Purification",
 	"lLl": "Mind's Reflection",
 	"sL": "Alidade's Purification",
-	"sl": "Pace Purification",
 	"Rr": "Reveal",
 	"slLLsRR": "Archer's Distillation",
 	"srRRsLL": "Architect's Distillation",

@@ -20,7 +20,7 @@ var level_info = null
 
 # The entity casting this hex (Normally the player)
 # Should be an entity from level_info, but not *necessarily* the player.
-var caster = null
+var caster: Entity = null
 
 # Consideration Mode
 # If true, the next executed pattern will be saved to the stack as a pattern. (Metalist or just on it's own)

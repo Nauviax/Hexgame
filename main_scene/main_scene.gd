@@ -18,24 +18,10 @@ func _ready():
 	level_control.add_child(level)
 
 	# Prepare hexecutor with level info
-	hexecutor = Hexecutor.new(level.level_info, level.level_info.player, self)
+	hexecutor = Hexecutor.new(level, level.player.entity, self)
 
 	# Update hex_display
 	update_hex_display()
-
-# Handle input
-func _input(event):
-	if event is InputEventMouseButton:
-		# Tell grid to send pattern on mouse up
-		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() == false:
-			grid.send_pattern()
-			return
-		# Clear hexecutor/grid etc on right click
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
-			# Don't clear if grid.cur_points is not empty (Pattern in progress)
-			if grid.cur_points.size() == 0:
-				clear()
-			return
 
 # Called with new patterns from grid. Executes them using hexecutor
 func new_pattern_drawn(pattern):

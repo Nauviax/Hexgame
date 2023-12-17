@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbo0lm0clhhmu"]
+
+[ext_resource type="Script" path="res://entity/non_player/iota_haver.gd" id="1_fbb2e"]
+[ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/temp/ShittyEntitySprite.png" id="2_aekvw"]
+
+[node name="IotaHaver" type="Node2D"]
+script = ExtResource("1_fbb2e")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_aekvw")

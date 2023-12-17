@@ -2,13 +2,12 @@ class_name Entity
 
 # Info regarding this entity, set on _init()
 var disp_name # Display name for entity
-var position # (0.0, 0.0)
-var looking_dir # (1.0, 0.0), normalized vector
-var velocity # (0.0, 0.0), Speed is magnitude, direction would be normalized vector
 var team # 0 = Neutral, 1 = Friendly/Player, -1 = Hostile
+var node # Node/Object that this entity is attached to.
+var look_dir # (1.0, 0.0), normalized vector
 
 var sb = [null] # List of iotas that this entity is storing.
-var sb_names = ["0"] # List of names of iotas in spellbook, for display purposes.
+var sb_names = ["0"] # List of names of iotas in spellbook, for display purposes. (!!! Maybe remove for now?)
 var sb_sel = 0 # Index of currently selected iota in spellbook.
 var sb_read = true # True if other entities can read from this entity's spellbook. (Selected iota only)
 var sb_write = true # True if other entities can write to this entity's spellbook. (Selected iota only)
@@ -17,16 +16,14 @@ var sb_write = true # True if other entities can write to this entity's spellboo
 
 var ravenmind = null # Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
 
-# Constructor
-func _init(name, pos = Vector2(0, 0), team = 0, look = Vector2(1, 0), vel = Vector2(0, 0)):
+# Constructor (Set look_dir later)
+func _init(name, team, node):
 	self.disp_name = name
-	self.position = pos
 	self.team = team
-	self.looking_dir = look
-	self.velocity = vel
+	self.node = node
 
 # Sets values for spellbook. Mainly for setting sb_read/write, but can also be used to set spellbook size / default values.
-func set_spellbook(sb_read = true, sb_write = true, sb:Array = [null], gen_names = true):
+func set_spellbook(sb_read, sb_write, sb:Array, gen_names = true):
 	self.sb_read = sb_read
 	self.sb_write = sb_write
 	self.sb = sb
@@ -60,3 +57,24 @@ func dec_sb():
 # Display string for entity.
 func _to_string():
 	return "Entity: " + disp_name
+
+# Position getters
+func get_pos():
+	return node.position
+
+# (For display uses)
+func get_fake_pos():
+	return Entity.real_to_fake(node.position)
+
+# Coordinate conversions
+# Fake takes 0,0 as centre of top left tile, but actual positions take 0,0 as top left CORNER
+# Additionally, one tile is 64 pixels. so x64 + 32 to convert fake to real, -32 / 64 to convert real to fake
+# Fake coordinates are for input/output, real coordinates are for mathing on and storing.
+
+static var FAKE_SCALE = 64 # Used by some patterns needing to convert fake distances to real distances. (Floats)
+
+static func fake_to_real(level_pos: Vector2):
+	return Vector2(level_pos.x * 64 + 32, level_pos.y * 64 + 32)
+
+static func real_to_fake(screen_pos: Vector2):
+	return Vector2((screen_pos.x - 32) / 64, (screen_pos.y - 32) / 64)

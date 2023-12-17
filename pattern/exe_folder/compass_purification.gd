@@ -5,7 +5,7 @@ static func execute(hexecutor, _pattern):
 	var entity = stack.pop_back()
 	# Check that the popped value is an entity
 	if entity is Entity:
-		stack.push_back(entity.position)
+		stack.push_back(entity.get_fake_pos())
 	else:
 		stack.push_back(Bad_Iota.new())
 		return "Error: Iota was not an entity"

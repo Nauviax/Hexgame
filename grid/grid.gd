@@ -45,6 +45,29 @@ func _ready():
 		hex_border.line.position = GRIDOFFSET # Offset hex_border to match the grid
 		add_child(hex_border.line)
 
+# Handle input for grid
+# Don't allow input if player_control is true
+func _on_grid_area_2d_input_event(_viewport, event, _shape_idx):
+	# Check player control
+	if Globals.player_control:
+		return
+	# Mouse input
+	if event is InputEventMouseButton:
+		# Tell grid to send pattern on mouse up
+		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() == false:
+			send_pattern()
+			return
+		# Clear hexecutor/grid etc on right click
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
+			# Don't clear if grid.cur_points is not empty (Pattern in progress)
+			if cur_points.size() == 0:
+				main_scene.clear() # Clear grid, but also related gui and hexecutor
+			return
+
+# Also send pattern on mouse exit
+func _on_grid_area_2d_mouse_exited():
+	send_pattern()
+
 # On every frame, update the mouse_line to go between the latest point and the mouse
 # If cur_points is empty, mouse_line is hidden
 func _process(_delta):

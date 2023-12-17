@@ -31,6 +31,9 @@ Basic Patterns
 	Stadiometer's Prfn. (entity → num) REMOVED
 		Height of entity seems irrelevant in 2D
 
+	Pace Purification REMOVED
+		I think the game won't have moving entities, so velocity is redundant.
+
 
 Number Literals
 	
