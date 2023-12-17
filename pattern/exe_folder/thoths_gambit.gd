@@ -25,7 +25,7 @@ static func execute(hexecutor, _pattern):
 	
 	hexecutor.execution_depth += 1 # Prevent infinite recursion (!!! Should this be 8 or smth to reduce recursion for thoths? !!!)
 	var results = [] # List of results from each list iota. 
-	var hexecutor2 = Hexecutor.new(hexecutor.level_info, hexecutor.caster) # New hexecutor for meta execution (New stack)
+	var hexecutor2 = Hexecutor.new(hexecutor.level_base, hexecutor.caster) # New hexecutor for meta execution (New stack)
 	hexecutor2.execution_depth = hexecutor.execution_depth # Execution depth persist to prevent infinite recursion
 
 	for iota in list:

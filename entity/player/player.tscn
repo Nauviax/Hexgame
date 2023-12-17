@@ -1,16 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://crqwgh2ejsj6j"]
+[gd_scene load_steps=5 format=3 uid="uid://crqwgh2ejsj6j"]
 
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://icon.svg" id="1_3bml7"]
 [ext_resource type="Script" path="res://entity/player/player.gd" id="1_vgx7j"]
+[ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/LookLine.png" id="3_f244p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r3tw1"]
+size = Vector2(64, 64)
 
 [node name="Player" type="Node2D"]
 script = ExtResource("1_vgx7j")
 player_sb = null
 
-[node name="Body" type="Sprite2D" parent="."]
-texture = ExtResource("1_3bml7")
-
 [node name="Look_Dir" type="Line2D" parent="."]
 points = PackedVector2Array(0, 0, 0, -100)
+width = 64.0
+texture = ExtResource("3_f244p")
+texture_mode = 1
 
-[node name="RayCast2D" type="RayCast2D" parent="Look_Dir"]
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_3bml7")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_r3tw1")

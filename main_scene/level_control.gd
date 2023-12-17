@@ -6,8 +6,6 @@ func _on_level_area_2d_input_event(_viewport, event, _shape_idx):
 		# L_click to toggle player control
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() == true:
 			Globals.player_control = !Globals.player_control
-			print("Player control: ", Globals.player_control)
-			# Possibly also alert player entity of toggle here (!!!)
 
 # Ensures that the Area2D is always the same size as the control (Should just run once. _ready() gives 0,0)
 func _on_resized():

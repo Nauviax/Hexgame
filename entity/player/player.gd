@@ -18,13 +18,14 @@ var entity: Entity = Entity.new("Player", 1, self)
 func _ready():
 	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
 	entity.set_spellbook(true, false, player_sb)
+	entity.look_dir = Vector2(0.0, -1.0) # Init just look up
 
 # Func for aiming player's look line (Taking in mouse position)
 func set_look_dir(mouse_pos: Vector2):
 	# Set the look line's end position to the mouse position
 	look_line.points[1] = mouse_pos
 	# Adjust entity look unit vector
-	entity.look_dir = (mouse_pos - entity.pos).normalized()
+	entity.look_dir = mouse_pos.normalized()
 
 
 # Player controls
@@ -36,7 +37,4 @@ func _input(event):
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
 			print("Player recognized R_click")
 	if event is InputEventMouseMotion:
-		# Set the look line's end position to the mouse position
-		look_line.points[1] = to_local(event.position)
-		# Adjust entity look unit vector
-		entity.look_dir = (look_line.points[1] - position).normalized() # !!!!!!!!!! NOT LOCAL OR SOMETHING
+		set_look_dir(to_local(event.position))

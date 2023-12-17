@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbo0lm0clhhmu"]
+[gd_scene load_steps=4 format=3 uid="uid://cbo0lm0clhhmu"]
 
 [ext_resource type="Script" path="res://entity/non_player/iota_haver.gd" id="1_fbb2e"]
-[ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/temp/ShittyEntitySprite.png" id="2_aekvw"]
+[ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/ShittyEntitySprite.png" id="2_my1yg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3m4m"]
+size = Vector2(64, 64)
 
 [node name="IotaHaver" type="Node2D"]
 script = ExtResource("1_fbb2e")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_aekvw")
+texture = ExtResource("2_my1yg")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_b3m4m")

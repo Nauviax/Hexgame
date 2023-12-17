@@ -7,7 +7,7 @@ static func execute(hexecutor, _pattern):
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not vector"
 	pos = Entity.fake_to_real(pos) # Convert to real position
-	var entities = hexecutor.level_info.entities
+	var entities = hexecutor.level_base.entities
 	for entity in entities:
 		if entity.get_pos().x == pos.x and entity.get_pos().y == pos.y:
 			stack.push_back(entity)

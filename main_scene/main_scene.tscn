@@ -111,5 +111,7 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D"]
 shape = SubResource("RectangleShape2D_u4ys3")
 
+[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LR_Buttons/Sb_Left" to="HexDisplay" method="_on_sb_left_pressed"]
+[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LR_Buttons/Sb_Right" to="HexDisplay" method="_on_sb_right_pressed"]
 [connection signal="resized" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_resized"]
 [connection signal="input_event" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_level_area_2d_input_event"]

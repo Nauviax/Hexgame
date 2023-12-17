@@ -13,7 +13,7 @@ var entity: Entity = Entity.new("IotaHaver", 0, self)
 @export var sb_write: bool = true
 
 # Looking dir set (Should be normalized)
-@export var look_dir: Vector2 = Vector2(-1, 0)
+@export var look_dir: Vector2 = Vector2(-1.0, 0.0)
 
 # Init object
 func _ready():

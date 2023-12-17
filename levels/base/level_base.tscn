@@ -7,6 +7,14 @@
 [node name="LevelBase" type="Node2D"]
 script = ExtResource("1_3xh2x")
 
+[node name="Hex_Entity_Raycast" type="RayCast2D" parent="."]
+enabled = false
+collision_mask = 3
+
+[node name="Hex_Block_Raycast" type="RayCast2D" parent="."]
+enabled = false
+collision_mask = 2
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("1_2okn0")
 format = 2
@@ -14,5 +22,3 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 0, 131072, 0, 0, 196608,
 
 [node name="Player" parent="." instance=ExtResource("2_avtny")]
 position = Vector2(96, 96)
-scale = Vector2(0.5, 0.5)
-player_sb = null

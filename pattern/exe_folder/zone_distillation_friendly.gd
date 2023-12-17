@@ -9,7 +9,7 @@ static func execute(hexecutor, _pattern):
 		return "Error: invalid iota type recieved"
 	pos = Entity.fake_to_real(pos) # Convert to real position
 	dst = Entity.FAKE_SCALE * dst # Convert to real distance
-	var entities = hexecutor.level_info.entities
+	var entities = hexecutor.level_base.entities
 	var result = []
 	for entity in entities:
 		if not entity.team == 1:

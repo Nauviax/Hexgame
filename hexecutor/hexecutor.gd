@@ -14,12 +14,12 @@ static var meta_gradient = preload("res://resources/gradients/meta.tres")
 # The stack (Very important)
 var stack = []
 
-# A reference to the level_info the caster is a part of.
+# A reference to the level_base the caster is a part of.
 # Used to get entities and other level data for certian patterns.
-var level_info = null
+var level_base = null
 
 # The entity casting this hex (Normally the player)
-# Should be an entity from level_info, but not *necessarily* the player.
+# Should be an entity from level_base, but not *necessarily* the player.
 var caster: Entity = null
 
 # Consideration Mode
@@ -47,8 +47,8 @@ var charon_mode = false
 
 # Constructor
 # If not given a main_scene, will not update the stack display.
-func _init(level_info, caster, main_scene = null):
-	self.level_info = level_info
+func _init(level_base, caster, main_scene = null):
+	self.level_base = level_base
 	self.caster = caster
 	self.main_scene = main_scene
 		

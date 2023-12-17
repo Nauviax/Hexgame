@@ -30,3 +30,8 @@ gdscript/warnings/integer_division=0
 window/size/viewport_width=1600
 window/size/viewport_height=900
 window/stretch/mode="viewport"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_repeat=1
