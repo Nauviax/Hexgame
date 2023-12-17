@@ -61,6 +61,7 @@ func _on_grid_area_2d_input_event(_viewport, event, _shape_idx):
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
 			# Don't clear if grid.cur_points is not empty (Pattern in progress)
 			if cur_points.size() == 0:
+				SoundManager.play_fail() # Sound effect
 				main_scene.clear() # Clear grid, but also related gui and hexecutor
 			return
 
