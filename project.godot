@@ -54,6 +54,15 @@ move_right={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Entity"
+2d_physics/layer_2="Wall"
+2d_physics/layer_3="Glass"
+2d_physics/layer_4="Spike"
+2d_physics/layer_5="Green"
+2d_physics/layer_6="Red"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
