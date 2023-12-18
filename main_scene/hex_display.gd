@@ -5,8 +5,8 @@ extends Control
 @export var stack_path: NodePath # Set in Inspector
 @onready var stack_label = get_node(stack_path) # $Stack
 
-@export var error_path: NodePath # Also set (etc etc)
-@onready var error_label = get_node(error_path) # $Errors
+@export var output_path: NodePath # Also set (etc etc)
+@onready var output_label = get_node(output_path) # $Output
 
 @export var raven_path: NodePath 
 @onready var raven_label = get_node(raven_path) # $Ravenmind
@@ -14,21 +14,21 @@ extends Control
 @export var sb_path: NodePath
 @onready var sb_label = get_node(sb_path) # $Spellbook
 
-# Used to keep track of past errors, to create a scrolling history of sorts.
-var error_history = ["", "", ""] # Can be made longer for longer history, just check update_clear() also.
+# Used to keep track of past outputs, to create a scrolling history of sorts.
+var output_history = ["", "", "", "", ""] # Can be made longer for longer history, just check update_clear() also.
 
 # Update all labels
-func update_all(hexecutor, error):
+func update_all(hexecutor, output):
 	update_stack(hexecutor.stack)
-	update_error_label(error)
+	update_output_label(output)
 	update_ravenmind_label(hexecutor.caster.ravenmind)
 	update_sb_label(hexecutor.caster)
 
 # Update all labels related to clearing the grid, and clear error history
 func update_clear():
-	error_history = ["", "", ""]
+	output_history = ["", "", "", "", ""]
 	update_stack([])
-	update_error_label("Grid and Stack cleared!")
+	update_output_label("Grid and Stack cleared!")
 	update_ravenmind_label(null)
 
 # Stack label
@@ -38,13 +38,13 @@ func update_stack(stack):
 	for ii in range(stack_size):
 		stack_label.text += str(stack[stack_size - ii - 1]) + "\n"
 
-# Error label
-func update_error_label(error):
-	error_history.pop_back()
-	error_history.push_front(error)
-	error_label.text = ""
-	for ii in range(error_history.size()):
-		error_label.text += " ".repeat(ii) + error_history[ii] + "\n"
+# Output label
+func update_output_label(output):
+	output_history.pop_back()
+	output_history.push_front(output)
+	output_label.text = ""
+	for ii in range(output_history.size()):
+		output_label.text += " ".repeat(ii) + output_history[ii] + "\n"
 
 # Ravenmind label
 func update_ravenmind_label(ravenmind):

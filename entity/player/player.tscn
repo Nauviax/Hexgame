@@ -8,7 +8,7 @@
 size = Vector2(56, 56)
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 3
+collision_mask = 7
 motion_mode = 1
 platform_floor_layers = 0
 script = ExtResource("1_vgx7j")
@@ -25,3 +25,12 @@ texture = ExtResource("1_3bml7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_r3tw1")
+
+[node name="Spike_Checker" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spike_Checker"]
+shape = SubResource("RectangleShape2D_r3tw1")
+
+[connection signal="body_entered" from="Spike_Checker" to="." method="_on_spike_checker_body_entered"]

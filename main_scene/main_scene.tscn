@@ -22,9 +22,9 @@ anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("3_pett3")
 stack_path = NodePath("MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack")
-error_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Errors")
-raven_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Ravenmind")
-sb_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Spellbook")
+output_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Output")
+raven_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Ravenmind")
+sb_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook")
 
 [node name="MarginContainer" type="MarginContainer" parent="HexDisplay"]
 layout_mode = 0
@@ -37,7 +37,7 @@ layout_mode = 2
 [node name="Stack_Grid" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.7
+size_flags_stretch_ratio = 0.81
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid"]
 layout_mode = 2
@@ -52,28 +52,34 @@ text = "This is the stack"
 [node name="Grid_Control" type="Control" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.65
+size_flags_stretch_ratio = 2.05
 mouse_filter = 2
 
 [node name="Grid" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control" instance=ExtResource("2_qu1ct")]
+scale = Vector2(1.2, 1.2)
 main_scene_path = NodePath("../../../../../..")
 
 [node name="Info_SB_Level" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Errors" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+[node name="Info_Tabs" type="TabContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+layout_mode = 2
+
+[node name="Output" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "This is the error log"
+text = "This is the output log
 
-[node name="Ravenmind" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+
+
+"
+
+[node name="Spellbook" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
+visible = false
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
-text = "Ravenmind"
 
-[node name="Spellbook" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+[node name="Spellbook" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
 layout_mode = 2
 size_flags_vertical = 3
 text = "- Spellbook -
@@ -82,18 +88,24 @@ text = "- Spellbook -
    2: 
    3: "
 
-[node name="LR_Buttons" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+[node name="LR_Buttons" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Sb_Left" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LR_Buttons"]
+[node name="Sb_Left" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/LR_Buttons"]
 layout_mode = 2
 text = "Left"
 
-[node name="Sb_Right" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LR_Buttons"]
+[node name="Sb_Right" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/LR_Buttons"]
 layout_mode = 2
 text = "Right"
+
+[node name="Ravenmind" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+text = "Ravenmind"
 
 [node name="Level_Control" type="CenterContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
 layout_mode = 2
@@ -111,7 +123,7 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D"]
 shape = SubResource("RectangleShape2D_u4ys3")
 
-[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LR_Buttons/Sb_Left" to="HexDisplay" method="_on_sb_left_pressed"]
-[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LR_Buttons/Sb_Right" to="HexDisplay" method="_on_sb_right_pressed"]
+[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/LR_Buttons/Sb_Left" to="HexDisplay" method="_on_sb_left_pressed"]
+[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/LR_Buttons/Sb_Right" to="HexDisplay" method="_on_sb_right_pressed"]
 [connection signal="resized" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_resized"]
 [connection signal="input_event" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_level_area_2d_input_event"]

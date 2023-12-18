@@ -5,7 +5,7 @@ var PointScene = preload("res://grid/point.tscn")
 @export var main_scene_path: NodePath # Set in Inspector
 @onready var main_scene = get_node(main_scene_path)
 
-const GRIDSIZE = 20 # Amount of points in given direction
+const GRIDSIZE = 18 # Amount of points in given direction
 const GRIDSPACING = 32.0 # Distance between points
 const ROWSPACING = GRIDSPACING * 0.866  # Distance between each row, based on X (0.866 ~= sqrt(3)/2)
 const GRIDOFFSET = Vector2(16, 16) # Offset of the grid from the top left corner of the screen

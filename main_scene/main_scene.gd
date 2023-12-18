@@ -17,7 +17,10 @@ func _ready():
 	var level = test_level.instantiate()
 	level_control.add_child(level)
 	# Offset by Entity.FAKE_SCALE / 2 (Due to tilemap offset)
-	level.position = Vector2(Entity.FAKE_SCALE / 2, Entity.FAKE_SCALE / 2)
+	if Engine.is_editor_hint():
+		level.position = Vector2(32, 32) # Issue getting Entity.FAKE_SCALE in editor. This may become outdated
+	else:
+		level.position = Vector2(Entity.FAKE_SCALE / 2, Entity.FAKE_SCALE / 2)
 
 	# Prepare hexecutor with level info
 	hexecutor = Hexecutor.new(level, level.player.entity, self)

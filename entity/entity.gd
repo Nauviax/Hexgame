@@ -66,6 +66,13 @@ func get_pos():
 func get_fake_pos():
 	return Entity.real_to_fake(node.position)
 
+# Velocity get (Returns 0,0 if no velocity var)
+func get_fake_vel():
+	if "velocity" in node:
+		return Entity.real_to_fake(node.velocity)
+	else:
+		return Vector2.ZERO
+
 # Coordinate conversions
 # Fake takes 0,0 as centre of top left tile, but actual positions take 0,0 as top left CORNER
 # Additionally, one tile is 64 pixels. so x64 to convert fake to real, /64 to convert real to fake

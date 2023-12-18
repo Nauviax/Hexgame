@@ -13,7 +13,7 @@ var entity: Entity = Entity.new("Player", 1, self)
 
 # Variables for player movement
 var speed = 1024
-var bounce = 0.1 # Velocity preserved on collision (0.1 means 10% in collision direction)
+var bounce = 0.25 # Velocity preserved on collision (0.1 means 10% in collision direction)
 var friction = 0.05 # Pull towards 0 when no input
 var tile_gravity = 10 # Pull strength of tiles (When slow enough)
 var tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
@@ -82,3 +82,9 @@ func _physics_process(delta):
 
 	# Player aiming controls
 	set_look_dir(to_local(get_viewport().get_mouse_position()))
+
+
+# Handle collision with spikes
+func _on_spike_checker_body_entered(_body):
+	# Invert velocity and multiply
+	velocity *= -(1 + bounce)
