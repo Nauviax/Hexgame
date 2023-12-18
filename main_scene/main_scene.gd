@@ -35,12 +35,16 @@ func new_pattern_drawn(pattern):
 # Update hex_display (Normally after a pattern is executed)
 # Takes hexecutor to get stack/caster info etc
 func update_hex_display(err_str = ""):
-	hex_display.update_all(hexecutor, err_str) # Update stack display
+	hex_display.update_all_hexy(hexecutor, err_str) # Update stack display
+
+# Update border size display, also located in hex_display.
+func update_border_display():
+	hex_display.update_border_label(grid.hex_border.border_score, grid.hex_border.perimeter)
 
 # Clear all patterns and reset stack
 func clear():
 	hexecutor.reset()
-	hex_display.update_clear() # Update/Clear stack display
+	hex_display.update_clear_hexy() # Update/Clear stack display
 	for pattern_og in grid.patterns:
 		pattern_og.remove()
 	grid.patterns = []

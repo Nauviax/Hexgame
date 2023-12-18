@@ -41,7 +41,7 @@ func _ready():
 
 	# Prepare Hex border
 	if not Engine.is_editor_hint():
-		hex_border = Hex_Border.new(GRIDSPACING, ROWSPACING)
+		hex_border = Hex_Border.new(GRIDSPACING, ROWSPACING, main_scene)
 		hex_border.line.position = GRIDOFFSET # Offset hex_border to match the grid
 		add_child(hex_border.line)
 

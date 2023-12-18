@@ -14,18 +14,25 @@ extends Control
 @export var sb_path: NodePath
 @onready var sb_label = get_node(sb_path) # $Spellbook
 
+@export var border_path: NodePath
+@onready var border_label = get_node(border_path) # $Stack
+
 # Used to keep track of past outputs, to create a scrolling history of sorts.
 var output_history = ["", "", "", "", ""] # Can be made longer for longer history, just check update_clear() also.
 
-# Update all labels
-func update_all(hexecutor, output):
+# Update border size counter
+func update_border_label(prev, current):
+	border_label.text = "Border score: " + str(prev) + " + " + str(current) + " = " + str(prev + current)
+
+# Update all labels related to hexecutor
+func update_all_hexy(hexecutor, output):
 	update_stack(hexecutor.stack)
 	update_output_label(output)
 	update_ravenmind_label(hexecutor.caster.ravenmind)
 	update_sb_label(hexecutor.caster)
 
 # Update all labels related to clearing the grid, and clear error history
-func update_clear():
+func update_clear_hexy():
 	output_history = ["", "", "", "", ""]
 	update_stack([])
 	update_output_label("Grid and Stack cleared!")

@@ -25,6 +25,7 @@ stack_path = NodePath("MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack
 output_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Output")
 raven_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Ravenmind")
 sb_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook")
+border_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Border_Score")
 
 [node name="MarginContainer" type="MarginContainer" parent="HexDisplay"]
 layout_mode = 0
@@ -106,6 +107,18 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 text = "Ravenmind"
+
+[node name="Level" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
+visible = false
+layout_mode = 2
+
+[node name="Level_Desc" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
+layout_mode = 2
+text = "LEVEL DESC NOT IMPLEMENTED YET"
+
+[node name="Border_Score" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
+layout_mode = 2
+text = "Border score: 0 + 0 = 0"
 
 [node name="Level_Control" type="CenterContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
 layout_mode = 2
