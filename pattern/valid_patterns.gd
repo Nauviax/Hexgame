@@ -99,16 +99,16 @@ static var static_patterns = {
 	
 	# Entities
 	"lllllRLlL": "Entity Purification",
-	"lllllRLlLLss": "Entity Purification: Neutral",
-	"lllllRLlLLsl": "Entity Purification: Hostile",
-	"lllllRLlLLsr": "Entity Purification: Friendly",
-	"lllllsRrR": "Zone Distillation: Any",
-	"lllllsRrRRss": "Zone Distillation: Neutral",
-	"lllllsRrRRsl": "Zone Distillation: Hostile",
-	"lllllsRrRRsr": "Zone Distillation: Friendly",
-	"rrrrrsLlLLss": "Zone Distillation: Non-Neutral",
-	"rrrrrsLlLLsl": "Zone Distillation: Non-Hostile",
-	"rrrrrsLlLLsr": "Zone Distillation: Non-Friendly",
+	# "lllllRLlLLss": "Entity Purification: Neutral",
+	# "lllllRLlLLsl": "Entity Purification: Hostile",
+	# "lllllRLlLLsr": "Entity Purification: Friendly",
+	"lllllsRrR": "Zone Distillation",
+	# "lllllsRrRRss": "Zone Distillation: Neutral",
+	# "lllllsRrRRsl": "Zone Distillation: Hostile",
+	# "lllllsRrRRsr": "Zone Distillation: Friendly",
+	# "rrrrrsLlLLss": "Zone Distillation: Non-Neutral",
+	# "rrrrrsLlLLsl": "Zone Distillation: Non-Hostile",
+	# "rrrrrsLlLLsr": "Zone Distillation: Non-Friendly",
 
 	# List Manipulation
 	"rRlRr": "Integration Distillation",
@@ -178,6 +178,20 @@ static var static_patterns = {
 	"lsLslsL": "Recto's Gambit",
 	"RsrsRsrRs": "Tome's Reflection",
 	"lsLslsLls": "Tome's Gambit",
+
+	## SPELLS ##
+
+	# Sentinel
+	"sLrLsLr": "Summon Sentinel",
+	"lRsRlRs": "Banish Sentinel",
+	"sLrLsLrRr": "Locate Sentinel",
+	"sLrLsLrRsL": "Wayfind Sentinel",
+
+	# Other
+	"LLsLLsLL": "Explosion",
+	"LslllsLls": "Impulse",
+	"lllllLssLsLsR": "Blue Sun's Nadir",
+	"sssLllsrrrrrsllsllsssllrllsssll": "Teleport",
 }
 
 # ---------------------- #

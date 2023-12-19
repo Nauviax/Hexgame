@@ -29,7 +29,8 @@ static func execute(hexecutor, _pattern):
 	hexecutor2.execution_depth = hexecutor.execution_depth # Execution depth persist to prevent infinite recursion
 
 	for iota in list:
-		hexecutor2.stack = [iota] # Load 
+		hexecutor2.stack = stack.duplicate(true) # Copy stack (Deep copy)
+		hexecutor2.stack.push_back(iota) # Load 
 		for pattern in patterns:
 			var success = hexecutor2.execute_pattern(pattern, false) # False means don't update display on pattern success
 			if hexecutor2.charon_mode or not success:

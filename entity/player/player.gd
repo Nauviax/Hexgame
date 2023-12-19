@@ -3,8 +3,8 @@ class_name Player
 
 # The Level_Control node (Level's parent) controls Global.player_control, which determines if the player recieves input.
 
-# Information that all entities need (Player is a friendly (1) entity)
-var entity: Entity = Entity.new("Player", 1, self)
+# Information that all entities need
+var entity: Entity = Entity.new("Player", self)
 
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [[0.0, 1.0, 2.0, 3.0, 4.0], null, null, null]
@@ -78,7 +78,6 @@ func _physics_process(delta):
 			velocity.x *= -bounce
 		else:
 			velocity.y *= -bounce
-
 
 	# Player aiming controls
 	set_look_dir(to_local(get_viewport().get_mouse_position()))

@@ -2,7 +2,6 @@ class_name Entity
 
 # Info regarding this entity, set on _init()
 var disp_name # Display name for entity
-var team # 0 = Neutral, 1 = Friendly/Player, -1 = Hostile
 var node # Node/Object that this entity is attached to.
 var look_dir # (1.0, 0.0), normalized vector
 
@@ -17,9 +16,8 @@ var sb_write = true # True if other entities can write to this entity's spellboo
 var ravenmind = null # Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
 
 # Constructor (Set look_dir later)
-func _init(name, team, node):
+func _init(name, node):
 	self.disp_name = name
-	self.team = team
 	self.node = node
 
 # Sets values for spellbook. Mainly for setting sb_read/write, but can also be used to set spellbook size / default values.

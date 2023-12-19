@@ -36,6 +36,7 @@ offset_bottom = 900.0
 layout_mode = 2
 
 [node name="Stack_Grid" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.81
@@ -61,10 +62,12 @@ scale = Vector2(1.2, 1.2)
 main_scene_path = NodePath("../../../../../..")
 
 [node name="Info_SB_Level" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Info_Tabs" type="TabContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+clip_contents = true
 layout_mode = 2
 
 [node name="Output" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
@@ -75,6 +78,7 @@ text = "This is the output log
 
 
 "
+text_overrun_behavior = 3
 
 [node name="Spellbook" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
 visible = false

@@ -21,6 +21,8 @@ My Patterns
 --Spell Circle Patterns--
 --Akashic Patterns-- (Maybe?)
 
+Spells
+
 ------------------------------------------------------------
 
 Basic Patterns
@@ -64,13 +66,7 @@ Logical Operators
 
 Entities
 
-	Old categories removed. Based on final flick on pattern, new categories are as follows:
-		R: -none-    (Living old)
-		r: Friendly  (Player old)
-		s: Neutral   (Item old)
-		l: Hostile   (Monster old)
-		L: -none-    (Animal old)
-	Removed categories are invalid patterns, but may be implemented later.
+	Currently, types aren't a thing. Zone_Distillation and Entity_Purification exist just as that.
 
 List Manipulation
 
@@ -84,9 +80,7 @@ List Manipulation
 
 Escaping Patterns
 
-	Consideration no longer pushes a single pattern, but a one long list containing it's pattern
-
-	(This change of representing single pattern iotas will be present everywhere)
+	Hasty retrospection just returns a Bad Iota, not itself as a meta-pattern.
 
 Reading and Writing
 
@@ -107,7 +101,10 @@ Sets
 	Outputs from set patterns are now sets. 
 	- This differs from base hexcasting where a specific input with duplicates causes the output to also contain duplicates.
 
-Meta-Evaluation*
+Meta-Evaluation
+
+	Thoths no longer stops upon error-ing. Instead, it skips to the next iota in the list. (The current iota stops.)
+	- The results list may contain multiple Bad_Iotas as a result. (On a crash)
 
 	Iris's Gambit left out for now, as I don't think I properly understand it as of right now.
 	Come back to it once I get a solid definition of "Jump" iota usage. (!!!)
@@ -136,3 +133,42 @@ My Patterns
 		Recto's Gambit, Turn spellbook right
 		Tome's Reflection, See spellbook size (ret num)
 		Tome's Gambit, Goto spellbook page (num)
+
+
+------------------------------------------------------------
+
+Spells
+	- Many left out, as their use would just add bloat. Perhaps look into adding more later.
+	- The following spells are implemented:
+
+	Explosion (pos, size ->)*
+		- Size 1 is min, will kill pos and 4 neighbors. Size is just dist from pos.
+		- Idea is explosion isn't safe if friendlies nearby. Perhaps impulse into spikes instead.
+	
+	Impulse (ent, vect ->)*
+		- Destination snaps to nearest tile.
+		- Now works like blink, but NOT through blocks (Inc glass)
+			- Specifically, this acts like a tp.
+			- Note, not the eye part. Can still impulse sideways.
+		- Requires levitation to impulse over spikes. Removes levitation afterwards.
+			- Additionally, ice physics if levitation. Ignore vect magnitude and just keep going.
+		- Can impulse through entities, but not land on entity.
+		- If blocked by wall or at end by entity, find next closest tile on line.
+
+	All Sentinel spells (Normal use)*
+		- Sentinel is unselectable entity (Invisible to zone purifications etc, therefor also impulse etc.)
+			- Additionally, it has no collision. No blocking movement or teleportation.
+		- No great spell, as no ambit in this game.
+		- Note: These spells do NOT affect level state, despite creating and moving entity
+	
+	Greater Teleport -> Teleport (ent, vect ->)*
+		- Requires line of sight to destination. Destination MUST be unobstructed teleport tile.
+			- Can tp through glass and entities etc, just no walls.
+		- vect is from entity. If not unobstructed tp tile, then spell fails.
+
+	Blue Sun's Nadir (ent ->)*
+		- Currently only Nadir/Zenith
+		- Reduce player friction and allow over spikes (Lose on exit spikes)
+		- For others, allow survive impulse over spikes once (Can be over many spikes)
+			- Lost after impulse
+		
