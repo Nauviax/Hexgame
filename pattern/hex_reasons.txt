@@ -145,7 +145,7 @@ Spells
 		- Size 1 is min, will kill pos and 4 neighbors. Size is just dist from pos.
 		- Idea is explosion isn't safe if friendlies nearby. Perhaps impulse into spikes instead.
 	
-	Impulse (ent, vect ->)*
+	Impulse (ent, vect ->)
 		- Destination snaps to nearest tile.
 		- Now works like blink, but NOT through blocks (Inc glass)
 			- Specifically, this acts like a tp.
@@ -158,6 +158,7 @@ Spells
 	All Sentinel spells (Normal use)*
 		- Sentinel is unselectable entity (Invisible to zone purifications etc, therefor also impulse etc.)
 			- Additionally, it has no collision. No blocking movement or teleportation.
+			- Effectively just a coordinate stored in Entity, and *maybe* displayed on map? (!!! Later)
 		- No great spell, as no ambit in this game.
 		- Note: These spells do NOT affect level state, despite creating and moving entity
 	
@@ -166,7 +167,7 @@ Spells
 			- Can tp through glass and entities etc, just no walls.
 		- vect is from entity. If not unobstructed tp tile, then spell fails.
 
-	Blue Sun's Nadir (ent ->)*
+	Blue Sun's Nadir (ent ->)
 		- Currently only Nadir/Zenith
 		- Reduce player friction and allow over spikes (Lose on exit spikes)
 		- For others, allow survive impulse over spikes once (Can be over many spikes)

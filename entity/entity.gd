@@ -15,6 +15,8 @@ var sb_write = true # True if other entities can write to this entity's spellboo
 
 var ravenmind = null # Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
 
+var sentinel = Vector2.ZERO # Sentinel iota. Preserved on grid clear.
+
 var is_floating = false # True if this entity is floating. (Via Blue Sun's Nadir, Levitation spell)
 
 # Constructor (Set look_dir later)

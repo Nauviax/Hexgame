@@ -85,21 +85,21 @@ func entity_at(pos):
 # 0 = Wall(inc glass) or Spike (Depending on layer)
 # 1 = Floor or Gate/TP (Depending on layer)
 # 2 = default (Later could expand "Floor" to seperate the two implemented colored tiles?)
-# func get_tile(pos, layer):
-# 	var atlas = tilemap.get_cell_atlas_coords(layer, pos)
-# 	if layer == 0:
-# 		match atlas:
-# 			Vector2i(1,0), Vector2i(0,1): # Wall, Glass
-# 				return 0
-# 			Vector2i(1,1), Vector2i(0,2), Vector2i(1,2): # Floor tiles
-# 				return 1
-# 			_:
-# 				return 2
-# 	else:
-# 		match atlas:
-# 			Vector2i(0,0): # Spikes
-# 				return 0
-# 			Vector2i(0,1): # Gate/TP
-# 				return 1
-# 			_:
-# 				return 2
+func get_tile(pos, layer):
+	var atlas = tilemap.get_cell_atlas_coords(layer, pos)
+	if layer == 0:
+		match atlas:
+			Vector2i(1,0), Vector2i(0,1): # Wall, Glass
+				return 0
+			Vector2i(1,1), Vector2i(0,2), Vector2i(1,2): # Floor tiles
+				return 1
+			_:
+				return 2
+	else:
+		match atlas:
+			Vector2i(0,0): # Spikes
+				return 0
+			Vector2i(0,1): # Gate/TP
+				return 1
+			_:
+				return 2
