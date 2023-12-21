@@ -61,7 +61,7 @@ func _init(GRIDSPACING, ROWSPACING, main_scene):
 func expand_border(point):
 	# If this is the first point, warn in logs and do nothing.
 	if line.get_point_count() == 0:
-		print("Warning: HexBorder.new_point() called before initial border created.")
+		printerr("Warning: HexBorder.new_point() called before initial border created.")
 		return
 	# Otherwise, find new p1-p6 that create a hexagon enclosing the new point (p7) and all previous points
 	var p7_x = point.x_id

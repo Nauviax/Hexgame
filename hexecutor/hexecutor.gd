@@ -119,6 +119,8 @@ func scan_stack():
 	for item in stack:
 		if item is int:
 			printerr("WARNING: Int found in stack!")
+		if item is Vector2i:
+			printerr("WARNING: Vector2i found in stack!")
 		if item is Array:
 			for arr in array_list:
 				if is_same(arr, item): # By reference, not the same as ==

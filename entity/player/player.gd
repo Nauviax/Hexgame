@@ -85,5 +85,11 @@ func _physics_process(delta):
 
 # Handle collision with spikes
 func _on_spike_checker_body_entered(_body):
-	# Invert velocity and multiply
-	velocity *= -(1 + bounce)
+	# If floating, ignore
+	if not entity.is_floating:
+		# Invert velocity and multiply
+		velocity *= -(1 + bounce)
+
+func _on_spike_checker_body_exited(_body):
+	# Clear floating
+	entity.is_floating = false

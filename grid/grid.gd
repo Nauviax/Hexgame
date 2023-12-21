@@ -137,7 +137,6 @@ func on_point(point):
 	SoundManager.play_segment() # Sound effect
 	cur_points.append(point)
 	line.add_point(point.position)
-	#print("X = %d, Y = %d" % [point.x_id, point.y_id])	
 
 	# If this is the first point ever, create the hex border
 	if hex_border.line.get_point_count() == 0:

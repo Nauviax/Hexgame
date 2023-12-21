@@ -15,6 +15,8 @@ var sb_write = true # True if other entities can write to this entity's spellboo
 
 var ravenmind = null # Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
 
+var is_floating = false # True if this entity is floating. (Via Blue Sun's Nadir, Levitation spell)
+
 # Constructor (Set look_dir later)
 func _init(name, node):
 	self.disp_name = name
@@ -64,6 +66,14 @@ func get_pos():
 func get_fake_pos():
 	return Entity.real_to_fake(node.position)
 
+# Position setters
+# func set_pos(pos): # Commented out while not in use
+# 	node.position = pos
+
+# Turns out setting fake pos is convenient when impulsing.
+func set_fake_pos(pos):
+	node.position = Entity.fake_to_real(pos)
+
 # Velocity get (Returns 0,0 if no velocity var)
 func get_fake_vel():
 	if "velocity" in node:
@@ -79,7 +89,7 @@ func get_fake_vel():
 static var FAKE_SCALE = 64 # This val directly used by some patterns needing to convert fake distances to real distances. (Floats)
 
 static func fake_to_real(level_pos: Vector2):
-	return Vector2(level_pos.x * FAKE_SCALE, level_pos.y * FAKE_SCALE)
+	return level_pos * FAKE_SCALE
 
 static func real_to_fake(screen_pos: Vector2):
-	return Vector2(screen_pos.x / FAKE_SCALE, screen_pos.y / FAKE_SCALE)
+	return screen_pos / FAKE_SCALE
