@@ -21,10 +21,14 @@ static func execute(hexecutor, _pattern):
 	var target = level_base.impulse_raycast(pos_real, vector * Entity.FAKE_SCALE, entity.is_floating) # Return point of tile hit (or max dist)
 	var interpolated = interpolated_line(pos, target) # Slightly short
 	for tile in interpolated: # Should start at furthest tile and work backwards, due to order of list.
-		if level_base.entity_at(tile):
-			continue # Entity check (The actually important check)
-		# if (not entity.is_floating) and level_base.get_tile(tile, 1) == 0:
-		# 	continue # Spike check (!!! Trigger death or something later instead? !!!)
+		if level_base.entity_at(tile): # Entity check (The actually important check)
+			continue 
+		if (not entity.is_floating) and level_base.get_tile(tile, 1) == 0: # Spike check
+			var dead = level_base.remove_entity(entity) # Attempt to push poor entity into hole
+			if dead:
+				return "" # Woo
+			else:
+				continue # Player can't be killed, so keep looking for safe spot.
 		entity.set_fake_pos(tile)
 		entity.is_floating = false # Clear floating status (Irrelevant if entity is not floating)
 		return ""

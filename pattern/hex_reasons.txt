@@ -141,8 +141,8 @@ Spells
 	- Many left out, as their use would just add bloat. Perhaps look into adding more later.
 	- The following spells are implemented:
 
-	Explosion (pos, size ->)*
-		- Size 1 is min, will kill pos and 4 neighbors. Size is just dist from pos.
+	Explosion (pos, size ->)
+		- Size 1 is min, will kill pos and 8 neighbors. Explosion is always in square.
 		- Idea is explosion isn't safe if friendlies nearby. Perhaps impulse into spikes instead.
 	
 	Impulse (ent, vect ->)
@@ -162,7 +162,7 @@ Spells
 		- No great spell, as no ambit in this game.
 		- Note: These spells do NOT affect level state, despite creating and moving entity
 	
-	Greater Teleport -> Teleport (ent, vect ->)*
+	Greater Teleport -> Teleport (ent, vect ->)
 		- Requires line of sight to destination. Destination MUST be unobstructed teleport tile.
 			- Can tp through glass and entities etc, just no walls.
 		- vect is from entity. If not unobstructed tp tile, then spell fails.

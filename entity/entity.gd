@@ -1,4 +1,5 @@
 class_name Entity
+extends Resource # Should mean this object gets deleted automatically when not in use.
 
 # Info regarding this entity, set on _init()
 var disp_name # Display name for entity
@@ -82,6 +83,15 @@ func get_fake_vel():
 		return Entity.real_to_fake(node.velocity)
 	else:
 		return Vector2.ZERO
+
+# Death function. Deletes the entity node and cleans up.
+# Should NOT be called through entity. Pass entity to level_base and delete via there.
+func delete():
+	node.queue_free()
+	node = null
+	sb = null # This and raven likely unneeded, but just in case.
+	ravenmind = null
+
 
 # Coordinate conversions
 # Fake takes 0,0 as centre of top left tile, but actual positions take 0,0 as top left CORNER

@@ -23,6 +23,15 @@ func _ready():
 		if "entity" in child:
 			entities.append(child.entity)
 
+# Remove an entity from the level, effectively killing it. Returns false on failure. (When killing player)
+func remove_entity(entity):
+	if entity.node == player:
+		return false
+	entities.erase(entity)
+	remove_child(entity.node)
+	entity.delete()
+	return true
+
 # Raycasts for hexes (Uses literal/actual positions)
 static var raycast_dist = 1024 # (16 * 64, or 16 tiles)
 func block_raycast(pos, dir):
@@ -66,7 +75,7 @@ func impulse_raycast(pos, offset, is_floating):
 	if not raycast_i.is_colliding():
 		return (pos + offset) / fs
 	var hit_pos = to_local(raycast_i.get_collision_point()) # self.local because we aren't directly using tilemap
-	var adj_pos = hit_pos - offset/1000 # Get point just before hit to skip checking if hit tile is wall later (Spoiler: it is)
+	var adj_pos = hit_pos + offset/1000 # Get point just after hit to guarantee checking if hit tile is spikes
 	if is_floating: # Possibly redundant if statement, but ehhh
 		raycast_i.set_collision_mask_value(4, true)
 	return adj_pos / fs
@@ -74,8 +83,9 @@ func impulse_raycast(pos, offset, is_floating):
 # Returns true if an entity is on the given tile
 # Takes a tile position (Uses fake/tilemap position system)
 func entity_at(pos):
+	var pos_true = pos * Entity.FAKE_SCALE
 	for entity in entities:
-		if entity.get_pos() == pos * Entity.FAKE_SCALE:
+		if entity.get_pos() == pos_true:
 			return true
 	return false
 
