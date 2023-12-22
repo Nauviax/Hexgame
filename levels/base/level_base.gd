@@ -2,6 +2,9 @@ extends Node2D
 # Base level is currently for debugging. Not intended to be in final game.
 # Eventually move most creation content out of level_base.gd
 
+# Validator for this level
+@export var validator: Script
+
 # List of entities in the level
 var entities: Array
 
@@ -22,6 +25,10 @@ func _ready():
 	for child in get_children():
 		if "entity" in child:
 			entities.append(child.entity)
+
+# Test if the level is complete
+func validate():
+	return validator.validate(self)
 
 # Remove an entity from the level, effectively killing it. Returns false on failure. (When killing player)
 func remove_entity(entity):
@@ -93,18 +100,24 @@ func entity_at(pos):
 # Layer 0 is tiles, layer 1 is toppers
 # Current return values are funky, but are as follows:
 # 0 = Wall(inc glass) or Spike (Depending on layer)
-# 1 = Floor or Gate/TP (Depending on layer)
-# 2 = default (Later could expand "Floor" to seperate the two implemented colored tiles?)
+# 1 = White floor or Gate/TP (Depending on layer)
+# 2 = Green floor
+# 3 = Red floor
+# -1 = default (Invalid normally)
 func get_tile(pos, layer):
-	var atlas = tilemap.get_cell_atlas_coords(layer, pos)
+	var atlas = tilemap.get_cell_atlas_coords(layer, pos.round()) # Round pos, as tilemap will floor it otherwise.
 	if layer == 0:
 		match atlas:
 			Vector2i(1,0), Vector2i(0,1): # Wall, Glass
 				return 0
-			Vector2i(1,1), Vector2i(0,2), Vector2i(1,2): # Floor tiles
+			Vector2i(1,1): # White floor
 				return 1
-			_:
+			Vector2i(0,2): # Green floor
 				return 2
+			Vector2i(1,2): # Red floor
+				return 3
+			_:
+				return -1
 	else:
 		match atlas:
 			Vector2i(0,0): # Spikes
@@ -112,4 +125,4 @@ func get_tile(pos, layer):
 			Vector2i(0,1): # Gate/TP
 				return 1
 			_:
-				return 2
+				return -1

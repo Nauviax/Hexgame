@@ -29,6 +29,8 @@ static func execute(hexecutor, _pattern):
 				return "" # Woo
 			else:
 				continue # Player can't be killed, so keep looking for safe spot.
+		if level_base.get_tile(tile, 0) == 0: # Wall/Glass check
+			continue # Can't land here, nope.
 		entity.set_fake_pos(tile)
 		entity.is_floating = false # Clear floating status (Irrelevant if entity is not floating)
 		return ""

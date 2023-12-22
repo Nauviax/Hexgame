@@ -20,7 +20,6 @@ var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
 var patterns = [] # List of patterns (Mainly for deletion afterwards)
 
-
 # Prepare *stuff*
 func _ready():
 	# Draw points
@@ -165,3 +164,13 @@ func new_line():
 	line.width = line_size
 	line.gradient = line_gradient
 	add_child(line)
+
+# Reset grid. Optionally either update or clear border score.
+func reset(hard = false):
+	for pattern_on_grid in patterns:
+		pattern_on_grid.remove() # Clears points and line
+	patterns = []
+	if hard:
+		hex_border.reset_hard()
+	else:
+		hex_border.reset()

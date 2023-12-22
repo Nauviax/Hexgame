@@ -26,7 +26,7 @@ var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE)
 # Prepare player object
 func _ready():
 	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
-	entity.set_spellbook(true, false, player_sb)
+	entity.set_spellbook(true, false, player_sb.duplicate(true)) # Duplicate, or it won't reset with level
 	entity.look_dir = Vector2(0.0, -1.0) # Init just look up
 
 # Func for aiming player's look line (Taking in mouse position)

@@ -17,5 +17,5 @@ var entity: Entity = Entity.new("IotaHaver", self)
 
 # Init object
 func _ready():
-	entity.set_spellbook(sb_read, sb_write, sb)
+	entity.set_spellbook(sb_read, sb_write, sb.duplicate(true))
 	entity.look_dir = look_dir.normalized()

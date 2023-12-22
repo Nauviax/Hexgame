@@ -189,10 +189,16 @@ func undo():
 func clear_history():
 	history.clear()
 
-# Delete border, ready to be reused.
+# Delete border, ready to be reused. Save_perim is so single point borders don't add to score
 func reset(save_perim = true):
 	line.clear_points()
+	history.clear() # Just in case
 	if save_perim:
 		border_score += perimeter
 	perimeter = 0
 	main_scene.update_border_display()
+
+# Clear border and score
+func reset_hard():
+	border_score = 0
+	reset(false) # Don't add to score

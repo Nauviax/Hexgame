@@ -26,6 +26,8 @@ output_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Output"
 raven_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Ravenmind")
 sb_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook")
 border_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Border_Score")
+level_desc_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Desc")
+validate_button_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate")
 
 [node name="MarginContainer" type="MarginContainer" parent="HexDisplay"]
 layout_mode = 0
@@ -68,32 +70,21 @@ size_flags_horizontal = 3
 
 [node name="Info_Tabs" type="TabContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
 clip_contents = true
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
+current_tab = 1
 
 [node name="Output" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
-text = "This is the output log
-
-
-
-"
+text = "This is the output log"
 text_overrun_behavior = 3
 
 [node name="Spellbook" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
-visible = false
 layout_mode = 2
 
-[node name="Spellbook" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "- Spellbook -
--> 0: iota
-   1: 
-   2: 
-   3: "
-
-[node name="LR_Buttons" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+[node name="LR_Buttons" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
@@ -106,19 +97,49 @@ text = "Left"
 layout_mode = 2
 text = "Right"
 
-[node name="Ravenmind" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+[node name="Spellbook" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 size_flags_vertical = 3
+text = "- Spellbook -
+-> 0: iota
+   1: 
+   2: 
+   3: "
+clip_text = true
+
+[node name="Ravenmind" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
 size_flags_stretch_ratio = 0.5
 text = "Ravenmind"
+autowrap_mode = 3
+clip_text = true
 
 [node name="Level" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
 visible = false
 layout_mode = 2
 
-[node name="Level_Desc" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
+[node name="Level_Buttons" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
 layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Validate" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons"]
+layout_mode = 2
+text = "Validate"
+
+[node name="Next" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons"]
+layout_mode = 2
+text = "Next Level"
+
+[node name="Level_Desc" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_vertical = 1
 text = "LEVEL DESC NOT IMPLEMENTED YET"
+autowrap_mode = 2
 
 [node name="Border_Score" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
 layout_mode = 2
@@ -142,5 +163,7 @@ shape = SubResource("RectangleShape2D_u4ys3")
 
 [connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/LR_Buttons/Sb_Left" to="HexDisplay" method="_on_sb_left_pressed"]
 [connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/LR_Buttons/Sb_Right" to="HexDisplay" method="_on_sb_right_pressed"]
+[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
+[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Next" to="HexDisplay" method="_on_level_next_pressed"]
 [connection signal="resized" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_resized"]
 [connection signal="input_event" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_level_area_2d_input_event"]

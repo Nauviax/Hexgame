@@ -3,19 +3,25 @@ extends Control
 @onready var main_scene = get_parent()
 
 @export var stack_path: NodePath # Set in Inspector
-@onready var stack_label = get_node(stack_path) # $Stack
+@onready var stack_label = get_node(stack_path)
 
 @export var output_path: NodePath # Also set (etc etc)
-@onready var output_label = get_node(output_path) # $Output
+@onready var output_label = get_node(output_path)
 
 @export var raven_path: NodePath 
-@onready var raven_label = get_node(raven_path) # $Ravenmind
+@onready var raven_label = get_node(raven_path)
 
 @export var sb_path: NodePath
-@onready var sb_label = get_node(sb_path) # $Spellbook
+@onready var sb_label = get_node(sb_path)
 
 @export var border_path: NodePath
-@onready var border_label = get_node(border_path) # $Stack
+@onready var border_label = get_node(border_path)
+
+@export var level_desc_path: NodePath
+@onready var level_desc_label = get_node(level_desc_path)
+
+@export var validate_button_path: NodePath
+@onready var validate_button = get_node(validate_button_path) # For changing color
 
 # Used to keep track of past outputs, to create a scrolling history of sorts.
 var output_history = ["", "", "", "", ""] # Can be made longer for longer history, just check update_clear() also.
@@ -71,9 +77,23 @@ func update_sb_label(caster):
 		var iota = caster.sb[ii]
 		sb_label.text += caster.sb_names[ii] + ": " + str(iota if iota != null else "") + "\n"
 
-# Handle UI buttons (Probably to be replaced later) (!!!)
+# Level description label (Called directly by main_scene)
+func update_level_desc_label(text):
+	level_desc_label.text = text
+	# Reset validate button color
+	validate_button.modulate = Color(1, 1, 1)
+
+# Handle UI buttons
 func _on_sb_left_pressed():
 	main_scene.spellbook_LR(true)
 
 func _on_sb_right_pressed():
 	main_scene.spellbook_LR(false)
+
+func _on_level_validate_pressed():
+	var validated = main_scene.validate_level()
+	print ("Valid level: " + str(validated))
+	validate_button.modulate = Color(0, 1, 0) if validated else Color(1, 0, 0)
+
+func _on_level_next_pressed():
+	main_scene.load_next_level()
