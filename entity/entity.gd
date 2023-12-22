@@ -18,7 +18,7 @@ var ravenmind = null # Ravenmind iota. Not readable/writable by other entities, 
 
 var sentinel = Vector2.ZERO # Sentinel iota. Preserved on grid clear.
 
-var is_floating = false # True if this entity is floating. (Via Blue Sun's Nadir, Levitation spell)
+var is_floating = false # True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
 
 # Constructor (Set look_dir later)
 func _init(name, node):

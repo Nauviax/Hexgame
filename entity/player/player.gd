@@ -55,10 +55,10 @@ func _physics_process(delta):
 	# Movement
 	if input_dir != Vector2.ZERO:
 		# Lerp towards input direction
-		velocity = lerp(velocity, input_dir.normalized() * speed, acceleration)
+		velocity = lerp(velocity, input_dir.normalized() * speed, acceleration / 2 if entity.is_floating else acceleration)
 	else:
 		# Apply friction
-		velocity = lerp(velocity, Vector2.ZERO, friction)
+		velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_floating else friction)
 		var vel_len = velocity.length()
 		# If close enough and slow enough, snap to grid
 		var tile_center = position.snapped(tile_snap)

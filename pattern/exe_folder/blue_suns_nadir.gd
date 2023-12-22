@@ -1,4 +1,4 @@
-# Takes an entity, then gives them levitation for their next impulse.
+# Takes an entity, then gives them floating for their next impulse.
 static var iota_count = 1
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
