@@ -19,6 +19,7 @@ var level_current_index = 0 # Index of currently loaded level in level_list
 func _ready():
 	# Prepare level_list
 	level_list.push_back(preload("res://levels/test_level/level.tscn"))
+	level_list.push_back(preload("res://levels/reveal_iota/level.tscn"))
 	level_list.push_back(preload("res://levels/bool_sort/level.tscn"))
 	load_next_level(false) # False as nothing to unload yet
 

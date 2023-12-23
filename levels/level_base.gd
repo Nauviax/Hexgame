@@ -12,6 +12,9 @@ var entities: Array
 # Player object for the level 
 @onready var player = $Player
 
+# Most recently revealed iota (For level verification)
+var revealed_iota = null
+
 # Tilemap for the level
 @onready var tilemap = $TileMap
 
