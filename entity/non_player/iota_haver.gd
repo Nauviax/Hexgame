@@ -1,7 +1,8 @@
 extends StaticBody2D
 
 # Information that all entities need
-var entity: Entity = Entity.new("IotaHaver", self)
+@export var entity_name: String = "IotaHaver"
+@onready var entity: Entity = Entity.new(entity_name, self)
 
 # Starting spellbook for this entity. Format: [iota, iota, iota, ...]
 @export var sb: Array = [42.0]

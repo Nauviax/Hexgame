@@ -72,7 +72,7 @@ size_flags_horizontal = 3
 clip_contents = true
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-current_tab = 1
+current_tab = 2
 
 [node name="Output" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
 visible = false
@@ -82,6 +82,7 @@ text = "This is the output log"
 text_overrun_behavior = 3
 
 [node name="Spellbook" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
+visible = false
 layout_mode = 2
 
 [node name="LR_Buttons" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
@@ -109,6 +110,7 @@ text = "- Spellbook -
 clip_text = true
 
 [node name="Ravenmind" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -118,7 +120,6 @@ autowrap_mode = 3
 clip_text = true
 
 [node name="Level" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
-visible = false
 layout_mode = 2
 
 [node name="Level_Buttons" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
@@ -138,7 +139,7 @@ text = "Next Level"
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 1
-text = "LEVEL DESC NOT IMPLEMENTED YET"
+text = "Level Name + Description here"
 autowrap_mode = 2
 
 [node name="Border_Score" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]

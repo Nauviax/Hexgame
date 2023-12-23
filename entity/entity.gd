@@ -2,7 +2,7 @@ class_name Entity
 extends Resource # Should mean this object gets deleted automatically when not in use.
 
 # Info regarding this entity, set on _init()
-var disp_name # Display name for entity
+var name # Entity name, display and randomizer purposes
 var node # Node/Object that this entity is attached to.
 var look_dir # (1.0, 0.0), normalized vector
 
@@ -22,7 +22,7 @@ var is_floating = false # True if this entity is floating. (Via Blue Sun's Nadir
 
 # Constructor (Set look_dir later)
 func _init(name, node):
-	self.disp_name = name
+	self.name = name
 	self.node = node
 
 # Sets values for spellbook. Mainly for setting sb_read/write, but can also be used to set spellbook size / default values.
@@ -59,7 +59,7 @@ func dec_sb():
 
 # Display string for entity.
 func _to_string():
-	return "Entity: " + disp_name
+	return "Entity: " + name
 
 # Position getters
 func get_pos():

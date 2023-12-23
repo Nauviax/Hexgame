@@ -1,3 +1,4 @@
+# Test Level Validator
 static var desc = "Test Level: All entities on green tiles must contain true. At least one on-green entity must exist."
 static func validate(level_base):
 	var green_entities = []

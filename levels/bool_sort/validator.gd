@@ -1,3 +1,4 @@
+# Bool Sort Validator
 static var desc = "Bool Sort: Move any haver containing true to the green area. Kill any haver containing false. You cannot write to the havers."
 static func validate(level_base):
 	var greens = []

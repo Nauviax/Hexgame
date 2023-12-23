@@ -2,8 +2,9 @@ extends Node2D
 # Base level is currently for debugging. Not intended to be in final game.
 # Eventually move most creation content out of level_base.gd
 
-# Validator for this level
+# Validator and Randomizer for this level
 @export var validator: Script
+@export var randomizer: Script
 
 # List of entities in the level
 var entities: Array
@@ -25,6 +26,8 @@ func _ready():
 	for child in get_children():
 		if "entity" in child:
 			entities.append(child.entity)
+	# Apply randomizer to level
+	randomizer.randomize(self)
 
 # Test if the level is complete
 func validate():

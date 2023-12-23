@@ -18,8 +18,8 @@ var level_current_index = 0 # Index of currently loaded level in level_list
 # For now, just load the test_level scene and prepare hexecutor
 func _ready():
 	# Prepare level_list
-	level_list.push_back(preload("res://levels/test_level.tscn"))
-	level_list.push_back(preload("res://levels/bool_sort.tscn"))
+	level_list.push_back(preload("res://levels/test_level/level.tscn"))
+	level_list.push_back(preload("res://levels/bool_sort/level.tscn"))
 	load_next_level(false) # False as nothing to unload yet
 
 # Unloads the current level and loads the next one
