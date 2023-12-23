@@ -13,7 +13,7 @@ config_version=5
 config/name="Hexgame"
 run/main_scene="res://main_scene/main_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://resources/sprites/godot.svg"
 
 [autoload]
 

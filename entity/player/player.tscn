@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://crqwgh2ejsj6j"]
 
-[ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://icon.svg" id="1_3bml7"]
 [ext_resource type="Script" path="res://entity/player/player.gd" id="1_vgx7j"]
 [ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/LookLine.png" id="3_f244p"]
+[ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="3_xybjd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r3tw1"]
 size = Vector2(56, 56)
@@ -21,7 +21,7 @@ texture_mode = 1
 
 [node name="Body" type="Sprite2D" parent="."]
 scale = Vector2(0.45, 0.45)
-texture = ExtResource("1_3bml7")
+texture = ExtResource("3_xybjd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_r3tw1")

@@ -6,6 +6,9 @@ class_name Player
 # Information that all entities need
 var entity: Entity = Entity.new("Player", self)
 
+# Reference to the player's sentinel sprite (Pos and visibility controlled by entity)
+@export var sentinel: Node2D
+
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [[0.0, 1.0, 2.0, 3.0, 4.0], null, null, null]
 # Current default spellbook has 4 slots, and starts with the above 0-4 array.

@@ -14,11 +14,15 @@ var sb_write = true # True if other entities can write to this entity's spellboo
 # Spellbook size should be fixed, so no push/pop, just set/get. (Unless specifically trying to expand/shrink spellbook size)
 # For external reading/writing, use provided get/set functions.
 
-var ravenmind = null # Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
+ # True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
+var is_floating = false
 
-var sentinel = Vector2.ZERO # Sentinel iota. Preserved on grid clear.
+# Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
+var ravenmind = null 
 
-var is_floating = false # True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
+# Sentinel_pos vector. Preserved on grid clear.
+# THIS IS A FAKE/TILE POSITION
+var sentinel_pos = null
 
 # Constructor (Set look_dir later)
 func _init(name, node):
@@ -83,6 +87,16 @@ func get_fake_vel():
 		return Entity.real_to_fake(node.velocity)
 	else:
 		return Vector2.ZERO
+
+# Set sentinel, and show/hide based on null status. (Only player sentinels are visible)
+func set_sentinel(pos):
+	sentinel_pos = pos
+	if name == "Player": # Do not display sentinels for non-player entities.
+		if sentinel_pos == null:
+			node.sentinel.visible = false
+		else:
+			node.sentinel.visible = true
+			node.sentinel.position = sentinel_pos * Entity.FAKE_SCALE
 
 # Death function. Deletes the entity node and cleans up.
 # Should NOT be called through entity. Pass entity to level_base and delete via there.
