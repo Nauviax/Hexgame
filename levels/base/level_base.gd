@@ -41,8 +41,13 @@ func remove_entity(entity):
 
 # Raycasts for hexes (Uses literal/actual positions)
 static var raycast_dist = 1024 # (16 * 64, or 16 tiles)
-func block_raycast(pos, dir):
-	raycast_b.target_position = dir * raycast_dist
+
+# Can optionally use dir magnitude as distance, but uses 16 tiles by default
+func block_raycast(pos, dir, normalized = true):
+	if normalized:
+		raycast_b.target_position = dir * raycast_dist
+	else:
+		raycast_b.target_position = dir # Use dir magnitude as distance
 	raycast_b.position = pos
 	raycast_b.force_raycast_update() # Works while disabled
 	if not raycast_b.is_colliding():

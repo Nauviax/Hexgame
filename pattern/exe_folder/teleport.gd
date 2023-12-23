@@ -13,11 +13,16 @@ static func execute(hexecutor, _pattern):
 		return "Error: iota was not entity"
 	var pos = entity.get_fake_pos()
 	var dest = round(pos + vector)
-	var level = hexecutor.level_base # For functions
+	var level_base = hexecutor.level_base # For functions
 	if hexecutor.level_base.get_tile(dest, 1) == 1: # If gate
-		if not level.entity_at(dest): # If no entity
-			entity.set_fake_pos(dest)
-		# No error if gate is blocked, should be visually obvious anyway.
+		if not level_base.entity_at(dest): # If no entity
+			# Ensure line of sight
+			# (Unnormalized vector + false value, which will create shorter raycasts. (Equal to vector length))
+			var hit = level_base.block_raycast(pos * Entity.FAKE_SCALE, vector * Entity.FAKE_SCALE, false)
+			if hit == null: # No blocks in way
+				entity.set_fake_pos(dest)
+			print(hit)
+		# No error if gate is blocked or not in sight, should be visually obvious anyway.
 	else:
 		stack.push_back(Bad_Iota.new()) # DO error here, since it's less obvious. If your thoth is missing the gate, you'll want to know.
 		return "Error: Destination did not lead to a gate"
