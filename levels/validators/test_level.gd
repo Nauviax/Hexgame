@@ -4,7 +4,6 @@ static func validate(level_base):
 	var entities = level_base.entities
 	for entity in entities:
 		var pos = entity.get_fake_pos()
-		print(pos)
 		var tile = level_base.get_tile(pos, 0)
 		if tile == 2:
 			green_entities.append(entity)

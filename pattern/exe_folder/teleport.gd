@@ -21,7 +21,6 @@ static func execute(hexecutor, _pattern):
 			var hit = level_base.block_raycast(pos * Entity.FAKE_SCALE, vector * Entity.FAKE_SCALE, false)
 			if hit == null: # No blocks in way
 				entity.set_fake_pos(dest)
-			print(hit)
 		# No error if gate is blocked or not in sight, should be visually obvious anyway.
 	else:
 		stack.push_back(Bad_Iota.new()) # DO error here, since it's less obvious. If your thoth is missing the gate, you'll want to know.
