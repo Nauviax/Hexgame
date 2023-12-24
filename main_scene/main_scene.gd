@@ -42,6 +42,7 @@ func load_next_level(unload = true):
 	# Offset by Entity.FAKE_SCALE / 2 (Due to tilemap offset)
 	if Engine.is_editor_hint():
 		loaded_level.position = Vector2(32, 32) # Issue getting Entity.FAKE_SCALE in editor. This may become outdated
+		return # Don't update rest of scene if in editor
 	else:
 		loaded_level.position = Vector2(Entity.FAKE_SCALE / 2, Entity.FAKE_SCALE / 2)
 
