@@ -174,10 +174,10 @@ static var static_patterns = {
 	### NEW PATTERNS ###
 
 	# Spellbook
-	"RsrsRsr": "Verso's Gambit",
-	"lsLslsL": "Recto's Gambit",
-	"RsrsRsrRs": "Tome's Reflection",
-	"lsLslsLls": "Tome's Gambit",
+	"RRl": "Verso's Gambit",
+	"RRs": "Recto's Gambit",
+	"LLs": "Tome's Reflection",
+	"LLr": "Tome's Gambit",
 
 	## SPELLS ##
 
