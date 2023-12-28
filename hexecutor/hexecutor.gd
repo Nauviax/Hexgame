@@ -5,6 +5,10 @@ extends Resource # So one off instances can be removed automatically.
 # Can be left null, but will not update the stack display. (For when a hexecutor doesn't belong to a grid/display)
 var main_scene = null
 
+# True if this hexecutor should interact with the main scene directly.
+# This includes updating the display, but patterns can still interact using this reference!
+var is_main_hexecutor
+
 # Various gradients for pattern lines, to be set depending on state.
 # Static as they can be shared between all instances of this class.
 static var normal_gradient = preload("res://resources/gradients/normal.tres")
@@ -45,12 +49,19 @@ var execution_depth = 0
 # If not in a meta-pattern, simply end this hex (Clear grid and stack etc)
 var charon_mode = false
 
+# Scram Mode
+# If true, the the hex will attempt to end. Similar to Charon Mode, but does NOT respect meta-patterns.
+# Used for patterns that should not be followed by other patterns. (Enter and Exit for instance)
+# Not reset by hexecutor, main_scene should reset this when it needs to use the hexecutor again.
+var scram_mode = false
+
 # Constructor
-# If not given a main_scene, will not update the stack display.
-func _init(level_base, caster, main_scene = null):
+# If not is_main_hexecutor, will not update the stack display.
+func _init(level_base, caster, main_scene, is_main_hexecutor = true):
 	self.level_base = level_base
 	self.caster = caster
 	self.main_scene = main_scene
+	self.is_main_hexecutor = is_main_hexecutor
 		
 # Tries to validate the pattern, colors it, then executes it (With sounds)
 func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mistakes
@@ -72,6 +83,11 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 
 # Executes a given pattern (Of note: NOT a Pattern_Ongrid)
 func execute_pattern(pattern: Pattern, update_on_success = true):
+	# If scram mode, end hex.
+	if scram_mode:
+		print("Scram mode active, ending hex.")
+		return false # Return early (And "fail" via false, so meta-patterns don't continue)
+	
 	var return_string = ""
 	if execution_depth > 128: # Max depth
 		return_string = "Error: Execution depth too high (Max 128)"
@@ -94,19 +110,20 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 	# If AFTER meta-execution, charon_mode is true, end hex.
 	if charon_mode and execution_depth == 0:
 		charon_mode = false
-		main_scene.clear() # Wipe grid and stack
+		if is_main_hexecutor: # The execution depth check should prevent this being false, but just in case.
+			main_scene.clear() # Wipe grid and stack
 		return true # Return early
 
 	# Special case for patterns that don't want to update the display on return.
 	# Currently used when meta-executed patterns fail, to prevent error spam. Please don't return null elsewhere.
 	# (I want to change my error system, so this is somewhat temporary (!!!))
 	if return_string == null:
-		return false
+		return scram_mode # Return false, UNLESS scram mode is on, in which case return true. (Because scram mode is a special fail case)
 
 	var success = return_string.left(5) != "Error" # Check if return string contains "Error"
 	# Can choose to only update display on fail. Good for meta-patterns which run many patterns.
-	# Additionally, if main_scene is null, will not run updates. (Useful for oneoff hexecutor instances)
-	if (update_on_success or not success) and (main_scene != null):
+	# Additionally, if not is_main_hexecutor, will not run updates. (Useful for oneoff hexecutor instances)
+	if (update_on_success or not success) and is_main_hexecutor:
 		main_scene.update_hex_display(return_string) # Update stack display
 		scan_stack() # Debugging, comment out when not needed anymore (!!!)
 	return success

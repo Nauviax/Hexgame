@@ -1,5 +1,5 @@
-# Bool Sort Randomizer
-static func randomize(level_base):
+# Bool Sort Initiator
+static func initiate(level_base):
 	var entities = level_base.entities
 	var true_count = 0
 	var iota_havers = []

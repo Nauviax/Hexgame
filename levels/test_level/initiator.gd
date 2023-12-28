@@ -1,5 +1,5 @@
-# Test Level Randomizer
-static func randomize(level_base):
+# Test Level Initiator
+static func initiate(level_base):
 	var entities = level_base.entities
 	for entity in entities:
 		if entity.name == "IotaHaver_Rand":

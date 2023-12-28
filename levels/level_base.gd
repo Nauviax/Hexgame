@@ -2,9 +2,12 @@ extends Node2D
 # Base level is currently for debugging. Not intended to be in final game.
 # Eventually move most creation content out of level_base.gd
 
-# Validator and Randomizer for this level
+# Validator and initiator for this level
 @export var validator: Script
-@export var randomizer: Script
+@export var initiator: Script
+
+# True if level has been validated (And validator returned true)
+var validated = false
 
 # List of entities in the level
 var entities: Array
@@ -29,12 +32,13 @@ func _ready():
 	for child in get_children():
 		if "entity" in child:
 			entities.append(child.entity)
-	# Apply randomizer to level
-	randomizer.randomize(self)
+	# Apply initiator to level
+	initiator.initiate(self)
 
-# Test if the level is complete
+# Test if the level is complete (And save result)
 func validate():
-	return validator.validate(self)
+	validated = validator.validate(self)
+	return validated
 
 # Remove an entity from the level, effectively killing it. Returns false on failure. (When killing player)
 func remove_entity(entity):

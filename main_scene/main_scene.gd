@@ -12,32 +12,39 @@ extends Node2D
 @onready var level_control = get_node(level_control_path)
 
 var loaded_level = null # Currently loaded level (Child of level_control)
-var level_list = [] # List of level scenes that can be loaded. (Scenes, not instantiated)
-var level_current_index = 0 # Index of currently loaded level in level_list
+var level_list = [] # List of arrays that represent levels other than the loaded level. Appended to on new level load.
+# Pairs are in [[level_node, hexecutor, level_haver_entity]] format.
 
-# For now, just load the test_level scene and prepare hexecutor
+# For now, just load the hub scene
 func _ready():
-	# Prepare level_list
-	level_list.push_back(preload("res://levels/test_level/level.tscn"))
-	level_list.push_back(preload("res://levels/reveal_iota/level.tscn"))
-	level_list.push_back(preload("res://levels/bool_sort/level.tscn"))
-	load_next_level(false) # False as nothing to unload yet
+	load_level_from_scene(preload("res://levels/level_hub/level.tscn"))
 
-# Unloads the current level and loads the next one
-func load_next_level(unload = true):
-	if unload:
-		# Unload current level
-		loaded_level.queue_free()
-		loaded_level = null
-		# Increment level index, loop back to 0 if at end
-		level_current_index += 1
-		if level_current_index >= level_list.size():
-			level_current_index = 0
-		# Clear grid
-		grid.reset(true) # Hard reset, clears border score
 
+	# Prepare level_list (!!! TEMP CODE COMMENT)
+	# level_list.push_back(preload("res://levels/test_level/level.tscn"))
+	# level_list.push_back(preload("res://levels/reveal_iota/level.tscn"))
+	# level_list.push_back(preload("res://levels/bool_sort/level.tscn"))
+	# level_list.push_back(preload("res://levels/level_hub/level.tscn"))
+
+# Unloads and saves the current level to level_list, then loads a new level given by the level_haver
+func save_then_load_level(level_haver_entity: Entity):
+	# Save current level to level_list, along with hexecutor and the level_haver
+	level_list.push_back([loaded_level, hexecutor, level_haver_entity])
+	# Remove the level as a child
+	level_control.remove_child(loaded_level)
+	loaded_level = null
+	# Clear grid
+	grid.reset(true) # Hard reset, clears border score
+	# Load scene
+	var scene = level_haver_entity.ravenmind
+	if not scene is PackedScene: # Should already be validated, but won't hurt to check
+		printerr("level_haver_entity.ravenmind is not a PackedScene")
+		return
+	load_level_from_scene(scene)
+
+func load_level_from_scene(scene: PackedScene):
 	# Load test level
-	loaded_level = level_list[level_current_index].instantiate()
+	loaded_level = scene.instantiate()
 	level_control.add_child(loaded_level)
 	# Offset by Entity.FAKE_SCALE / 2 (Due to tilemap offset)
 	if Engine.is_editor_hint():
@@ -49,11 +56,39 @@ func load_next_level(unload = true):
 	# Prepare hexecutor with level info
 	hexecutor = Hexecutor.new(loaded_level, loaded_level.player.entity, self)
 
-	# Update hex_display
+	# Update hex_display, level desc
 	update_hex_display()
-
-	# Update level description
 	hex_display.update_level_desc_label(loaded_level.validator.desc)
+
+# Unloads the current level and loads the last level in level_list
+# Returns false if there are no levels to load
+func exit_level():
+	if level_list.size() == 0:
+		# No levels to load, return false
+		return false
+
+	var prev_level_stuff = level_list.pop_back()
+	# Unload and delete current level
+	var level_validated = loaded_level.validated # For use in updating level_haver \/
+	level_control.remove_child(loaded_level)
+	loaded_level.queue_free()
+	grid.reset(true) # Hard reset, clears border score
+
+	# Load previous level
+	loaded_level = prev_level_stuff[0]
+	level_control.add_child(loaded_level)
+	hexecutor = prev_level_stuff[1]
+	hexecutor.scram_mode = false # Disable scram mode so patterns can run again.
+
+	# Update hex_display, level desc
+	update_hex_display()
+	hex_display.update_level_desc_label(loaded_level.validator.desc)
+
+	# Update level_haver spellbook readability
+	prev_level_stuff[2].sb_read = level_validated
+
+	# Success
+	return true
 
 # Validates the current level
 func validate_level():
@@ -77,11 +112,3 @@ func clear():
 	grid.reset(false) # Soft reset, keeps previous border score
 	hexecutor.reset()
 	hex_display.update_clear_hexy() # Update/Clear stack display
-
-# Spellbook button handlers, possibly redo later (!!!)
-func spellbook_LR(left):
-	if left:
-		hexecutor.caster.dec_sb()
-	else:
-		hexecutor.caster.inc_sb()
-	hex_display.update_sb_label(hexecutor.caster)

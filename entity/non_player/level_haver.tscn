@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4j870xcpnwb8"]
+
+[ext_resource type="Script" path="res://entity/non_player/level_haver.gd" id="1_7rqd8"]
+[ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/ShittyEntitySprite.png" id="2_2b8y7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3m4m"]
+size = Vector2(56, 56)
+
+[node name="LevelHaver" type="StaticBody2D"]
+collision_mask = 3
+script = ExtResource("1_7rqd8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.27451, 1, 0.27451, 1)
+texture = ExtResource("2_2b8y7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_b3m4m")

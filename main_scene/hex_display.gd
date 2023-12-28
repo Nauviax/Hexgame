@@ -84,16 +84,7 @@ func update_level_desc_label(text):
 	validate_button.modulate = Color(1, 1, 1)
 
 # Handle UI buttons
-func _on_sb_left_pressed():
-	main_scene.spellbook_LR(true)
-
-func _on_sb_right_pressed():
-	main_scene.spellbook_LR(false)
-
 func _on_level_validate_pressed():
 	var validated = main_scene.validate_level()
 	print ("Valid level: " + str(validated))
 	validate_button.modulate = Color(0, 1, 0) if validated else Color(1, 0, 0)
-
-func _on_level_next_pressed():
-	main_scene.load_next_level()

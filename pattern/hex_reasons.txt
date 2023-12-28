@@ -127,6 +127,11 @@ Addons
 
 
 My Patterns
+	Level access
+	Added to enter and exit levels
+		Enter takes the level_haver you want to enter
+		Exit takes the caster as an entity (To prevent accidental leaving)
+
 	Spellbook slot selection (4)
 	Added to interact with spellbook (As it is permanently in "offhand")
 		Verso's Gambit, Turn spellbook left

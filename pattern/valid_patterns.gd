@@ -173,6 +173,10 @@ static var static_patterns = {
 
 	### NEW PATTERNS ###
 
+	# Level access
+	"llL": "Enter",
+	"llR": "Exit",
+
 	# Spellbook
 	"RRl": "Verso's Gambit",
 	"RRs": "Recto's Gambit",

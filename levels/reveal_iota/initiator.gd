@@ -1,6 +1,6 @@
-# Reveal Iota Randomizer
+# Reveal Iota Initiator
 static var iota # Goal value to reveal for this level
-static func randomize(level_base):
+static func initiate(level_base):
 	var entities = level_base.entities
 	for entity in entities:
 		if entity.name == "IotaHaver":
