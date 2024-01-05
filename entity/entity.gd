@@ -5,6 +5,9 @@ extends Resource # Should mean this object gets deleted automatically when not i
 var name # Entity name, display and randomizer purposes
 var node # Node/Object that this entity is attached to.
 var look_dir # (1.0, 0.0), normalized vector
+var alive = true # True if this entity is alive. (Equal to Node is not null)
+# Dead entities return null for iota reads, and Vector2.ZERO for position reads.
+# Any sets to dead entities are ignored, and no feedback is provided to the player.
 
 var sb = [null] # List of iotas that this entity is storing.
 var sb_names = ["0"] # List of names of iotas in spellbook, for display purposes. (!!! Maybe remove for now?)
@@ -42,7 +45,7 @@ func set_spellbook(sb_read, sb_write, sb:Array, gen_names = true):
 # Returns the currently selected iota in the spellbook.
 # If the entity isn't readable, always returns null. No feedback to player provided. (They should audit to find out)
 func get_iota():
-	if sb_read:
+	if sb_read and alive: # If readable and alive
 		return sb[sb_sel]
 	else:
 		return null
@@ -50,27 +53,33 @@ func get_iota():
 # Sets the currently selected iota in the spellbook.
 # If the entity isn't writable, does nothing. No feedback to player provided. (They should audit to find out)
 func set_iota(iota):
-	if sb_write:
+	if sb_write and alive:
 		sb[sb_sel] = iota
 
 # Increment the currently selected iota in the spellbook.
 func inc_sb():
-	sb_sel = (sb_sel + 1) % sb.size()
+	if alive:
+		sb_sel = (sb_sel + 1) % sb.size()
 
 # Decrement the currently selected iota in the spellbook.
 func dec_sb():
-	sb_sel = (sb_sel - 1 + sb.size()) % sb.size()
+	if alive:
+		sb_sel = (sb_sel - 1 + sb.size()) % sb.size()
 
 # Display string for entity.
 func _to_string():
-	return "Entity: " + name
+	return "Entity: " + name + ("" if alive else " (Dead)")
 
 # Position getters
 func get_pos():
+	if not alive: # Dead entity.
+		return Vector2.ZERO
 	return node.position
 
 # (For display uses)
 func get_fake_pos():
+	if not alive: # Dead entity.
+		return Vector2.ZERO
 	return Entity.real_to_fake(node.position)
 
 # Position setters
@@ -79,17 +88,20 @@ func get_fake_pos():
 
 # Turns out setting fake pos is convenient when impulsing.
 func set_fake_pos(pos):
-	node.position = Entity.fake_to_real(pos)
+	if alive:
+		node.position = Entity.fake_to_real(pos)
 
 # Velocity get (Returns 0,0 if no velocity var)
 func get_fake_vel():
-	if "velocity" in node:
+	if "velocity" in node and alive:
 		return Entity.real_to_fake(node.velocity)
 	else:
-		return Vector2.ZERO
+		return Vector2.ZERO # No velocity var, or dead entity.
 
 # Set sentinel, and show/hide based on null status. (Only player sentinels are visible)
 func set_sentinel(pos):
+	if not alive: # Dead entity.
+		return
 	sentinel_pos = pos
 	if name == "Player": # Do not display sentinels for non-player entities.
 		if sentinel_pos == null:
@@ -101,6 +113,7 @@ func set_sentinel(pos):
 # Death function. Deletes the entity node and cleans up.
 # Should NOT be called through entity. Pass entity to level_base and delete via there.
 func delete():
+	alive = false # Set alive to false, so that other functions know this entity is dead.
 	node.queue_free()
 	node = null
 	sb = null # This and raven likely unneeded, but just in case.
