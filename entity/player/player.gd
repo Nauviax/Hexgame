@@ -85,6 +85,7 @@ func _physics_process(delta):
 	# Player aiming controls
 	set_look_dir(to_local(get_viewport().get_mouse_position()))
 
+# Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
 
 # Handle collision with spikes
 func _on_spike_checker_body_entered(_body):

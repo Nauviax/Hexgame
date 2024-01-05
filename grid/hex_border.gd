@@ -23,6 +23,10 @@ var perimeter = 0
 # Does NOT include current border. (Add perimeter for final score)
 var border_score = 0
 
+# Cast score, an arbitrary score representing player casts. Added to border score for final score.
+# On grid reset, cast score is added to border score and reset to 0.
+var cast_score = 0
+
 # A history of previous borders, used for undoing.
 # Should be cleared when pattern completes.
 var history = []
@@ -185,6 +189,11 @@ func undo():
 	p6 = prev[5]
 	redraw()
 
+# Allows manual score inflation via cast score, to prevent manual r-click casting being completely free
+func inc_cast_score(amnt):
+	cast_score += amnt
+	main_scene.update_border_display()
+
 # Clear history, used when pattern completes
 func clear_history():
 	history.clear()
@@ -195,10 +204,13 @@ func reset(save_perim = true):
 	history.clear() # Just in case
 	if save_perim:
 		border_score += perimeter
+		border_score += cast_score # Add and reset cast score. Inside save_perim so single points won't save cast score
+		cast_score = 0
 	perimeter = 0
 	main_scene.update_border_display()
 
 # Clear border and score
 func reset_hard():
 	border_score = 0
+	cast_score = 0
 	reset(false) # Don't add to score

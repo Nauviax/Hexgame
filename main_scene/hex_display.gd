@@ -27,8 +27,9 @@ extends Control
 var output_history = ["", "", "", "", ""] # Can be made longer for longer history, just check update_clear() also.
 
 # Update border size counter
-func update_border_label(prev, current):
-	border_label.text = "Border score: " + str(prev) + " + " + str(current) + " = " + str(prev + current)
+func update_border_label(prev, current, cast):
+	var cast_str = (" + " + str(cast)) if cast != 0 else ""
+	border_label.text = "Border score: " + str(prev) + " + " + str(current) + cast_str + " = " + str(prev + current + cast)
 
 # Update all labels related to hexecutor
 func update_all_hexy(hexecutor, output):

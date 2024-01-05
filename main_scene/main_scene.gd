@@ -19,13 +19,6 @@ var level_list = [] # List of arrays that represent levels other than the loaded
 func _ready():
 	load_level_from_scene(preload("res://levels/level_hub/level.tscn"))
 
-
-	# Prepare level_list (!!! TEMP CODE COMMENT)
-	# level_list.push_back(preload("res://levels/test_level/level.tscn"))
-	# level_list.push_back(preload("res://levels/reveal_iota/level.tscn"))
-	# level_list.push_back(preload("res://levels/bool_sort/level.tscn"))
-	# level_list.push_back(preload("res://levels/level_hub/level.tscn"))
-
 # Unloads and saves the current level to level_list, then loads a new level given by the level_haver
 func save_then_load_level(level_haver_entity: Entity):
 	# Save current level to level_list, along with hexecutor and the level_haver
@@ -105,10 +98,24 @@ func update_hex_display(err_str = ""):
 
 # Update border size display, also located in hex_display.
 func update_border_display():
-	hex_display.update_border_label(grid.hex_border.border_score, grid.hex_border.perimeter)
+	hex_display.update_border_label(grid.hex_border.border_score, grid.hex_border.perimeter, grid.hex_border.cast_score)
 
 # Clear grid, all patterns and reset stack
 func clear():
 	grid.reset(false) # Soft reset, keeps previous border score
 	hexecutor.reset()
 	hex_display.update_clear_hexy() # Update/Clear stack display
+
+# Player cast function (On right click)
+# Duplicates then executes the currently selected spellbook pattern.
+func _input(event):
+	if not Globals.player_control:
+		return # Player control required
+	# If right click
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		# Increment border score by 2 (Arbitrary, but seems fine)
+		grid.hex_border.inc_cast_score(2)
+		# Duplicate the spellbook iota 
+		hexecutor.execute_pattern(Pattern.new("1Llllll")) # Scribe's Reflection
+		# Execute the iota
+		hexecutor.execute_pattern(Pattern.new("1RrLll")) # Hermes' Gambit

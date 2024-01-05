@@ -146,7 +146,9 @@ func on_point(point):
 
 # Sends the created pattern to hexecutor via main_scene (Unless it's a single point)
 func send_pattern():
-	if cur_points.size() <= 1:
+	if cur_points.size() == 0:
+		return # Do nothing
+	if cur_points.size() == 1:
 		line.clear_points()
 		hex_border.undo() # Initial click could have changed border
 	else: # Create and send pattern, (And save result to list here) then prepare new line.
