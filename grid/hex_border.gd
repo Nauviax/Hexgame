@@ -27,7 +27,7 @@ var border_score = 0
 # On grid reset, cast score is added to border score and reset to 0.
 var cast_score = 0
 
-# A history of previous borders, used for undoing.
+# A history of previous borders, used for undoing. (Can contain nulls)
 # Should be cleared when pattern completes.
 var history = []
 
@@ -104,7 +104,7 @@ func expand_border(point):
 	
 	# If nothing changed, then just return
 	if not changed:
-		history.append([]) # No change in history
+		history.append(null) # No change in history
 		return
 
 	# Save current border to history
@@ -176,8 +176,8 @@ func undo():
 		return
 	var prev = history.pop_back()
 
-	# If prev is empty, do nothing
-	if prev.size() == 0:
+	# If prev is null, do nothing
+	if prev == null:
 		return
 
 	# Else revert
