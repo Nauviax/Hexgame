@@ -28,7 +28,7 @@ var revealed_iota = null
 
 # Generate rest of base level info
 func _ready():
-	# Get all children, add to entities array if they are an entity (!!!)
+	# Get all children, add to entities array if they are an entity
 	for child in get_children():
 		if "entity" in child:
 			entities.append(child.entity)

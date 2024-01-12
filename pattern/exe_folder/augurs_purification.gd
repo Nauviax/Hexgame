@@ -7,7 +7,7 @@ static func execute(hexecutor, _pattern):
 	if iota is float:
 		stack.push_back(iota != 0)
 	elif iota is Array:
-		stack.push_back(iota.size() != 0) # !!! TEST
+		stack.push_back(iota.size() != 0)
 	else:
 		stack.push_back(iota != null)
 	return ""

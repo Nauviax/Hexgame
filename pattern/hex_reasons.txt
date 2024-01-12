@@ -3,7 +3,6 @@ Contents: (Base HexCasting)
 Basic Patterns
 Number Literals
 Mathematics
-	!!! division_distillation.gd * Untested
 Constants
 Stack Manipulation
 Logical Operators
@@ -90,7 +89,7 @@ Reading and Writing
 
 	Truenames aren't really a thing here. You can save any entity reference anywhere.
 		- As this feature normally existed to prevent players abusing truenames, it isn't needed in this singleplayer game.
-		- Entity references will still become <null> when they become invalid, such as leaving a level, or killing said entity. (!!!)
+		- Entity references become invalid when said entity is dead. It persists on the stack, but spells don't affect them and reads return null.
 
 Advanced Mathematics
 
@@ -163,7 +162,7 @@ Spells
 	All Sentinel spells (Normal use)*
 		- Sentinel is unselectable entity (Invisible to zone purifications etc, therefor also impulse etc.)
 			- Additionally, it has no collision. No blocking movement or teleportation.
-			- Effectively just a coordinate stored in Entity, and *maybe* displayed on map? (!!! Later)
+			- Effectively just a coordinate stored in Entity, displayed on map for player.
 		- No great spell, as no ambit in this game.
 		- Note: These spells do NOT affect level state, despite creating and moving entity
 	

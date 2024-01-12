@@ -23,7 +23,7 @@ static func execute(hexecutor, _pattern):
 			stack.push_back(Bad_Iota.new())
 			return "Error: List contained non-pattern iota"
 	
-	hexecutor.execution_depth += 1 # Prevent infinite recursion (!!! Should this be 8 or smth to reduce recursion for thoths? !!!)
+	hexecutor.execution_depth += 1 # Prevent infinite recursion (!!! Should this be 8 or smth to reduce recursion for thoths?)
 	var results = [] # List of results from each list iota. 
 	var hexecutor2 = Hexecutor.new(hexecutor.level_base, hexecutor.caster, hexecutor.main_scene, false) # New hexecutor for meta execution (New stack)
 	# Note this hexecutor takes "false" as a fourth argument, which among other things means it will not update the display.
