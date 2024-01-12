@@ -1,5 +1,6 @@
 # Take a position (second-top) and max distance (top), then combine them into a list of all entities near the position.
 # Result is sorted by distance, closest entity (The caster normally) being index 0.
+# Max distance is capped at 5 tiles. (Prevent getting every entity on map) Position can be any distance away.
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
@@ -8,6 +9,9 @@ static func execute(hexecutor, _pattern):
 	if not dst is float or not pos is Vector2:
 		stack.push_back(Bad_Iota.new())
 		return "Error: invalid iota type recieved"
+	if dst > 5:
+		stack.push_back(Bad_Iota.new())
+		return "Error: max search radius is 5 tiles"
 	pos = Entity.fake_to_real(pos) # Convert to real position
 	dst = Entity.FAKE_SCALE * dst # Convert to real distance
 	var entities = hexecutor.level_base.entities

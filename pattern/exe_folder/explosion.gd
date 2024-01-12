@@ -17,10 +17,15 @@ static func execute(hexecutor, _pattern):
 	pos = pos.round() # Round to center on tile and prevent cheese (No edge sniping single targets in group)
 	var level_base = hexecutor.level_base
 	var entities = level_base.entities
-	var success = true
+	var close_entities = []
 	for entity in entities:
 		var entity_pos = entity.get_fake_pos() # pos and radius are in fake/tile space
 		var distance = abs(entity_pos - pos) 
 		if distance.x <= size and distance.y <= size:
-			success = level_base.remove_entity(entity) and success # "and" so that success stays false on fail
-	return "" if success else "Player death prevented" # Should be labled as a success by return handler
+			close_entities.push_back(entity)
+	if hexecutor.caster in close_entities: # Can't kill caster
+		stack.push_back(Bad_Iota.new())
+		return "Error: Caster in explosion radius"
+	for entity in close_entities:
+		level_base.remove_entity(entity)
+	return ""
