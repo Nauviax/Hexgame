@@ -1,6 +1,8 @@
 extends Node2D
-# Base level is currently for debugging. Not intended to be in final game.
-# Eventually move most creation content out of level_base.gd
+# Base level for all other levels
+
+# Reference to parent control, mainly for getting view size
+@onready var parent = get_parent()
 
 # Validator and initiator for this level
 @export var validator: Script
@@ -34,6 +36,12 @@ func _ready():
 			entities.append(child.entity)
 	# Apply initiator to level
 	initiator.initiate(self)
+
+# Control level centering
+func _process(_delta):
+	# Center level on player
+	var pos = player.position
+	position = -pos + parent.size / 2
 
 # Test if the level is complete (And save result)
 func validate():

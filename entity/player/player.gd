@@ -9,6 +9,11 @@ var entity: Entity = Entity.new("Player", self)
 # Reference to the player's sentinel sprite (Pos and visibility controlled by entity)
 @export var sentinel: Node2D
 
+# Reference to the level parallax background (To be scrolled on player movement)
+# These nodes are added by level_base, they don't exist in the player scene.
+@onready var parallax_near = $NearLayer
+@onready var parallax_far = $FarLayer
+
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [[0.0, 1.0, 2.0, 3.0, 4.0], null, null, null]
 # Current default spellbook has 4 slots, and starts with the above 0-4 array.
@@ -31,6 +36,7 @@ func _ready():
 	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
 	entity.set_spellbook(true, false, player_sb.duplicate(true)) # Duplicate, or it won't reset with level
 	entity.look_dir = Vector2(0.0, -1.0) # Init just look up
+	update_parallax() # Parallax background initial pos set
 
 # Func for aiming player's look line (Taking in mouse position)
 func set_look_dir(mouse_pos: Vector2):
@@ -82,10 +88,17 @@ func _physics_process(delta):
 		else:
 			velocity.y *= -bounce
 
+	update_parallax() # Parallax background
+
 	# Player aiming controls
 	set_look_dir(to_local(get_viewport().get_mouse_position()))
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
+
+# Scroll parallax background (Modding position by 64)
+func update_parallax():
+	parallax_far.position = Vector2(fmod(-position.x / 4, 64), fmod(-position.y / 4, 64))
+	parallax_near.position = parallax_far.position * 2
 
 # Handle collision with spikes
 func _on_spike_checker_body_entered(_body):

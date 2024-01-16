@@ -129,6 +129,7 @@ layout_mode = 2
 text = "Border score: 0 + 0 = 0"
 
 [node name="Level_Control" type="CenterContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 5.6
