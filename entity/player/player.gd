@@ -14,6 +14,10 @@ var entity: Entity = Entity.new("Player", self)
 @onready var parallax_near = $NearLayer
 @onready var parallax_far = $FarLayer
 
+# Particle emitter references
+@onready var poofer_pgen = $Poofer
+@onready var trailer_pgen = $Trailer
+
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [[0.0, 1.0, 2.0, 3.0, 4.0], null, null, null]
 # Current default spellbook has 4 slots, and starts with the above 0-4 array.
@@ -26,7 +30,10 @@ var friction = 0.05 # Pull towards 0 when no input
 var tile_gravity = 10 # Pull strength of tiles (When slow enough)
 var tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
 var acceleration = 0.015
-var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE)
+var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
+var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
+var flying = true # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
+var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
 
 # The player's look line
 @onready var look_line: Line2D = $Look_Dir
@@ -60,33 +67,73 @@ func _physics_process(delta):
 		input_dir.x -= 1
 	if Input.is_action_pressed("move_right"):
 		input_dir.x += 1
+	if Input.is_action_pressed("fly"):
+		# Flight chargeup control
+		# !!! Check is_floating later !!!
+		if fly_chargeup < 50:
+			fly_chargeup += 1
+		elif not flying and fly_chargeup == 50:
+			flying = true
+			poofer_pgen.emitting = true # Poof particles (One-shot)
+			trailer_pgen.emitting = true # Start trail particles
+	else: # Handle decharging
+		if fly_chargeup > 0:
+			fly_chargeup -= 1
+		else: # If charge == 0
+			flying = false
+			trailer_pgen.emitting = false # Stop trail particles
 
 	# Movement
-	if input_dir != Vector2.ZERO:
-		# Lerp towards input direction
-		velocity = lerp(velocity, input_dir.normalized() * speed, acceleration / 2 if entity.is_floating else acceleration)
-	else:
-		# Apply friction
-		velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_floating else friction)
-		var vel_len = velocity.length()
-		# If close enough and slow enough, snap to grid
-		var tile_center = position.snapped(tile_snap)
-		var tile_dir = tile_center - position
-		if tile_dir.length() < 1 and vel_len < 25:
-			position = tile_center
-			velocity = Vector2.ZERO
-		# Otherwise, apply velocity towards nearest tile center
-		elif vel_len < tile_gravity_max_vel:
-			velocity += tile_dir.normalized() * tile_gravity
-	var collision = move_and_collide(velocity * delta)
-	if collision:
-		# Bounce off of collision
-		var col_norm = collision.get_normal()
-		# Bounce only horizontally or vertically, as most/all collisions are with tiles.
-		if abs(col_norm.x) > abs(col_norm.y):
-			velocity.x *= -bounce
+	if fly_chargeup < 30 and not Input.is_action_pressed("fly"): # Normal, grounded movement
+		if input_dir != Vector2.ZERO:
+			# Lerp towards input direction
+			velocity = lerp(velocity, input_dir.normalized() * speed, acceleration / 2 if entity.is_floating else acceleration)
 		else:
-			velocity.y *= -bounce
+			# Apply friction
+			velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_floating else friction)
+			var vel_len = velocity.length()
+			# If close enough and slow enough, snap to grid
+			var tile_center = position.snapped(tile_snap)
+			var tile_dir = tile_center - position
+			if tile_dir.length() < 1 and vel_len < 25:
+				position = tile_center
+				velocity = Vector2.ZERO
+			# Otherwise, apply velocity towards nearest tile center
+			elif vel_len < tile_gravity_max_vel:
+				velocity += tile_dir.normalized() * tile_gravity
+		var collision = move_and_collide(velocity * delta)
+		if collision:
+			# Bounce off of collision
+			var col_norm = collision.get_normal()
+			# Bounce only horizontally or vertically, as most/all collisions are with tiles.
+			if abs(col_norm.x) > abs(col_norm.y):
+				velocity.x *= -bounce
+			else:
+				velocity.y *= -bounce
+	else: # Flight mechanics
+		# If still charging, just apply friction (though stronger than normal)
+		if fly_chargeup < 50:
+			velocity = lerp(velocity, Vector2.ZERO, friction * 2)
+			var collision = move_and_collide(velocity * delta)
+			if collision:
+				# Bounce off of collision
+				var col_norm = collision.get_normal()
+				# Bounce only horizontally or vertically, as most/all collisions are with tiles.
+				if abs(col_norm.x) > abs(col_norm.y):
+					velocity.x *= -bounce
+					# Step away based on depth in collision
+					position.x += collision.get_depth()
+				else:
+					velocity.y *= -bounce
+					# Step away based on depth in collision
+					position.y += collision.get_depth()
+		# If finished charging, apply flight movement instead
+		else:
+			if input_dir.x != 0 or input_dir.y != 0:
+				var angle_dif = velocity.angle_to(input_dir)
+				var new_angle = velocity.angle() + angle_dif * fly_turnspeed
+				velocity = Vector2.from_angle(new_angle) * speed
+			position += velocity * delta # Ignore collisions, as we're flying
 
 	update_parallax() # Parallax background
 
