@@ -17,7 +17,7 @@ var level_list = [] # List of arrays that represent levels other than the loaded
 
 # For now, just load the hub scene
 func _ready():
-	load_level_from_scene(preload("res://levels/level_hub/level.tscn"))
+	load_level_from_scene(preload("res://levels/island_1/external_hub_1/level.tscn"))
 
 # Unloads and saves the current level to level_list, then loads a new level given by the level_haver
 func save_then_load_level(level_haver_entity: Entity):

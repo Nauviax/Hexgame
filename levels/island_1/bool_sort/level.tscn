@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://wkuc0osgt70a"]
+
+[ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_q6nao"]
+[ext_resource type="Script" path="res://levels/island_1/bool_sort/validator.gd" id="2_elwuk"]
+[ext_resource type="Script" path="res://levels/island_1/bool_sort/initiator.gd" id="3_ma73j"]
+[ext_resource type="PackedScene" uid="uid://cbo0lm0clhhmu" path="res://entity/non_player/iota_haver.tscn" id="4_ub756"]
+
+[node name="LevelBase" instance=ExtResource("1_q6nao")]
+validator = ExtResource("2_elwuk")
+initiator = ExtResource("3_ma73j")
+
+[node name="TileMap" parent="." index="3"]
+layer_0/tile_data = PackedInt32Array(0, 65536, 0, 65536, 65536, 0, 131072, 65536, 0, 196608, 65536, 0, 262144, 65536, 0, 327680, 65536, 0, 393216, 65536, 0, 458752, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 4, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 65543, 65536, 1, 262151, 65536, 0, 327687, 0, 2, 393223, 0, 2, 458758, 0, 2, 458757, 0, 2, 458756, 0, 2, 458755, 0, 2, 458754, 0, 2, 458753, 0, 2, 131079, 65536, 1, 196615, 65536, 1, 458759, 0, 2, 65540, 0, 1, 65539, 65536, 1, 65538, 65536, 1, 65537, 65536, 1, 131073, 65536, 1, 196609, 65536, 1, 262145, 65536, 0, 327681, 0, 2, 393217, 0, 2, 393218, 65536, 0, 393219, 0, 2, 393220, 0, 2, 393221, 0, 2, 393222, 0, 2, 327686, 0, 2, 262150, 0, 1, 196614, 65536, 1, 131078, 65536, 1, 65542, 65536, 1, 65541, 65536, 1, 131075, 65536, 1, 131074, 65536, 1, 196612, 0, 1, 196613, 65536, 1, 196611, 65536, 1, 131076, 0, 1, 131077, 65536, 1, 196610, 65536, 1, 262146, 65536, 0, 327682, 0, 2, 327683, 0, 2, 327684, 0, 2, 262148, 65536, 0, 262149, 65536, 0, 262147, 65536, 0, 327685, 0, 2, 524288, 65536, 0, 524289, 65536, 0, 524290, 65536, 0, 524291, 65536, 0, 524292, 65536, 0, 524293, 65536, 0, 524294, 65536, 0, 524295, 65536, 0, 524296, 65536, 0, 458760, 65536, 0, 393224, 65536, 0, 327688, 65536, 0, 262152, 65536, 0, 196616, 65536, 0, 131080, 65536, 0, 65544, 65536, 0, 8, 65536, 0)
+layer_1/tile_data = PackedInt32Array(393222, 2, 1)
+
+[node name="IotaHaver" parent="." index="4" instance=ExtResource("4_ub756")]
+position = Vector2(320, 64)
+sb = [false]
+sb_write = false
+
+[node name="IotaHaver2" parent="." index="5" instance=ExtResource("4_ub756")]
+position = Vector2(320, 128)
+sb = [true]
+sb_write = false
+
+[node name="IotaHaver3" parent="." index="6" instance=ExtResource("4_ub756")]
+position = Vector2(320, 192)
+sb = [false]
+sb_write = false
+
+[node name="IotaHaver4" parent="." index="7" instance=ExtResource("4_ub756")]
+position = Vector2(448, 64)
+sb = [true]
+sb_write = false
+
+[node name="IotaHaver5" parent="." index="8" instance=ExtResource("4_ub756")]
+position = Vector2(448, 128)
+sb = [false]
+sb_write = false
+
+[node name="IotaHaver6" parent="." index="9" instance=ExtResource("4_ub756")]
+position = Vector2(448, 192)
+sb = [false]
+sb_write = false
+
+[node name="Player" parent="." index="10"]
+position = Vector2(128, 128)
+player_sb = [null, null, null, null]

@@ -1,4 +1,4 @@
-# Level Hub Initiator
+# External Hub 1 Initiator
 static func initiate(level_base):
 	# Create a sample hex for player, and set as sb slot 1
 	# Sample hex will get the entity player is looking at, and try to enter it.
