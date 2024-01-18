@@ -14,7 +14,7 @@ static func execute(hexecutor, _pattern):
 	var pos = entity.get_fake_pos()
 	var dest = round(pos + vector)
 	var level_base = hexecutor.level_base # For functions
-	if hexecutor.level_base.get_tile(dest, 1) == 1: # If gate
+	if hexecutor.level_base.get_tile_id(dest, 1) == 22: # If gate
 		if not level_base.entity_at(dest): # If no entity
 			# Ensure line of sight
 			# (Unnormalized vector + false value, which will create shorter raycasts. (Equal to vector length))

@@ -119,9 +119,8 @@ func _physics_process(delta):
 			velocity = lerp(velocity, Vector2.ZERO, friction * 2)
 			var collision = move_and_collide(velocity * delta)
 			if collision:
-				# Bounce off of collision
-				var col_norm = collision.get_normal()
 				# Bounce only horizontally or vertically, as most/all collisions are with tiles.
+				var col_norm = collision.get_normal()
 				if abs(col_norm.x) > abs(col_norm.y):
 					velocity.x *= -bounce
 					# Step away based on depth in collision
@@ -143,12 +142,12 @@ func _physics_process(delta):
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
 
-# Handle collision with spikes
+# Handle collision with spikes (Importantly, clear floating when exiting)
 func _on_spike_checker_body_entered(_body):
 	# If floating, ignore
 	if not entity.is_floating:
-		# Invert velocity and multiply
-		velocity *= -(1 + bounce)
+		# Invert velocity, plus some.
+		velocity *= -1.25 # Originally was 1 + bounce, but low bounce values can result in player clipping through spikes.
 
 func _on_spike_checker_body_exited(_body):
 	# Clear floating

@@ -43,7 +43,7 @@ func _physics_process(_delta):
 	process_count += 1
 	if process_count >= 60: # Every second, roughly
 		process_count = 0
-		if (not player.flying) and get_tile(player.entity.get_fake_pos(), 0) == -1: # If player is not on a tile
+		if (not player.flying) and get_tile_id(player.entity.get_fake_pos(), 0) == 0: # If player is not on a tile
 			player.position = player.respawn_point # Move player to respawn point
 
 # Test if the level is complete (And save result)
@@ -122,33 +122,23 @@ func entity_at(pos):
 			return true
 	return false
 
-# Methods for getting tiles at a position (Uses fake/tilemap position system) 
+# Methods for getting tileID at a position (Uses fake/tilemap position system) 
 # Layer 0 is tiles, layer 1 is toppers
-# Current return values are funky, but are as follows:
-# 0 = Wall(inc glass) or Spike (Depending on layer)
-# 1 = White floor or Gate/TP (Depending on layer)
-# 2 = Green floor
-# 3 = Red floor
-# -1 = default (Invalid normally)
-func get_tile(pos, layer):
-	var atlas = tilemap.get_cell_atlas_coords(layer, pos.round()) # Round pos, as tilemap will floor it otherwise.
-	if layer == 0:
-		match atlas:
-			Vector2i(1,0), Vector2i(0,1): # Wall, Glass
-				return 0
-			Vector2i(1,1): # White floor (Also grass tile)
-				return 1
-			Vector2i(0,2): # Green floor
-				return 2
-			Vector2i(1,2): # Red floor
-				return 3
-			_:
-				return -1
-	else:
-		match atlas:
-			Vector2i(0,0): # Spikes
-				return 0
-			Vector2i(0,1): # Gate/TP
-				return 1
-			_:
-				return -1
+# Tile ID for tilemap:
+# Layer 0
+#  00 = Undefined / Out of map
+#  01 = Wall
+#  02 = Glass
+#  03 = Basic floor (White, Grass etc)
+#  04 = Green floor
+#  05 = Red floor
+# Layer 1
+#  21 = Spikes
+#  22 = Gate
+func get_tile_id(pos, layer):
+	var data = tilemap.get_cell_tile_data(layer, pos.round()) # Round pos, as tilemap will floor it otherwise.
+	if data == null:
+		return 0
+	return data.get_custom_data("TileID")
+
+
