@@ -1,17 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://qir8003u2t7e"]
+[gd_scene load_steps=5 format=3 uid="uid://qir8003u2t7e"]
 
 [ext_resource type="Script" path="res://main_scene/main_scene.gd" id="1_7msjx"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="2_qu1ct"]
 [ext_resource type="Script" path="res://main_scene/hex_display.gd" id="3_pett3"]
-[ext_resource type="Script" path="res://main_scene/level_control.gd" id="4_hheto"]
+[ext_resource type="Script" path="res://main_scene/level_container.gd" id="4_opbep"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u4ys3"]
-size = Vector2(200, 200)
-
-[node name="MainScene" type="Node2D"]
+[node name="MainScene" type="Node2D" node_paths=PackedStringArray("grid", "level_container")]
 script = ExtResource("1_7msjx")
-grid_path = NodePath("HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control/Grid")
-level_control_path = NodePath("HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control")
+grid = NodePath("HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control/Grid")
+level_container = NodePath("HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
@@ -128,23 +125,17 @@ autowrap_mode = 2
 layout_mode = 2
 text = "Border score: 0 + 0 = 0"
 
-[node name="Level_Control" type="CenterContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
-clip_contents = true
+[node name="LevelContainer" type="SubViewportContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 5.6
-script = ExtResource("4_hheto")
+stretch = true
+script = ExtResource("4_opbep")
 
-[node name="Level_Area2D" type="Control" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control"]
-layout_mode = 2
-
-[node name="Area2D" type="Area2D" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D"]
-collision_layer = 256
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D"]
-shape = SubResource("RectangleShape2D_u4ys3")
+[node name="LevelViewport" type="SubViewport" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer"]
+handle_input_locally = false
+size = Vector2i(882, 736)
+render_target_update_mode = 4
 
 [connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
-[connection signal="resized" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_resized"]
-[connection signal="input_event" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control/Level_Area2D/Area2D" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Level_Control" method="_on_level_area_2d_input_event"]
+[connection signal="gui_input" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer" method="_on_gui_input"]

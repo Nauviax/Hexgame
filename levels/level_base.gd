@@ -15,7 +15,7 @@ var validated = false
 var entities: Array
 
 # Player object for the level 
-@onready var player = $Player
+@onready var player: Player = $Player
 
 # Most recently revealed iota (For level verification)
 var revealed_iota = null
@@ -37,11 +37,14 @@ func _ready():
 	# Apply initiator to level
 	initiator.initiate(self)
 
-# Control level centering
-func _process(_delta):
-	# Center level on player
-	var pos = player.position
-	position = -pos + parent.size / 2
+# Update function for the level. Currently just moves player to it's respawn point if it's not on a tile
+var process_count = 0
+func _physics_process(_delta):
+	process_count += 1
+	if process_count >= 60: # Every second, roughly
+		process_count = 0
+		if (not player.flying) and get_tile(player.entity.get_fake_pos(), 0) == -1: # If player is not on a tile
+			player.position = player.respawn_point # Move player to respawn point
 
 # Test if the level is complete (And save result)
 func validate():
@@ -133,7 +136,7 @@ func get_tile(pos, layer):
 		match atlas:
 			Vector2i(1,0), Vector2i(0,1): # Wall, Glass
 				return 0
-			Vector2i(1,1): # White floor
+			Vector2i(1,1): # White floor (Also grass tile)
 				return 1
 			Vector2i(0,2): # Green floor
 				return 2

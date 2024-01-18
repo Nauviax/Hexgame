@@ -15,7 +15,7 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="Gradient" id="Gradient_3wilb"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+colors = PackedColorArray(0.784314, 0.784314, 0.784314, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_46x23"]
 gradient = SubResource("Gradient_3wilb")
@@ -30,13 +30,13 @@ angular_velocity_min = 20.0
 angular_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
 damping_max = 100.0
-scale_min = 0.5
+scale_max = 1.5
 color_ramp = SubResource("GradientTexture1D_46x23")
 anim_speed_min = 1.0
 anim_speed_max = 1.5
 
 [sub_resource type="Gradient" id="Gradient_68tvs"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+colors = PackedColorArray(0.784314, 0.784314, 0.784314, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_l8feb"]
 gradient = SubResource("Gradient_68tvs")
@@ -48,7 +48,7 @@ spread = 0.0
 angular_velocity_min = 20.0
 angular_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
-scale_min = 0.5
+scale_max = 1.5
 color_ramp = SubResource("GradientTexture1D_l8feb")
 anim_speed_min = 1.0
 anim_speed_max = 1.5
@@ -92,12 +92,15 @@ one_shot = true
 explosiveness = 1.0
 
 [node name="Trailer" type="GPUParticles2D" parent="."]
+z_index = -1
 material = SubResource("CanvasItemMaterial_xquuw")
 emitting = false
-amount = 2
+amount = 16
 process_material = SubResource("ParticleProcessMaterial_vp5b2")
 texture = ExtResource("4_1otv8")
 lifetime = 2.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [connection signal="body_entered" from="Spike_Checker" to="." method="_on_spike_checker_body_entered"]
 [connection signal="body_exited" from="Spike_Checker" to="." method="_on_spike_checker_body_exited"]

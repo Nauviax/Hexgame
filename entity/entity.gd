@@ -90,8 +90,6 @@ func get_fake_pos():
 func set_fake_pos(pos):
 	if alive:
 		node.position = Entity.fake_to_real(pos)
-		if node is Player:
-			node.update_parallax() # Update parallax background for player.
 
 # Velocity get (Returns 0,0 if no velocity var)
 func get_fake_vel():

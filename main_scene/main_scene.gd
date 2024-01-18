@@ -5,11 +5,10 @@ extends Node2D
 #var test_level = preload("res://levels/test_level.tscn")
 @onready var hexecutor = null
 
-@export var grid_path: NodePath # Set in Inspector
-@onready var grid = get_node(grid_path) # $Grid
+@export var grid: Node2D
 @onready var hex_display = $HexDisplay
-@export var level_control_path: NodePath # Set in Inspector also
-@onready var level_control = get_node(level_control_path)
+@export var level_container: SubViewportContainer
+@onready var level_viewport = level_container.get_child(0)
 
 var loaded_level = null # Currently loaded level (Child of level_control)
 var level_list = [] # List of arrays that represent levels other than the loaded level. Appended to on new level load.
@@ -24,7 +23,7 @@ func save_then_load_level(level_haver_entity: Entity):
 	# Save current level to level_list, along with hexecutor and the level_haver
 	level_list.push_back([loaded_level, hexecutor, level_haver_entity])
 	# Remove the level as a child
-	level_control.remove_child(loaded_level)
+	level_viewport.remove_child(loaded_level)
 	loaded_level = null
 	# Clear grid
 	grid.reset(true) # Hard reset, clears border score
@@ -38,7 +37,7 @@ func save_then_load_level(level_haver_entity: Entity):
 func load_level_from_scene(scene: PackedScene):
 	# Load test level
 	loaded_level = scene.instantiate()
-	level_control.add_child(loaded_level)
+	level_viewport.add_child(loaded_level)
 	# Offset by Entity.FAKE_SCALE / 2 (Due to tilemap offset)
 	if Engine.is_editor_hint():
 		loaded_level.position = Vector2(32, 32) # Issue getting Entity.FAKE_SCALE in editor. This may become outdated
@@ -63,13 +62,13 @@ func exit_level():
 	var prev_level_stuff = level_list.pop_back()
 	# Unload and delete current level
 	var level_validated = loaded_level.validated # For use in updating level_haver \/
-	level_control.remove_child(loaded_level)
+	level_viewport.remove_child(loaded_level)
 	loaded_level.queue_free()
 	grid.reset(true) # Hard reset, clears border score
 
 	# Load previous level
 	loaded_level = prev_level_stuff[0]
-	level_control.add_child(loaded_level)
+	level_viewport.add_child(loaded_level)
 	hexecutor = prev_level_stuff[1]
 	hexecutor.scram_mode = false # Disable scram mode so patterns can run again.
 

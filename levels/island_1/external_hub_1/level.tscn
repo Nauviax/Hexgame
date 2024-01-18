@@ -21,12 +21,6 @@ layer_0/tile_data = PackedInt32Array(0, 3, 0, 65536, 196611, 2, 131072, 65539, 1
 position = Vector2(128, 128)
 player_sb = [[], null, null, null]
 
-[node name="FarLayer" parent="Player" index="4"]
-texture = ExtResource("4_eiyr4")
-
-[node name="NearLayer" parent="Player" index="5"]
-texture = ExtResource("5_b603i")
-
 [node name="Reveal_Iota" parent="." index="6" instance=ExtResource("6_55olu")]
 position = Vector2(256, 128)
 entity_name = "Reveal Iota"
@@ -44,3 +38,9 @@ position = Vector2(512, 128)
 entity_name = "Test_Level"
 level_scene = ExtResource("9_5durt")
 sb = ["Key_2"]
+
+[node name="FarLayer" parent="ParallaxBackground/PL_Far" index="0"]
+texture = ExtResource("4_eiyr4")
+
+[node name="NearLayer" parent="ParallaxBackground/PL_Near" index="0"]
+texture = ExtResource("5_b603i")

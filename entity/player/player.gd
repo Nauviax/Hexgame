@@ -9,14 +9,13 @@ var entity: Entity = Entity.new("Player", self)
 # Reference to the player's sentinel sprite (Pos and visibility controlled by entity)
 @export var sentinel: Node2D
 
-# Reference to the level parallax background (To be scrolled on player movement)
-# These nodes are added by level_base, they don't exist in the player scene.
-@onready var parallax_near = $NearLayer
-@onready var parallax_far = $FarLayer
-
 # Particle emitter references
 @onready var poofer_pgen = $Poofer
 @onready var trailer_pgen = $Trailer
+
+# Viewport/camera references
+@onready var viewport: Viewport = get_viewport()
+#@onready var camera: Camera2D = $Camera2D
 
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [[0.0, 1.0, 2.0, 3.0, 4.0], null, null, null]
@@ -32,8 +31,12 @@ var tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
 var acceleration = 0.015
 var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
 var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
-var flying = true # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
+var flying = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
 var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
+
+# Respawn point, should player ever become out of bounds (Set to initial position)
+# Level_Base will move the player here if they aren't on a tile, checked every second.
+@onready var respawn_point: Vector2 = position
 
 # The player's look line
 @onready var look_line: Line2D = $Look_Dir
@@ -43,7 +46,6 @@ func _ready():
 	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
 	entity.set_spellbook(true, false, player_sb.duplicate(true)) # Duplicate, or it won't reset with level
 	entity.look_dir = Vector2(0.0, -1.0) # Init just look up
-	update_parallax() # Parallax background initial pos set
 
 # Func for aiming player's look line (Taking in mouse position)
 func set_look_dir(mouse_pos: Vector2):
@@ -74,12 +76,13 @@ func _physics_process(delta):
 			fly_chargeup += 1
 		elif not flying and fly_chargeup == 50:
 			flying = true
-			poofer_pgen.emitting = true # Poof particles (One-shot)
+			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
 			trailer_pgen.emitting = true # Start trail particles
 	else: # Handle decharging
-		if fly_chargeup > 0:
+		if fly_chargeup > 1:
 			fly_chargeup -= 1
-		else: # If charge == 0
+		elif fly_chargeup == 1: # If charge about to end, stop flying
+			fly_chargeup -= 1
 			flying = false
 			trailer_pgen.emitting = false # Stop trail particles
 
@@ -135,17 +138,10 @@ func _physics_process(delta):
 				velocity = Vector2.from_angle(new_angle) * speed
 			position += velocity * delta # Ignore collisions, as we're flying
 
-	update_parallax() # Parallax background
-
 	# Player aiming controls
-	set_look_dir(to_local(get_viewport().get_mouse_position()))
+	set_look_dir(get_local_mouse_position())
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
-
-# Scroll parallax background (Modding position by 64)
-func update_parallax():
-	parallax_far.position = Vector2(fmod(-position.x / 4, 64), fmod(-position.y / 4, 64))
-	parallax_near.position = parallax_far.position * 2
 
 # Handle collision with spikes
 func _on_spike_checker_body_entered(_body):

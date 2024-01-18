@@ -8,6 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="5_us0qc"]
 
 [node name="LevelBase" type="Node2D"]
+texture_filter = 1
+texture_repeat = 2
 script = ExtResource("1_3xh2x")
 
 [node name="Hex_Entity_Raycast" type="RayCast2D" parent="."]
@@ -37,20 +39,34 @@ z_index = 5
 position = Vector2(64, 64)
 sentinel = NodePath("../Player_Sentinel")
 
-[node name="FarLayer" type="Sprite2D" parent="Player"]
-z_index = -110
-texture = ExtResource("4_grjnm")
-region_enabled = true
-region_rect = Rect2(0, 0, 1280, 1280)
-
-[node name="NearLayer" type="Sprite2D" parent="Player"]
-z_index = -100
-scale = Vector2(2, 2)
-texture = ExtResource("5_us0qc")
-region_enabled = true
-region_rect = Rect2(0, 0, 640, 640)
-
 [node name="Player_Sentinel" type="Sprite2D" parent="."]
 visible = false
 z_index = 6
 texture = ExtResource("4_k5sq3")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="PL_Far" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_filter = 1
+texture_repeat = 2
+motion_scale = Vector2(0.125, 0.125)
+motion_mirroring = Vector2(1280, 1280)
+
+[node name="FarLayer" type="Sprite2D" parent="ParallaxBackground/PL_Far"]
+texture = ExtResource("4_grjnm")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 1280)
+
+[node name="PL_Near" type="ParallaxLayer" parent="ParallaxBackground"]
+texture_filter = 1
+texture_repeat = 2
+motion_scale = Vector2(0.25, 0.25)
+motion_mirroring = Vector2(1280, 1280)
+
+[node name="NearLayer" type="Sprite2D" parent="ParallaxBackground/PL_Near"]
+scale = Vector2(2, 2)
+texture = ExtResource("5_us0qc")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 640, 640)
