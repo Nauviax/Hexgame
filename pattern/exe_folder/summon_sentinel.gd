@@ -6,5 +6,5 @@ static func execute(hexecutor, _pattern):
 	if not pos is Vector2:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not vector"
-	hexecutor.caster.set_sentinel(pos)
+	hexecutor.caster.node.set_sentinel(pos)
 	return ""

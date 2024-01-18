@@ -35,8 +35,8 @@ func update_border_label(prev, current, cast):
 func update_all_hexy(hexecutor, output):
 	update_stack(hexecutor.stack)
 	update_output_label(output)
-	update_ravenmind_label(hexecutor.caster.ravenmind)
-	update_sb_label(hexecutor.caster)
+	update_ravenmind_label(hexecutor.caster.node.ravenmind)
+	update_sb_label(hexecutor.caster.node)
 
 # Update all labels related to clearing the grid, and clear error history
 func update_clear_hexy():
@@ -68,15 +68,15 @@ func update_ravenmind_label(ravenmind):
 		raven_label.text = "Ravenmind: " + str(ravenmind)
 
 # Spellbook label
-func update_sb_label(caster):
+func update_sb_label(player):
 	sb_label.text = "- Spellbook -\n"
-	for ii in range(caster.sb.size()):
-		if ii == caster.sb_sel:
+	for ii in range(player.sb.size()):
+		if ii == player.sb_sel:
 			sb_label.text += "-> "
 		else:
 			sb_label.text += "   "
-		var iota = caster.sb[ii]
-		sb_label.text += caster.sb_names[ii] + ": " + str(iota if iota != null else "") + "\n"
+		var iota = player.sb[ii]
+		sb_label.text += str(ii) + ": " + str(iota if iota != null else "") + "\n"
 
 # Level description label (Called directly by main_scene)
 func update_level_desc_label(text):

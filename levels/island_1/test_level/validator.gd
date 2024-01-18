@@ -11,7 +11,7 @@ static func validate(level_base):
 	if green_entities.size() == 0:
 		return false # Instantly invalid if empty
 	for entity in green_entities:
-		var iota = entity.sb[entity.sb_sel]
+		var iota = entity.get_iota()
 		if not (iota is bool and iota):
 			return false
 	return true

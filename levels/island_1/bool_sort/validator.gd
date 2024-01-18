@@ -14,7 +14,7 @@ static func validate(level_base):
 	if non_greens.size() > 1:
 		return false # Instantly invalid if there are non-green entities (Excluding player, who is always on white)
 	for entity in greens:
-		var iota = entity.sb[entity.sb_sel]
+		var iota = entity.get_iota()
 		if not (iota is bool and iota):
 			return false
 	return true

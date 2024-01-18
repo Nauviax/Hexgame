@@ -25,19 +25,19 @@ player_sb = [[], null, null, null]
 position = Vector2(256, 128)
 entity_name = "Reveal Iota"
 level_scene = ExtResource("7_5kcfm")
-sb = ["Key_0"]
+level_iota = ["Key_0"]
 
 [node name="Bool_Sort" parent="." index="7" instance=ExtResource("6_55olu")]
 position = Vector2(384, 128)
 entity_name = "Bool Sort"
 level_scene = ExtResource("8_madyq")
-sb = ["Key_1"]
+level_iota = ["Key_1"]
 
 [node name="Test_Level" parent="." index="8" instance=ExtResource("6_55olu")]
 position = Vector2(512, 128)
 entity_name = "Test_Level"
 level_scene = ExtResource("9_5durt")
-sb = ["Key_2"]
+level_iota = ["Key_2"]
 
 [node name="FarLayer" parent="ParallaxBackground/PL_Far" index="0"]
 texture = ExtResource("4_eiyr4")

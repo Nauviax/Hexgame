@@ -15,8 +15,8 @@ layer_1/tile_data = PackedInt32Array(458756, 2, 0, 524294, 2, 0, 327685, 2, 0, 3
 
 [node name="IotaHaver" parent="." index="4" instance=ExtResource("4_oexsx")]
 position = Vector2(128, 320)
-sb = [0.0]
 sb_write = false
+writeable = false
 
 [node name="Player" parent="." index="5"]
 position = Vector2(128, 128)

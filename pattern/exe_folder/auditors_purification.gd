@@ -6,5 +6,5 @@ static func execute(hexecutor, _pattern):
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not an entity"
-	stack.push_back(entity.sb_read)
+	stack.push_back(entity.readable)
 	return ""

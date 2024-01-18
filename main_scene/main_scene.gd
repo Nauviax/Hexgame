@@ -12,26 +12,23 @@ extends Node2D
 
 var loaded_level = null # Currently loaded level (Child of level_control)
 var level_list = [] # List of arrays that represent levels other than the loaded level. Appended to on new level load.
-# Pairs are in [[level_node, hexecutor, level_haver_entity]] format.
+# Pairs are in [[level_node, hexecutor, level_haver]] format.
 
 # For now, just load the hub scene
 func _ready():
 	load_level_from_scene(preload("res://levels/island_1/external_hub_1/level.tscn"))
 
 # Unloads and saves the current level to level_list, then loads a new level given by the level_haver
-func save_then_load_level(level_haver_entity: Entity):
+func save_then_load_level(level_haver: LevelHaver):
 	# Save current level to level_list, along with hexecutor and the level_haver
-	level_list.push_back([loaded_level, hexecutor, level_haver_entity])
+	level_list.push_back([loaded_level, hexecutor, level_haver])
 	# Remove the level as a child
 	level_viewport.remove_child(loaded_level)
 	loaded_level = null
 	# Clear grid
 	grid.reset(true) # Hard reset, clears border score
 	# Load scene
-	var scene = level_haver_entity.ravenmind
-	if not scene is PackedScene: # Should already be validated, but won't hurt to check
-		printerr("level_haver_entity.ravenmind is not a PackedScene")
-		return
+	var scene = level_haver.get_level()
 	load_level_from_scene(scene)
 
 func load_level_from_scene(scene: PackedScene):
@@ -76,8 +73,8 @@ func exit_level():
 	update_hex_display()
 	hex_display.update_level_desc_label(loaded_level.validator.desc)
 
-	# Update level_haver spellbook readability
-	prev_level_stuff[2].sb_read = level_validated
+	# Update level_haver iota readability
+	prev_level_stuff[2].entity.readable = level_validated
 
 	# Success
 	return true

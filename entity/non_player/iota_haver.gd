@@ -4,19 +4,28 @@ extends StaticBody2D
 @export var entity_name: String = "IotaHaver"
 @onready var entity: Entity = Entity.new(entity_name, self)
 
-# Starting spellbook for this entity. Format: [iota, iota, iota, ...]
-@export var sb: Array = [null]
+# Iota that this haver haves.
+# Despite being an array, only the first element is used. (Variant type can't be exported)
+@export var haver_iota = [null]
 # This can be changed per level, using the inspector (@export)
 
-# Bool for if entity sb can be read from externally
-@export var sb_read: bool = true
 # Bool for if entity sb can be written to externally
-@export var sb_write: bool = true
+@export var writeable: bool = true
 
-# Looking dir set (Should be normalized)
-@export var look_dir: Vector2 = Vector2(-1.0, 0.0)
+# Iota that this haver haves. (Duplicated here to prevent reference issues, deep copy etc)
+var iota
 
 # Init object
 func _ready():
-	entity.set_spellbook(sb_read, sb_write, sb.duplicate(true))
-	entity.look_dir = look_dir.normalized()
+	entity.readable = true # Always readable
+	entity.writeable = writeable
+	iota = haver_iota.duplicate(true)[0] # Deep copy of haver_iota, then save first item
+
+# Iota getter
+func get_iota():
+	return iota
+
+# Iota setter (entity obj will confirm writeability)
+func set_iota(new_iota):
+	iota = new_iota
+	

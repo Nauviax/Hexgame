@@ -4,20 +4,29 @@ class_name LevelHaver
 @export var entity_name: String = "LevelHaver"
 @onready var entity: Entity = Entity.new(entity_name, self)
 
-# The level scene this haver loads (This is stored in the entities ravenmind)
+# The level scene this haver loads
 @export var level_scene: PackedScene = null
 
-# Starting spellbook for this entity. Format: [iota, iota, iota, ...]
-@export var sb: Array = [null]
+# Iota that this level contains.
+# Despite being an array, only the first element is used. (Variant type can't be exported)
+@export var level_iota = [null]
 # This can be changed per level, using the inspector (@export)
 
-# Level_haver's spellbook is always private. It becomes readable once level is beaten.
+# Iota that this level has. (Duplicated here to prevent reference issues, deep copy etc)
+var iota
 
-# Looking dir set (Should be normalized)
-@export var look_dir: Vector2 = Vector2(-1.0, 0.0)
+# Level_haver's iota is always private. It becomes readable once level is beaten.
 
 # Init object
 func _ready():
-	entity.set_spellbook(false, false, sb.duplicate(true))
-	entity.look_dir = look_dir.normalized()
-	entity.ravenmind = level_scene
+	iota = level_iota.duplicate(true)[0] # Deep copy, take first
+
+# Level getter
+func get_level():
+	return level_scene
+
+# Iota getter
+func get_iota():
+	return iota
+
+# No setter (Shouldn't ever change)

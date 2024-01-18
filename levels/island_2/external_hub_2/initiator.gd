@@ -6,5 +6,5 @@ static func initiate(level_base):
 	var hex = []
 	for ii in hex_strings:
 		hex.append(Pattern.new(ii))
-	level_base.player.entity.sb[0] = hex
+	level_base.player.sb[0] = hex
 	

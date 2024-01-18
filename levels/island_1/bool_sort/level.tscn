@@ -15,34 +15,27 @@ layer_1/tile_data = PackedInt32Array(393222, 2, 1)
 
 [node name="IotaHaver" parent="." index="4" instance=ExtResource("4_ub756")]
 position = Vector2(320, 64)
-sb = [false]
-sb_write = false
+writeable = false
 
 [node name="IotaHaver2" parent="." index="5" instance=ExtResource("4_ub756")]
 position = Vector2(320, 128)
-sb = [true]
-sb_write = false
+writeable = false
 
 [node name="IotaHaver3" parent="." index="6" instance=ExtResource("4_ub756")]
 position = Vector2(320, 192)
-sb = [false]
-sb_write = false
+writeable = false
 
 [node name="IotaHaver4" parent="." index="7" instance=ExtResource("4_ub756")]
 position = Vector2(448, 64)
-sb = [true]
-sb_write = false
+writeable = false
 
 [node name="IotaHaver5" parent="." index="8" instance=ExtResource("4_ub756")]
 position = Vector2(448, 128)
-sb = [false]
-sb_write = false
+writeable = false
 
 [node name="IotaHaver6" parent="." index="9" instance=ExtResource("4_ub756")]
 position = Vector2(448, 192)
-sb = [false]
-sb_write = false
+writeable = false
 
 [node name="Player" parent="." index="10"]
 position = Vector2(128, 128)
-player_sb = [null, null, null, null]

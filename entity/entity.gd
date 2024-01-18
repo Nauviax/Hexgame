@@ -4,67 +4,36 @@ extends Resource # Should mean this object gets deleted automatically when not i
 # Info regarding this entity, set on _init()
 var name # Entity name, display and randomizer purposes
 var node # Node/Object that this entity is attached to.
-var look_dir # (1.0, 0.0), normalized vector
+var look_dir = Vector2(0.0, -1.0) # Init just look up. (Normalized vector)
 var alive = true # True if this entity is alive. (Equal to Node is not null)
 # Dead entities return null for iota reads, and Vector2.ZERO for position reads.
 # Any sets to dead entities are ignored, and no feedback is provided to the player.
 
-var sb = [null] # List of iotas that this entity is storing.
-var sb_names = ["0"] # List of names of iotas in spellbook, for display purposes. (!!! Maybe remove for now?)
-var sb_sel = 0 # Index of currently selected iota in spellbook.
-var sb_read = true # True if other entities can read from this entity's spellbook. (Selected iota only)
-var sb_write = true # True if other entities can write to this entity's spellbook. (Selected iota only)
-# Spellbook size should be fixed, so no push/pop, just set/get. (Unless specifically trying to expand/shrink spellbook size)
-# For external reading/writing, use provided get/set functions.
+# Generic readability and writeability for this entity when iota/sb is accessed externally. (Default neither)
+var readable = false
+var writeable = false
 
- # True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
+# True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
 var is_floating = false
 
-# Ravenmind iota. Not readable/writable by other entities, and lost on grid clear (Assuming this entity can cast)
-var ravenmind = null 
-
-# Sentinel_pos vector. Preserved on grid clear.
-# THIS IS A FAKE/TILE POSITION
-var sentinel_pos = null
-
-# Constructor (Set look_dir later)
+# Constructor
 func _init(name, node):
 	self.name = name
 	self.node = node
 
-# Sets values for spellbook. Mainly for setting sb_read/write, but can also be used to set spellbook size / default values.
-func set_spellbook(sb_read, sb_write, sb:Array, gen_names = true):
-	self.sb_read = sb_read
-	self.sb_write = sb_write
-	self.sb = sb
-	if gen_names:
-		self.sb_names = []
-		for ii in range(len(sb)):
-			self.sb_names.append(str(ii)) # ["0", "1", "2", ...] as needed
-
-# Returns the currently selected iota in the spellbook.
+# Returns the readable iota for this entity, if it exists.
 # If the entity isn't readable, always returns null. No feedback to player provided. (They should audit to find out)
 func get_iota():
-	if sb_read and alive: # If readable and alive
-		return sb[sb_sel]
+	if readable and alive: # If readable and alive
+		return node.get_iota() # If readable and this node doesn't have get_iota(), *something* bad will happen. Don't do that.
 	else:
 		return null
 
 # Sets the currently selected iota in the spellbook.
 # If the entity isn't writable, does nothing. No feedback to player provided. (They should audit to find out)
 func set_iota(iota):
-	if sb_write and alive:
-		sb[sb_sel] = iota
-
-# Increment the currently selected iota in the spellbook.
-func inc_sb():
-	if alive:
-		sb_sel = (sb_sel + 1) % sb.size()
-
-# Decrement the currently selected iota in the spellbook.
-func dec_sb():
-	if alive:
-		sb_sel = (sb_sel - 1 + sb.size()) % sb.size()
+	if writeable and alive:
+		node.set_iota(iota) # Same deal as get_iota()
 
 # Display string for entity.
 func _to_string():
@@ -82,10 +51,6 @@ func get_fake_pos():
 		return Vector2.ZERO
 	return Entity.real_to_fake(node.position)
 
-# Position setters
-# func set_pos(pos): # Commented out while not in use
-# 	node.position = pos
-
 # Turns out setting fake pos is convenient when impulsing.
 func set_fake_pos(pos):
 	if alive:
@@ -98,26 +63,12 @@ func get_fake_vel():
 	else:
 		return Vector2.ZERO # No velocity var, or dead entity.
 
-# Set sentinel, and show/hide based on null status. (Only player sentinels are visible)
-func set_sentinel(pos):
-	if not alive: # Dead entity.
-		return
-	sentinel_pos = pos
-	if name == "Player": # Do not display sentinels for non-player entities.
-		if sentinel_pos == null:
-			node.sentinel.visible = false
-		else:
-			node.sentinel.visible = true
-			node.sentinel.position = sentinel_pos * Entity.FAKE_SCALE
-
 # Death function. Deletes the entity node and cleans up.
 # Should NOT be called through entity. Pass entity to level_base and delete via there.
 func delete():
 	alive = false # Set alive to false, so that other functions know this entity is dead.
 	node.queue_free()
 	node = null
-	sb = null # This and raven likely unneeded, but just in case.
-	ravenmind = null
 
 
 # Coordinate conversions

@@ -22,8 +22,7 @@ var stack = []
 # Used to get entities and other level data for certian patterns.
 var level_base = null
 
-# The entity casting this hex (Normally the player)
-# Should be an entity from level_base, but not *necessarily* the player.
+# The entity representing the player casting this hex. (Will cause issues if caster.node is not type player!)
 var caster: Entity = null
 
 # Consideration Mode
@@ -149,6 +148,6 @@ func scan_stack():
 func reset(keep_raven = false):
 	stack = []
 	if not keep_raven: # Thoths keeps ravenmind intact.
-		caster.ravenmind = null
+		caster.node.ravenmind = null
 	consideration_mode = false
 	introspection_depth = 0

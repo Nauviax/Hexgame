@@ -6,10 +6,10 @@ static func execute(hexecutor, _pattern):
 	if not num is float:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not a number"
-	var caster = hexecutor.caster
-	var size = caster.sb.size()
+	var player = hexecutor.caster.node
+	var size = player.sb.size()
 	if num < 0 or num >= size:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was out of bounds"
-	caster.sb_sel = int(num)
+	player.sb_sel = int(num)
 	return ""

@@ -18,9 +18,15 @@ var entity: Entity = Entity.new("Player", self)
 #@onready var camera: Camera2D = $Camera2D
 
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
-@export var player_sb: Array = [[0.0, 1.0, 2.0, 3.0, 4.0], null, null, null]
+@export var player_sb: Array = [null, null, null, null]
 # Current default spellbook has 4 slots, and starts with the above 0-4 array.
 # This can be changed per level, using the inspector (@export)
+
+# Player hex-casting variables
+var sb: Array
+var sb_sel: int = 0
+var sentinel_pos = null # Vector2, fake coords (Preserved on grid clear) (Ensure sentinel node is moved when this changes)
+var ravenmind = null # Iota (Not readable/writable by other entities, and lost on grid clear)
 
 # Variables for player movement
 var speed = 1024
@@ -44,15 +50,32 @@ var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be le
 # Prepare player object
 func _ready():
 	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
-	entity.set_spellbook(true, false, player_sb.duplicate(true)) # Duplicate, or it won't reset with level
-	entity.look_dir = Vector2(0.0, -1.0) # Init just look up
+	sb = player_sb.duplicate(true)
+	entity.readable = true
 
-# Func for aiming player's look line (Taking in mouse position)
-func set_look_dir(mouse_pos: Vector2):
-	# Set the look line's end position to the mouse position
-	look_line.points[1] = mouse_pos
-	# Adjust entity look unit vector
-	entity.look_dir = mouse_pos.normalized()
+# Get the selected spellbook iota
+func get_iota():
+	return sb[sb_sel]
+
+# No set_iota() function, as the player's spellbook is not writable externally.
+# Patterns writing to spellbook should use the variable directly.
+
+# Increment spellbook.
+func inc_sb():
+	sb_sel = (sb_sel + 1) % sb.size()
+
+# Decrement spellbook.
+func dec_sb():
+	sb_sel = (sb_sel - 1 + sb.size()) % sb.size()
+
+# Set sentinel, and show/hide based on null status.
+func set_sentinel(pos):
+	sentinel_pos = pos
+	if sentinel_pos == null:
+		sentinel.visible = false
+	else:
+		sentinel.visible = true
+		sentinel.position = sentinel_pos * Entity.FAKE_SCALE
 
 # Player movement controls
 func _physics_process(delta):
@@ -139,6 +162,13 @@ func _physics_process(delta):
 
 	# Player aiming controls
 	set_look_dir(get_local_mouse_position())
+
+# Func for aiming player's look line (Taking in mouse position)
+func set_look_dir(mouse_pos: Vector2):
+	# Set the look line's end position to the mouse position
+	look_line.points[1] = mouse_pos
+	# Adjust entity look unit vector
+	entity.look_dir = mouse_pos.normalized()
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
 
