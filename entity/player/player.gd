@@ -15,7 +15,7 @@ var entity: Entity = Entity.new("Player", self)
 
 # Viewport/camera references
 @onready var viewport: Viewport = get_viewport()
-#@onready var camera: Camera2D = $Camera2D
+@onready var camera: Camera2D = $Camera2D
 
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [null, null, null, null]
@@ -92,11 +92,12 @@ func _physics_process(delta):
 		input_dir.x -= 1
 	if Input.is_action_pressed("move_right"):
 		input_dir.x += 1
-	if Input.is_action_pressed("fly"):
+	if entity.is_floating and Input.is_action_pressed("fly"):
 		# Flight chargeup control
-		# !!! Check is_floating later !!!
 		if fly_chargeup < 50:
 			fly_chargeup += 1
+			camera.zoom -= Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
+			scale += Vector2(0.01, 0.01) # Scale up while charging (Until 1.5, 1.5)
 		elif not flying and fly_chargeup == 50:
 			flying = true
 			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
@@ -104,9 +105,14 @@ func _physics_process(delta):
 	else: # Handle decharging
 		if fly_chargeup > 1:
 			fly_chargeup -= 1
+			camera.zoom += Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
+			scale -= Vector2(0.01, 0.01) # Scale up while charging (Until 1.5, 1.5)
 		elif fly_chargeup == 1: # If charge about to end, stop flying
 			fly_chargeup -= 1
+			camera.zoom = Vector2.ONE # Reset zoom
+			scale = Vector2.ONE # Reset scale
 			flying = false
+			entity.is_floating = false # Stop floating
 			trailer_pgen.emitting = false # Stop trail particles
 
 	# Movement
@@ -138,6 +144,7 @@ func _physics_process(delta):
 				velocity.y *= -bounce
 	else: # Flight mechanics
 		# If still charging, just apply friction (though stronger than normal)
+		# This means holding fly while not floating will effectively act as a brake for normal player movement.
 		if fly_chargeup < 50:
 			velocity = lerp(velocity, Vector2.ZERO, friction * 2)
 			var collision = move_and_collide(velocity * delta)
@@ -181,4 +188,5 @@ func _on_spike_checker_body_entered(_body):
 
 func _on_spike_checker_body_exited(_body):
 	# Clear floating
-	entity.is_floating = false
+	if not flying: # Don't clear floating if flying
+		entity.is_floating = false

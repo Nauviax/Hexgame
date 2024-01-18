@@ -45,6 +45,7 @@ z_index = 6
 texture = ExtResource("4_k5sq3")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
 
 [node name="PL_Far" type="ParallaxLayer" parent="ParallaxBackground"]
 texture_filter = 1
