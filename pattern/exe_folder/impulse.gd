@@ -1,4 +1,4 @@
-# Takes an entity (b) and a vector (a), then pushes the entity in the given direction by the vector magnitude.
+# Takes an entity (b) and a vector (a), then pushes the entity in the given direction by the vector magnitude. (Max magnitude is 16)
 # If entity is floating, does NOT collide with spikes.
 static var iota_count = 2
 static func execute(hexecutor, _pattern):
@@ -15,6 +15,8 @@ static func execute(hexecutor, _pattern):
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not entity"
+	if not entity.moveable: # If can't move entity, just return silently
+		return ""
 	var pos_real = entity.get_pos() # Actual pos (For raycasting)
 	var pos = Entity.real_to_fake(pos_real) # Fake pos (For interpolation)
 	var level_base = hexecutor.level_base # Used to do raycasting
@@ -24,7 +26,7 @@ static func execute(hexecutor, _pattern):
 		if level_base.entity_at(tile): # Entity check (The actually important check)
 			continue 
 		if (not entity.is_floating) and level_base.get_tile_id(tile, 1) == 21: # Spike check
-			var dead = level_base.remove_entity(entity) # Attempt to push poor entity into hole
+			var dead = level_base.remove_entity(entity) # Attempt to push poor entity into spikes
 			if dead:
 				return "" # Woo
 			else:
@@ -32,6 +34,10 @@ static func execute(hexecutor, _pattern):
 		var tile_id = level_base.get_tile_id(tile, 0)
 		if tile_id == 1 or tile_id == 2: # Wall/Glass check
 			continue # Can't land here, nope.
+		if tile_id == 0: # Out of Bounds check (Regardless of is_floating)
+			if level_base.remove_entity(entity): # Attempt to push poor entity out of map
+				return "" # Woo
+			# If not dead, still set pos. See what happens. (Likely the player, and will respawn)
 		entity.set_fake_pos(tile)
 		entity.is_floating = false # Clear floating status (Irrelevant if entity is not floating)
 		return ""

@@ -23,9 +23,9 @@ static func execute(hexecutor, _pattern):
 		var distance = abs(entity_pos - pos) 
 		if distance.x <= size and distance.y <= size:
 			close_entities.push_back(entity)
-	if hexecutor.caster in close_entities: # Can't kill caster
+	if hexecutor.caster in close_entities: # Error if caster is in explosion radius (Even though it wouldn't be removed)
 		stack.push_back(Bad_Iota.new())
 		return "Error: Caster in explosion radius"
 	for entity in close_entities:
-		level_base.remove_entity(entity)
+		level_base.remove_entity(entity) # Will not remove unkillable entities
 	return ""

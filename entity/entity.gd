@@ -13,6 +13,10 @@ var alive = true # True if this entity is alive. (Equal to Node is not null)
 var readable = false
 var writeable = false
 
+# Per-Entity variables that affect what spells affect them.
+var killable = true # Explosion, Impulse into spikes
+var moveable = true # Teleport, Impulse, Floating etc (set_pos and similar still function, this must be checked per spell!)
+
 # True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
 var is_floating = false
 

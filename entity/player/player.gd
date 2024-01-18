@@ -52,6 +52,7 @@ func _ready():
 	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
 	sb = player_sb.duplicate(true)
 	entity.readable = true
+	entity.killable = false
 
 # Get the selected spellbook iota
 func get_iota():

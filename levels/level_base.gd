@@ -51,9 +51,9 @@ func validate():
 	validated = validator.validate(self)
 	return validated
 
-# Remove an entity from the level, effectively killing it. Returns false on failure. (When killing player)
+# Remove an entity from the level, effectively killing it. Returns false on failure.
 func remove_entity(entity):
-	if entity.node == player:
+	if not entity.killable: # Player for example, can't be killed
 		return false
 	entities.erase(entity)
 	remove_child(entity.node)

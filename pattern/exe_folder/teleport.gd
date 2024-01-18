@@ -11,6 +11,8 @@ static func execute(hexecutor, _pattern):
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new())
 		return "Error: iota was not entity"
+	if not entity.moveable: # If can't move entity, just return silently
+		return ""
 	var pos = entity.get_fake_pos()
 	var dest = round(pos + vector)
 	var level_base = hexecutor.level_base # For functions

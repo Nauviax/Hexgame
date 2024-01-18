@@ -20,6 +20,8 @@ var iota
 # Init object
 func _ready():
 	iota = level_iota.duplicate(true)[0] # Deep copy, take first
+	entity.killable = false
+	entity.moveable = false
 
 # Level getter
 func get_level():
