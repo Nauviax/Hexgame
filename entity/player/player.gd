@@ -17,6 +17,13 @@ var entity: Entity = Entity.new("Player", self)
 @onready var viewport: Viewport = get_viewport()
 @onready var camera: Camera2D = $Camera2D
 
+# The player's look line
+@onready var look_line: Line2D = $Look_Dir
+
+# Respawn point, should player ever become out of bounds (Set to initial position)
+# Level_Base will move the player here if they aren't on a tile, checked every second.
+@onready var respawn_point: Vector2 = position
+
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
 @export var player_sb: Array = [null, null, null, null]
 # Current default spellbook has 4 slots, and starts with the above 0-4 array.
@@ -39,13 +46,6 @@ var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal gri
 var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
 var flying = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
 var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
-
-# Respawn point, should player ever become out of bounds (Set to initial position)
-# Level_Base will move the player here if they aren't on a tile, checked every second.
-@onready var respawn_point: Vector2 = position
-
-# The player's look line
-@onready var look_line: Line2D = $Look_Dir
 
 # Prepare player object
 func _ready():
