@@ -7,4 +7,10 @@ static func initiate(level_base):
 	for ii in hex_strings:
 		hex.append(Pattern.new(ii))
 	level_base.player.sb[0] = hex
+	# Next hex will give the caster levitation, for quick flight
+	hex_strings = ["1lLl", "2lllllLssLsLsR"]
+	hex = []
+	for ii in hex_strings:
+		hex.append(Pattern.new(ii))
+	level_base.player.sb[1] = hex
 	
