@@ -43,8 +43,11 @@ var tile_gravity = 10 # Pull strength of tiles (When slow enough)
 var tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
 var acceleration = 0.015
 var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
+
+# Variables for player flight
 var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
 var flying = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
+var stuck_flying = false # If true, player can't stop flying. Used in world_view.
 var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
 
 # Prepare player object
@@ -103,7 +106,7 @@ func _physics_process(delta):
 			flying = true
 			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
 			trailer_pgen.emitting = true # Start trail particles
-	else: # Handle decharging
+	elif not stuck_flying: # Handle decharging (Assuming not stuck flying)
 		if fly_chargeup > 1:
 			fly_chargeup -= 1
 			camera.zoom += Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)

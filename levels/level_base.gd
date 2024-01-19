@@ -1,8 +1,13 @@
 extends Node2D
 # Base level for all other levels
 
-# Reference to parent control, mainly for getting view size
-@onready var parent = get_parent()
+# Reference to main_scene, purely to request a level transition (To world view)
+# Should not be used to get hexecutor or anything else. Open to better ways to do this.
+var main_scene
+
+# String ID for the level
+# Generally in format "1-1", "1-2", but can contain letters ("1-h" for starting level hub)
+@export var level_id: String
 
 # Validator and initiator for this level
 @export var validator: Script
@@ -23,6 +28,10 @@ var revealed_iota = null
 # Tilemap for the level
 @onready var tilemap = $TileMap
 
+# Tilemap calculated centre and size (Real coords not fake)
+@onready var level_centre = $Bottom_Right_Point.position / 2
+@onready var level_size = max(level_centre.x, level_centre.y) * 2
+
 # Raycast objects for the level (Enabled = false)
 @onready var raycast_b = $Hex_Block_Raycast
 @onready var raycast_e = $Hex_Entity_Raycast
@@ -30,14 +39,44 @@ var revealed_iota = null
 
 # Generate rest of base level info
 func _ready():
-	# Get all children, add to entities array if they are an entity
-	for child in get_children():
-		if "entity" in child:
-			entities.append(child.entity)
+	# Get entities
+	reload_entities_list()
 	# Apply initiator to level
 	initiator.initiate(self)
 
-# Update function for the level. Currently just moves player to it's respawn point if it's not on a tile
+# Reload entities list
+#  Get all children, add to entities array if they are an entity
+#  (Includes player)
+func reload_entities_list():
+	entities = []
+	for child in get_children():
+		if "entity" in child:
+			entities.append(child.entity)
+
+# Takes a player entity, and replaces the current player with the new one.
+# Also takes a direction to move the player to, as a normalised vector2. (As this function is called when a player is entering the level)
+func use_player(player_new: Player, dir: Vector2):
+	# Ensure relevant @onready things are got (Normally skipped when this is called quickly)
+	player = $Player
+	level_centre = $Bottom_Right_Point.position / 2
+	level_size = max(level_centre.x, level_centre.y) * 2
+	# Remove and delte old player
+	remove_child(player)
+	player.queue_free()
+	# Add new player to level and update it's data
+	player = player_new
+	add_child(player_new)
+	reload_entities_list() # Refresh entities list
+	player.trailer_pgen.restart() # Clear stragglers
+	player.stuck_flying = false # Player can land again
+	player.position = level_centre + (dir * level_size * 3) # Move player to edge of level
+	# Reload sentinel
+	player.sentinel = $Player_Sentinel
+	player.sentinel_pos = null
+
+# Update function for the level.
+# Will respawn player if they end up illegally outside the level.
+# Will transition player to world map if they are more than 2.5 level_sizes away from the level centre.
 var process_count = 0
 func _physics_process(_delta):
 	process_count += 1
@@ -45,6 +84,8 @@ func _physics_process(_delta):
 		process_count = 0
 		if (not player.flying) and get_tile_id(player.entity.get_fake_pos(), 0) == 0: # If player is not on a tile
 			player.position = player.respawn_point # Move player to respawn point
+		if player.flying and player.position.distance_to(level_centre) > level_size * 3.5: # If player is flying and is more than 3.5 level_sizes away from the level centre
+			main_scene.transition_to_world()
 
 # Test if the level is complete (And save result)
 func validate():
@@ -141,4 +182,10 @@ func get_tile_id(pos, layer):
 		return 0
 	return data.get_custom_data("TileID")
 
-
+# Force kill all entities in the level, excluding player.
+# Used to prevent old entities being used when a level is left.
+# NOT required on level exit. Exit clears the player spellbook so no references remain.
+func kill_all_entities():
+	for entity in entities:
+		if entity != player.entity:
+			entity.delete()

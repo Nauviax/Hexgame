@@ -20,6 +20,7 @@ var stack = []
 
 # A reference to the level_base the caster is a part of.
 # Used to get entities and other level data for certian patterns.
+# If left null, pattern execution will fail. Can be intentionally left null to prevent execution.
 var level_base = null
 
 # The entity representing the player casting this hex. (Will cause issues if caster.node is not type player!)
@@ -90,6 +91,8 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 	var return_string = ""
 	if execution_depth > 128: # Max depth
 		return_string = "Error: Execution depth too high (Max 128)"
+	elif level_base == null: # No level base, casting disabled
+		return_string = "Error: Casting is unavailable right now."
 	else: # Execute normally
 		if consideration_mode: # Single meta-pattern mode, see var declaration.
 			if stack.size() > 0 and stack[-1] is Pattern_Metalist:

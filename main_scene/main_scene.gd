@@ -1,14 +1,14 @@
 @tool
 extends Node2D
 
-# Test_level scene
-#var test_level = preload("res://levels/test_level.tscn")
 @onready var hexecutor = null
 
 @export var grid: Node2D
 @onready var hex_display = $HexDisplay
 @export var level_container: SubViewportContainer
 @onready var level_viewport = level_container.get_child(0)
+
+var world_view_scene = preload("res://worlds/world_view.tscn") 
 
 var loaded_level = null # Currently loaded level (Child of level_control)
 var level_list = [] # List of arrays that represent levels other than the loaded level. Appended to on new level load.
@@ -35,12 +35,11 @@ func load_level_from_scene(scene: PackedScene):
 	# Load test level
 	loaded_level = scene.instantiate()
 	level_viewport.add_child(loaded_level)
-	# Offset by Entity.FAKE_SCALE / 2 (Due to tilemap offset)
 	if Engine.is_editor_hint():
-		loaded_level.position = Vector2(32, 32) # Issue getting Entity.FAKE_SCALE in editor. This may become outdated
 		return # Don't update rest of scene if in editor
-	else:
-		loaded_level.position = Vector2(Entity.FAKE_SCALE / 2, Entity.FAKE_SCALE / 2)
+	
+	# Prepare level with reference to self
+	loaded_level.main_scene = self
 
 	# Prepare hexecutor with level info
 	hexecutor = Hexecutor.new(loaded_level, loaded_level.player.entity, self)
@@ -79,9 +78,46 @@ func exit_level():
 	# Success
 	return true
 
+# Transition from current level to the world view.
+func transition_to_world():
+	hexecutor.level_base = null # Remove reference to level_base, disables hexecutor.
+	var world_view = world_view_scene.instantiate()
+	world_view.main_scene = self # So it can request to transition FROM world
+	var player = loaded_level.player
+	loaded_level.remove_child(player) # So it can be added to world_view
+	world_view.use_player(player, loaded_level.level_id) # Load player into world
+	hexecutor.caster = player.entity # Set caster to new player's entity
+	loaded_level.kill_all_entities() # Prevent living references.
+	level_viewport.remove_child(loaded_level)
+	loaded_level.queue_free()
+	level_viewport.add_child(world_view) # New scene being shown.
+	loaded_level = world_view # Done!
+	update_hex_display() # Refresh display (Now-Dead entities, level desc)
+	hex_display.update_level_desc_label(world_view.desc)
+
+# Transition from world view to selected level.
+func transition_from_world(selected_level: PackedScene):
+	var new_level = selected_level.instantiate()
+	new_level.main_scene = self # So it can request to transition FROM world
+	var player = loaded_level.player
+	loaded_level.remove_child(player) # So it can be added to world_view
+	new_level.use_player(player, -player.velocity.normalized()) # Load player into level
+	hexecutor.caster = player.entity # Set caster to new player's entity
+	level_viewport.remove_child(loaded_level)
+	loaded_level.queue_free()
+	level_viewport.add_child(new_level) # New scene being shown.
+	hexecutor.level_base = new_level
+	loaded_level = new_level # Done!
+	update_hex_display() # Refresh display (New level desc etc)
+	hex_display.update_level_desc_label(new_level.validator.desc)
+
+
 # Validates the current level
 func validate_level():
-	return loaded_level.validate()
+	if loaded_level.has_method("validate"):
+		return loaded_level.validate()
+	else:
+		return false
 
 # Called with new patterns from grid. Executes them using hexecutor
 func new_pattern_drawn(pattern):

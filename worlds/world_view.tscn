@@ -1,48 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://dp0v5jhyadmwq"]
+[gd_scene load_steps=5 format=3 uid="uid://iy2km8hcnni2"]
 
-[ext_resource type="TileSet" uid="uid://dhmy420vajm2h" path="res://resources/tiles/Level_tileset.tres" id="1_2okn0"]
-[ext_resource type="Script" path="res://levels/level_base.gd" id="1_3xh2x"]
-[ext_resource type="PackedScene" uid="uid://crqwgh2ejsj6j" path="res://entity/player/player.tscn" id="2_avtny"]
-[ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/InsideFar.png" id="4_grjnm"]
-[ext_resource type="Texture2D" uid="uid://qv4r1lh202yr" path="res://resources/sprites/Sentinel.png" id="4_k5sq3"]
-[ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="5_us0qc"]
+[ext_resource type="Script" path="res://worlds/world_view.gd" id="1_nkc0k"]
+[ext_resource type="TileSet" uid="uid://0b2cgk05xs2i" path="res://resources/tiles/World_tileset.tres" id="3_ldoaj"]
+[ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/InsideFar.png" id="3_q102y"]
+[ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="4_47uvq"]
 
-[node name="LevelBase" type="Node2D"]
+[node name="WorldView" type="Node2D"]
 texture_filter = 1
 texture_repeat = 2
-script = ExtResource("1_3xh2x")
+script = ExtResource("1_nkc0k")
 
-[node name="Hex_Entity_Raycast" type="RayCast2D" parent="."]
-enabled = false
-collision_mask = 3
-
-[node name="Hex_Block_Raycast" type="RayCast2D" parent="."]
-enabled = false
-collision_mask = 2
-
-[node name="Hex_Impulse_Raycast" type="RayCast2D" parent="."]
-enabled = false
-collision_mask = 14
-
-[node name="TileMap" type="TileMap" parent="."]
+[node name="WorldMap" type="TileMap" parent="."]
 position = Vector2(-32, -32)
-tile_set = ExtResource("1_2okn0")
+tile_set = ExtResource("3_ldoaj")
 format = 2
 layer_0/name = "Tiles"
 layer_0/tile_data = PackedInt32Array(0, 65536, 0, 65536, 65536, 0, 131072, 65536, 0, 196608, 65536, 0, 262144, 65536, 0, 327680, 65536, 0, 393216, 65536, 0, 458752, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 4, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 65543, 65536, 0, 262151, 65536, 0, 327687, 65536, 0, 393223, 65536, 0, 458758, 65536, 0, 458757, 65536, 0, 458756, 65536, 0, 458755, 65536, 0, 458754, 65536, 0, 458753, 65536, 0, 131079, 65536, 0, 196615, 65536, 0, 458759, 65536, 0, 65540, 65536, 1, 65539, 65536, 1, 65538, 65536, 1, 65537, 65536, 1, 131073, 65536, 1, 196609, 65536, 1, 262145, 65536, 1, 327681, 65536, 1, 393217, 65536, 1, 393218, 65536, 1, 393219, 65536, 1, 393220, 65536, 1, 393221, 65536, 1, 393222, 65536, 1, 327686, 65536, 1, 262150, 65536, 1, 196614, 65536, 1, 131078, 65536, 1, 65542, 65536, 1, 65541, 65536, 1, 131075, 65536, 1, 131074, 65536, 1, 196612, 65536, 1, 196613, 65536, 1, 196611, 65536, 1, 131076, 65536, 1, 131077, 65536, 1, 196610, 65536, 1, 262146, 65536, 1, 327682, 65536, 1, 327683, 65536, 1, 327684, 65536, 1, 262148, 65536, 1, 262149, 65536, 1, 262147, 65536, 1, 327685, 65536, 1)
 layer_1/name = "Toppers"
 layer_1/z_index = 1
 layer_1/tile_data = PackedInt32Array()
-
-[node name="Player" parent="." node_paths=PackedStringArray("sentinel") instance=ExtResource("2_avtny")]
-z_index = 5
-position = Vector2(64, 64)
-sentinel = NodePath("../Player_Sentinel")
-
-[node name="Player_Sentinel" type="Sprite2D" parent="."]
-visible = false
-z_index = 6
-texture = ExtResource("4_k5sq3")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 scroll_ignore_camera_zoom = true
@@ -54,7 +30,7 @@ motion_scale = Vector2(0.125, 0.125)
 motion_mirroring = Vector2(1280, 1280)
 
 [node name="FarLayer" type="Sprite2D" parent="ParallaxBackground/PL_Far"]
-texture = ExtResource("4_grjnm")
+texture = ExtResource("3_q102y")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 1280, 1280)
@@ -67,10 +43,7 @@ motion_mirroring = Vector2(1280, 1280)
 
 [node name="NearLayer" type="Sprite2D" parent="ParallaxBackground/PL_Near"]
 scale = Vector2(2, 2)
-texture = ExtResource("5_us0qc")
+texture = ExtResource("4_47uvq")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 640, 640)
-
-[node name="Bottom_Right_Point" type="Node2D" parent="."]
-position = Vector2(448, 448)

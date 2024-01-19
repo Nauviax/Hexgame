@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddf1bsj2ug77n"]
+[gd_scene load_steps=7 format=3 uid="uid://ddf1bsj2ug77n"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_hqtvq"]
 [ext_resource type="Script" path="res://levels/island_1/external_hub_1/validator.gd" id="2_cuq1m"]
 [ext_resource type="Script" path="res://levels/island_1/external_hub_1/initiator.gd" id="3_6l7h6"]
+[ext_resource type="Texture2D" uid="uid://bfdplhe7mtc6a" path="res://resources/parallax/OutsideFar.png" id="4_dogu0"]
+[ext_resource type="Texture2D" uid="uid://bwtd38rt40h3t" path="res://resources/parallax/OutsideNear.png" id="5_1le5v"]
 [ext_resource type="PackedScene" uid="uid://b4j870xcpnwb8" path="res://entity/non_player/level_haver.tscn" id="6_j44ca"]
 
 [node name="LevelBase" instance=ExtResource("1_hqtvq")]
@@ -27,3 +29,9 @@ level_iota = ["Key_1"]
 [node name="Some_Level_3" parent="." index="8" instance=ExtResource("6_j44ca")]
 position = Vector2(576, 0)
 level_iota = ["Key_2"]
+
+[node name="FarLayer" parent="ParallaxBackground/PL_Far" index="0"]
+texture = ExtResource("4_dogu0")
+
+[node name="NearLayer" parent="ParallaxBackground/PL_Near" index="0"]
+texture = ExtResource("5_1le5v")
