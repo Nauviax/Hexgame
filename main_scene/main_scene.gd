@@ -79,13 +79,14 @@ func exit_level():
 	return true
 
 # Transition from current level to the world view.
-func transition_to_world():
+# 0 for main world, 1 for island 1 internal world, etc.
+func transition_to_world(world_id: int):
 	hexecutor.level_base = null # Remove reference to level_base, disables hexecutor.
 	var world_view = world_view_scene.instantiate()
 	world_view.main_scene = self # So it can request to transition FROM world
 	var player = loaded_level.player
 	loaded_level.remove_child(player) # So it can be added to world_view
-	world_view.use_player(player, loaded_level.level_id) # Load player into world
+	world_view.prepare(player, world_id, loaded_level.scene_file_path) # Load player into new world
 	hexecutor.caster = player.entity # Set caster to new player's entity
 	loaded_level.kill_all_entities() # Prevent living references.
 	level_viewport.remove_child(loaded_level)
@@ -93,7 +94,7 @@ func transition_to_world():
 	level_viewport.add_child(world_view) # New scene being shown.
 	loaded_level = world_view # Done!
 	update_hex_display() # Refresh display (Now-Dead entities, level desc)
-	hex_display.update_level_desc_label(world_view.desc)
+	hex_display.update_level_desc_label(world_view.world_script.desc)
 
 # Transition from world view to selected level.
 func transition_from_world(selected_level: PackedScene):

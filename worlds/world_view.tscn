@@ -1,14 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://iy2km8hcnni2"]
+[gd_scene load_steps=6 format=3 uid="uid://iy2km8hcnni2"]
 
 [ext_resource type="Script" path="res://worlds/world_view.gd" id="1_nkc0k"]
+[ext_resource type="PackedScene" uid="uid://bcrk21oby4p0a" path="res://worlds/level_in_world.tscn" id="2_3ralq"]
 [ext_resource type="TileSet" uid="uid://0b2cgk05xs2i" path="res://resources/tiles/World_tileset.tres" id="3_ldoaj"]
 [ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/InsideFar.png" id="3_q102y"]
 [ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="4_47uvq"]
 
-[node name="WorldView" type="Node2D"]
+[node name="WorldView" type="Node2D" node_paths=PackedStringArray("parallax_near", "parallax_far")]
 texture_filter = 1
 texture_repeat = 2
 script = ExtResource("1_nkc0k")
+parallax_near = NodePath("ParallaxBackground/PL_Near/NearLayer")
+parallax_far = NodePath("ParallaxBackground/PL_Far/FarLayer")
+liw_scene = ExtResource("2_3ralq")
 
 [node name="WorldMap" type="TileMap" parent="."]
 position = Vector2(-32, -32)

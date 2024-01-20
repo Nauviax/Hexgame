@@ -5,10 +5,6 @@ extends Node2D
 # Should not be used to get hexecutor or anything else. Open to better ways to do this.
 var main_scene
 
-# String ID for the level
-# Generally in format "1-1", "1-2", but can contain letters ("1-h" for starting level hub)
-@export var level_id: String
-
 # Validator and initiator for this level
 @export var validator: Script
 @export var initiator: Script
@@ -31,6 +27,7 @@ var revealed_iota = null
 # Tilemap calculated centre and size (Real coords not fake)
 @onready var level_centre = $Bottom_Right_Point.position / 2
 @onready var level_size = max(level_centre.x, level_centre.y) * 2
+var transition_multiplier = 3.5 # Distance player is placed on transition, and how far to go to leave.
 
 # Raycast objects for the level (Enabled = false)
 @onready var raycast_b = $Hex_Block_Raycast
@@ -69,7 +66,7 @@ func use_player(player_new: Player, dir: Vector2):
 	reload_entities_list() # Refresh entities list
 	player.trailer_pgen.restart() # Clear stragglers
 	player.stuck_flying = false # Player can land again
-	player.position = level_centre + (dir * level_size * 3) # Move player to edge of level
+	player.position = level_centre + (dir * level_size * transition_multiplier) # Move player to edge of level
 	# Reload sentinel
 	player.sentinel = $Player_Sentinel
 	player.sentinel_pos = null
@@ -79,13 +76,15 @@ func use_player(player_new: Player, dir: Vector2):
 # Will transition player to world map if they are more than 2.5 level_sizes away from the level centre.
 var process_count = 0
 func _physics_process(_delta):
+	if not Globals.player_control:
+		return # Player control required
 	process_count += 1
 	if process_count >= 60: # Every second, roughly
 		process_count = 0
 		if (not player.flying) and get_tile_id(player.entity.get_fake_pos(), 0) == 0: # If player is not on a tile
 			player.position = player.respawn_point # Move player to respawn point
-		if player.flying and player.position.distance_to(level_centre) > level_size * 3.5: # If player is flying and is more than 3.5 level_sizes away from the level centre
-			main_scene.transition_to_world()
+		if player.flying and player.position.distance_to(level_centre) > level_size * (transition_multiplier + 0.1): # If player is flying and is far away from the level centre
+			main_scene.transition_to_world(0) # !!! Only loads main world currently !!!
 
 # Test if the level is complete (And save result)
 func validate():
