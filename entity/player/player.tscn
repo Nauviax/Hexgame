@@ -61,16 +61,6 @@ motion_mode = 1
 platform_floor_layers = 0
 script = ExtResource("1_vgx7j")
 
-[node name="Look_Dir" type="Line2D" parent="."]
-points = PackedVector2Array(0, 0, 0, -100)
-width = 64.0
-texture = ExtResource("3_f244p")
-texture_mode = 1
-
-[node name="Body" type="Sprite2D" parent="."]
-scale = Vector2(0.45, 0.45)
-texture = ExtResource("3_xybjd")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_r3tw1")
 
@@ -81,6 +71,19 @@ collision_mask = 8
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spike_Checker"]
 scale = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_r3tw1")
+
+[node name="PlayerBody" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerBody"]
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("3_xybjd")
+
+[node name="Look_Dir" type="Line2D" parent="."]
+show_behind_parent = true
+points = PackedVector2Array(0, 0, 0, -100)
+width = 64.0
+texture = ExtResource("3_f244p")
+texture_mode = 1
 
 [node name="Poofer" type="GPUParticles2D" parent="."]
 z_index = -1

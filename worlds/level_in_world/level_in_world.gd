@@ -5,5 +5,13 @@ extends Area2D
 # Simply holds a string reference to the levels filepath
 var level_path
 
+# Display name for this level (Does not need to match anything)
+var level_name
+
 # Reference to this node's pointer
-@onready var pointer = $Pointer
+var pointer
+
+# On _ready, set the pointer's text to the level's name
+func _ready():
+	pointer = $Pointer
+	pointer.get_node("Label").text = level_name

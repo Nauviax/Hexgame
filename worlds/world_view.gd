@@ -30,7 +30,9 @@ func _physics_process(_delta):
 	# Move each level_in_world node's pointer to the player's position, offset towards the level it's from
 	var player_pos = player.position
 	for level in levels:
-		level.pointer.position = player_pos - level.position + player_pos.direction_to(level.position) * 100
+		level.pointer.position = player_pos - level.position + player_pos.direction_to(level.position) * 150 # 150 pixels from player
+		# Slowly fade the pointer in using modulate
+		level.pointer.modulate.a = clamp(level.pointer.modulate.a + 0.025, 0, 1)
 
 # Function for loading the player into the world
 # Takes a player to use, the world id to load, and the filepath of the world the player is coming from
@@ -53,6 +55,7 @@ func prepare(player_new: Player, world_id: int, from_filepath: String):
 		levels.append(level_in_world) # Save node reference
 		level_in_world.position = level[0] # Position in world
 		level_in_world.level_path = level[1] # Path to level file
+		level_in_world.level_name = level[2] # Display name of level
 		# Check if player came from this level
 		if level[1] == from_filepath:
 			# Set player position to level position 
@@ -75,6 +78,12 @@ func _on_player_area_entered(area: Area2D):
 	level_path_to_load = area.level_path # Save path to level
 	# call_deferred() to avoid issues with Area2D, as it gets deleted when this is called
 	call_deferred("transition_to_main") # Switch to level
+	# Move all level_in_world pointer nodes to be children of the player, and set their positions to be relative to the player
+	for level in levels:
+		var pointer = level.pointer
+		level.remove_child(pointer)
+		player.add_child(pointer)
+		pointer.fade_out = true # Begin fading out, and remove when done
 
 # Deffered function for transitioning to the saved level
 var level_path_to_load

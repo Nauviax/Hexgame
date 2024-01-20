@@ -9,21 +9,15 @@ var entity: Entity = Entity.new("Player", self)
 # Reference to the player's sentinel sprite (Pos and visibility controlled by entity)
 @export var sentinel: Node2D
 
-# Particle emitter references
-@onready var poofer_pgen = $Poofer
-@onready var trailer_pgen = $Trailer
-
-# Viewport/camera references
-@onready var viewport: Viewport = get_viewport()
+# Various parts of the player, for reference
+@onready var poofer_pgen: GPUParticles2D = $Poofer
+@onready var trailer_pgen: GPUParticles2D = $Trailer
 @onready var camera: Camera2D = $Camera2D
-
-# Background references
-@onready var parallax_bg: CanvasLayer = $ParallaxBG #camera.get_node("ParallaxBG")
+@onready var body: Node2D = $PlayerBody # Node that holds sprites
+@onready var look_line: Line2D = $Look_Dir # Looking direction line
+@onready var parallax_bg: CanvasLayer = $ParallaxBG# Background references
 @onready var parallax_near: Sprite2D = parallax_bg.get_node("NearLayer")
 @onready var parallax_far: Sprite2D = parallax_bg.get_node("FarLayer")
-
-# The player's look line
-@onready var look_line: Line2D = $Look_Dir
 
 # Respawn point, should player ever become out of bounds (Set to initial position)
 # Level_Base will move the player here if they aren't on a tile, checked every second.
@@ -108,7 +102,7 @@ func _physics_process(delta):
 		if fly_chargeup < 50:
 			fly_chargeup += 1
 			camera.zoom -= Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
-			scale += Vector2(0.01, 0.01) # Scale up while charging (Until 1.5, 1.5)
+			body.scale += Vector2(0.01, 0.01) # Scale up visibly while charging (Until 1.5, 1.5)
 		elif not flying and fly_chargeup == 50:
 			flying = true
 			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
@@ -117,11 +111,11 @@ func _physics_process(delta):
 		if fly_chargeup > 1:
 			fly_chargeup -= 1
 			camera.zoom += Vector2(0.01, 0.01) # Revert back to normal zoom
-			scale -= Vector2(0.01, 0.01) # Revert back to normal scale
+			body.scale -= Vector2(0.01, 0.01) # Revert back to normal scale
 		elif fly_chargeup == 1: # If charge about to end, stop flying
 			fly_chargeup -= 1
 			camera.zoom = Vector2.ONE # Reset zoom
-			scale = Vector2.ONE # Reset scale
+			body.scale = Vector2.ONE # Reset scale
 			flying = false
 			entity.is_floating = false # Stop floating
 			trailer_pgen.emitting = false # Stop trail particles
