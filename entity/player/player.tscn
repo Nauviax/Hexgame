@@ -104,19 +104,27 @@ lifetime = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="ParallaxBG" type="Node2D" parent="Camera2D"]
-z_index = -100
+[node name="ParallaxBG" type="CanvasLayer" parent="."]
+layer = -1
+offset = Vector2(-192, -192)
+transform = Transform2D(1, 0, 0, 1, -192, -192)
 
-[node name="FarLayer" type="Sprite2D" parent="Camera2D/ParallaxBG"]
+[node name="FarLayer" type="Sprite2D" parent="ParallaxBG"]
 z_index = -1
+texture_filter = 1
+texture_repeat = 2
 texture = ExtResource("5_1h83c")
+centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 1280, 1280)
 
-[node name="NearLayer" type="Sprite2D" parent="Camera2D/ParallaxBG"]
+[node name="NearLayer" type="Sprite2D" parent="ParallaxBG"]
 z_index = 1
+texture_filter = 1
+texture_repeat = 2
 scale = Vector2(2, 2)
 texture = ExtResource("6_0wx4c")
+centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 640, 640)
 

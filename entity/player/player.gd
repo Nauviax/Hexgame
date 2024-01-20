@@ -18,7 +18,7 @@ var entity: Entity = Entity.new("Player", self)
 @onready var camera: Camera2D = $Camera2D
 
 # Background references
-@onready var parallax_bg: Node2D = camera.get_node("ParallaxBG")
+@onready var parallax_bg: CanvasLayer = $ParallaxBG #camera.get_node("ParallaxBG")
 @onready var parallax_near: Sprite2D = parallax_bg.get_node("NearLayer")
 @onready var parallax_far: Sprite2D = parallax_bg.get_node("FarLayer")
 
@@ -109,7 +109,6 @@ func _physics_process(delta):
 			fly_chargeup += 1
 			camera.zoom -= Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
 			scale += Vector2(0.01, 0.01) # Scale up while charging (Until 1.5, 1.5)
-			parallax_bg.scale += Vector2(0.005, 0.005) # Also scale background, so it effectively shrinks less (Until 1.25, 1.25)
 		elif not flying and fly_chargeup == 50:
 			flying = true
 			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
@@ -119,12 +118,10 @@ func _physics_process(delta):
 			fly_chargeup -= 1
 			camera.zoom += Vector2(0.01, 0.01) # Revert back to normal zoom
 			scale -= Vector2(0.01, 0.01) # Revert back to normal scale
-			parallax_bg.scale -= Vector2(0.005, 0.005)
 		elif fly_chargeup == 1: # If charge about to end, stop flying
 			fly_chargeup -= 1
 			camera.zoom = Vector2.ONE # Reset zoom
 			scale = Vector2.ONE # Reset scale
-			parallax_bg.scale = Vector2.ONE # Reset parallax scale
 			flying = false
 			entity.is_floating = false # Stop floating
 			trailer_pgen.emitting = false # Stop trail particles
