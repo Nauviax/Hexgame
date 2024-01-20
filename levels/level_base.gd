@@ -9,6 +9,9 @@ var main_scene
 @export var validator: Script
 @export var initiator: Script
 
+# Level background theme
+@export var bg_theme: String = "Inside"
+
 # True if level has been validated (And validator returned true)
 var validated = false
 
@@ -40,6 +43,8 @@ func _ready():
 	reload_entities_list()
 	# Apply initiator to level
 	initiator.initiate(self)
+	# Set background theme
+	player.set_background_theme(bg_theme)
 
 # Reload entities list
 #  Get all children, add to entities array if they are an entity

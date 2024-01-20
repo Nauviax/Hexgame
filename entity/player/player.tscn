@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://crqwgh2ejsj6j"]
+[gd_scene load_steps=15 format=3 uid="uid://crqwgh2ejsj6j"]
 
 [ext_resource type="Script" path="res://entity/player/player.gd" id="1_vgx7j"]
 [ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/LookLine.png" id="3_f244p"]
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="3_xybjd"]
 [ext_resource type="Texture2D" uid="uid://dut64si8c4ne4" path="res://resources/particles/Poof.png" id="4_1otv8"]
+[ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/InsideFar.png" id="5_1h83c"]
+[ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="6_0wx4c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r3tw1"]
 size = Vector2(40, 40)
@@ -101,6 +103,22 @@ texture = ExtResource("4_1otv8")
 lifetime = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="ParallaxBG" type="Node2D" parent="Camera2D"]
+z_index = -100
+
+[node name="FarLayer" type="Sprite2D" parent="Camera2D/ParallaxBG"]
+z_index = -1
+texture = ExtResource("5_1h83c")
+region_enabled = true
+region_rect = Rect2(0, 0, 1280, 1280)
+
+[node name="NearLayer" type="Sprite2D" parent="Camera2D/ParallaxBG"]
+z_index = 1
+scale = Vector2(2, 2)
+texture = ExtResource("6_0wx4c")
+region_enabled = true
+region_rect = Rect2(0, 0, 640, 640)
 
 [connection signal="body_entered" from="Spike_Checker" to="." method="_on_spike_checker_body_entered"]
 [connection signal="body_exited" from="Spike_Checker" to="." method="_on_spike_checker_body_exited"]

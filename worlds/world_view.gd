@@ -15,10 +15,6 @@ var world_script
 # List of level_in_world nodes added as children # !!! Possibly unnecessary
 var levels: Array
 
-# Parallax background sprite references, to set background theme
-@export var parallax_near: Sprite2D
-@export var parallax_far: Sprite2D
-
 # Reference to level_in_world scene, to load level hitboxes into world.
 @export var liw_scene: PackedScene
 
@@ -59,15 +55,14 @@ func prepare(player_new: Player, world_id: int, from_filepath: String):
 		level_in_world.level_path = level[1] # Path to level file
 		# Check if player came from this level
 		if level[1] == from_filepath:
-			# Set player position to level position
+			# Set player position to level position 
 			player.position = level[0]
+
+	# Set background theme
+	player.set_background_theme(world_script.theme)
 
 	# Connect player's spike checker Area2D to the relevant function here
 	player.get_node("Spike_Checker").area_entered.connect(_on_player_area_entered)
-
-	# Set background theme
-	parallax_near.texture = load(world_script.theme_near)
-	parallax_far.texture = load(world_script.theme_far)
 
 # Function for loading a level from the world
 # - As player starts inside an area, the first call is ignored.

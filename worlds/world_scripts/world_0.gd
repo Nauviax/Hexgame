@@ -7,8 +7,7 @@ static var levels: Array = [
 ]
 
 # Backgroud theme for this world
-static var theme_near: String = "res://resources/parallax/OutsideNear.png"
-static var theme_far: String = "res://resources/parallax/OutsideFar.png"
+static var theme: String = "Outside"
 
 # World description to be shown in UI
 static var desc: String = "Between levels. You can see other islands from here."

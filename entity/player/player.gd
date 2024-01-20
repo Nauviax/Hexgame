@@ -17,6 +17,11 @@ var entity: Entity = Entity.new("Player", self)
 @onready var viewport: Viewport = get_viewport()
 @onready var camera: Camera2D = $Camera2D
 
+# Background references
+@onready var parallax_bg: Node2D = camera.get_node("ParallaxBG")
+@onready var parallax_near: Sprite2D = parallax_bg.get_node("NearLayer")
+@onready var parallax_far: Sprite2D = parallax_bg.get_node("FarLayer")
+
 # The player's look line
 @onready var look_line: Line2D = $Look_Dir
 
@@ -83,6 +88,8 @@ func set_sentinel(pos):
 
 # Player movement controls
 func _physics_process(delta):
+	# Regardless of player control, apply wind to background
+	scroll_background(Vector2(1, 0))
 	if not Globals.player_control:
 		return # Player control required
 
@@ -102,6 +109,7 @@ func _physics_process(delta):
 			fly_chargeup += 1
 			camera.zoom -= Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
 			scale += Vector2(0.01, 0.01) # Scale up while charging (Until 1.5, 1.5)
+			parallax_bg.scale += Vector2(0.005, 0.005) # Also scale background, so it effectively shrinks less (Until 1.25, 1.25)
 		elif not flying and fly_chargeup == 50:
 			flying = true
 			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
@@ -109,17 +117,20 @@ func _physics_process(delta):
 	elif not stuck_flying: # Handle decharging (Assuming not stuck flying)
 		if fly_chargeup > 1:
 			fly_chargeup -= 1
-			camera.zoom += Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
-			scale -= Vector2(0.01, 0.01) # Scale up while charging (Until 1.5, 1.5)
+			camera.zoom += Vector2(0.01, 0.01) # Revert back to normal zoom
+			scale -= Vector2(0.01, 0.01) # Revert back to normal scale
+			parallax_bg.scale -= Vector2(0.005, 0.005)
 		elif fly_chargeup == 1: # If charge about to end, stop flying
 			fly_chargeup -= 1
 			camera.zoom = Vector2.ONE # Reset zoom
 			scale = Vector2.ONE # Reset scale
+			parallax_bg.scale = Vector2.ONE # Reset parallax scale
 			flying = false
 			entity.is_floating = false # Stop floating
 			trailer_pgen.emitting = false # Stop trail particles
 
 	# Movement
+	var initial_pos = position # Used to scroll background based on movement
 	if fly_chargeup < 30 and not Input.is_action_pressed("fly"): # Normal, grounded movement
 		if input_dir != Vector2.ZERO:
 			# Lerp towards input direction
@@ -170,6 +181,9 @@ func _physics_process(delta):
 				var new_angle = velocity.angle() + angle_dif * fly_turnspeed
 				velocity = Vector2.from_angle(new_angle) * speed
 			position += velocity * delta # Ignore collisions, as we're flying
+	
+	# Scroll background based on new position
+	scroll_background(position - initial_pos)
 
 	# Player aiming controls
 	set_look_dir(get_local_mouse_position())
@@ -182,6 +196,23 @@ func set_look_dir(mouse_pos: Vector2):
 	entity.look_dir = mouse_pos.normalized()
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
+
+# Set background theme
+# Options: "Inside", "Outside"
+func set_background_theme(theme: String):
+	# Set background theme 
+	parallax_near.texture = load("res://resources/parallax/" + theme + "Near.png")
+	parallax_far.texture = load("res://resources/parallax/" + theme + "Far.png")
+
+# Scroll background by given amount
+func scroll_background(amount: Vector2):
+	var mod = 2 * parallax_near.texture.get_width() # So scroll can loop without jumping
+	var relative_amnt = -amount / 4
+	parallax_near.position.x = fmod(parallax_near.position.x + relative_amnt.x, mod)
+	parallax_near.position.y = fmod(parallax_near.position.y + relative_amnt.y, mod)
+	relative_amnt /= 2
+	parallax_far.position.x = fmod(parallax_far.position.x + relative_amnt.x, mod)
+	parallax_far.position.y = fmod(parallax_far.position.y + relative_amnt.y, mod)
 
 # Handle collision with spikes (Importantly, clear floating when exiting)
 func _on_spike_checker_body_entered(_body):

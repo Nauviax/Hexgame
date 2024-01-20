@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="2_5plop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ybvlb"]
-size = Vector2(256, 256)
+size = Vector2(512, 512)
 
 [node name="LevelInWorld" type="Area2D"]
 collision_layer = 8

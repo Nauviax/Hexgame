@@ -1,11 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dp0v5jhyadmwq"]
+[gd_scene load_steps=5 format=3 uid="uid://dp0v5jhyadmwq"]
 
 [ext_resource type="TileSet" uid="uid://dhmy420vajm2h" path="res://resources/tiles/Level_tileset.tres" id="1_2okn0"]
 [ext_resource type="Script" path="res://levels/level_base.gd" id="1_3xh2x"]
 [ext_resource type="PackedScene" uid="uid://crqwgh2ejsj6j" path="res://entity/player/player.tscn" id="2_avtny"]
-[ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/InsideFar.png" id="4_grjnm"]
 [ext_resource type="Texture2D" uid="uid://qv4r1lh202yr" path="res://resources/sprites/Sentinel.png" id="4_k5sq3"]
-[ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="5_us0qc"]
 
 [node name="LevelBase" type="Node2D"]
 texture_filter = 1
@@ -43,34 +41,6 @@ sentinel = NodePath("../Player_Sentinel")
 visible = false
 z_index = 6
 texture = ExtResource("4_k5sq3")
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-scroll_ignore_camera_zoom = true
-
-[node name="PL_Far" type="ParallaxLayer" parent="ParallaxBackground"]
-texture_filter = 1
-texture_repeat = 2
-motion_scale = Vector2(0.125, 0.125)
-motion_mirroring = Vector2(1280, 1280)
-
-[node name="FarLayer" type="Sprite2D" parent="ParallaxBackground/PL_Far"]
-texture = ExtResource("4_grjnm")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 1280, 1280)
-
-[node name="PL_Near" type="ParallaxLayer" parent="ParallaxBackground"]
-texture_filter = 1
-texture_repeat = 2
-motion_scale = Vector2(0.25, 0.25)
-motion_mirroring = Vector2(1280, 1280)
-
-[node name="NearLayer" type="Sprite2D" parent="ParallaxBackground/PL_Near"]
-scale = Vector2(2, 2)
-texture = ExtResource("5_us0qc")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 640, 640)
 
 [node name="Bottom_Right_Point" type="Node2D" parent="."]
 position = Vector2(448, 448)
