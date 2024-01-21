@@ -15,7 +15,6 @@ layer_0/tile_data = PackedInt32Array(0, 196611, 2, 65536, 65539, 65537, 131072, 
 
 [node name="Player" parent="." index="4"]
 position = Vector2(64, 256)
-player_sb = [[], null, null, null]
 
 [node name="Some_Level_1" parent="." index="6" instance=ExtResource("6_j44ca")]
 position = Vector2(384, 256)

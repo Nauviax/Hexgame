@@ -18,7 +18,6 @@ layer_0/tile_data = PackedInt32Array(0, 3, 0, 65536, 196611, 2, 131072, 65539, 1
 
 [node name="Player" parent="." index="4"]
 position = Vector2(128, 128)
-player_sb = [[], null, null, null]
 
 [node name="Reveal_Iota" parent="." index="6" instance=ExtResource("6_55olu")]
 position = Vector2(256, 128)

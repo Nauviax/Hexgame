@@ -1,6 +1,9 @@
 # External Hub 1 Initiator
 static func initiate(level_base):
-	# Create a sample hex for player, and set as sb slot 1
+	# Create starting hexes for player, and set as sb slot 1 and 2
+	# If player spellbook is not empty, do not overwrite it.
+	if level_base.player.sb != [null, null, null, null]:
+		return
 	# Sample hex will get the entity player is looking at, and try to enter it.
 	var hex_strings = ["1lLl", "2LL", "3lLl", "4sL", "5srLlL", "6llL"]
 	var hex = []
