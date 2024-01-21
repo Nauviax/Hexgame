@@ -3,6 +3,7 @@
 # With two lists, this creates a SET with every unique element from the two lists.
 # (OR)
 static var iota_count = 2
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

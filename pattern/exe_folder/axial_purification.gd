@@ -2,6 +2,7 @@
 # For a number, return the sign of the number; 1 if positive, -1 if negative.
 # In both cases, zero is unaffected.
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var iota = stack.pop_back()

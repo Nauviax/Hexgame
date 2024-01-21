@@ -6,9 +6,12 @@ extends Resource # Should mean this object gets deleted automatically when not i
 # Subsequent characters are one from [L, l, s, r, R], representing hard left, left, straight etc.
 var p_code = ""
 
-# Name and validity of this pattern.
+# Various pattern features
 var name = ""
-var is_valid = false
+var is_valid = false # False if no matching pattern found in valid_patterns.gd
+var is_spell = false # Spells interact with the level in some way, and have their own sound effect.
+# (Cont.) For our purposes, this includes patterns that get or read from / write to entities. For simplicity, so are Hermes and Thoth.
+# Casting more than one spell will invalidate single-cast attempts for the current level.
 
 # Executable code for this pattern.
 var p_exe_name # Used to load executable code. "Mind's Reflection" would become "minds_reflection"
@@ -27,6 +30,7 @@ func _init(p_code: String):
 	Valid_Patterns.set_pattern_name(self)
 	p_exe_name = name.to_lower().replace(" ", "_").replace("'", "").replace(":", "")
 	p_exe = load("res://pattern/exe_folder/" + p_exe_name + ".gd")
+	is_spell = p_exe.is_spell # Set spell status
 
 # Execute the pattern on the given stack
 func execute(hexecutor):

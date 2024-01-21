@@ -69,13 +69,20 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 	var success = execute_pattern(pattern_og.pattern)
 	# Splash of color and sound
 	if is_meta:
-		SoundManager.play_normal()
+		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
 		if pattern_og.pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
 			pattern_og.line.gradient = normal_gradient
 		else:
 			pattern_og.line.gradient = meta_gradient
 	elif success: # Pattern is valid and executed successfully
-		SoundManager.play_normal()
+		if pattern_og.pattern.name == "Thoth's Gambit":
+			SoundManager.play_thoth()
+		elif pattern_og.pattern.name == "Hermes' Gambit":
+			SoundManager.play_hermes()
+		elif pattern_og.pattern.is_spell: # Spells are patterns that interact with the level in some way, including getting or reading from entities.
+			SoundManager.play_spell()
+		else:
+			SoundManager.play_normal()
 		pattern_og.line.gradient = normal_gradient
 	else: # Pattern is invalid or failed to execute
 		SoundManager.play_fail()

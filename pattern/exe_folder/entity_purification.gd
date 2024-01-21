@@ -1,5 +1,6 @@
 # Take a position, then return the first entity at that position																																																																																																																																																																																																										)
 static var iota_count = 1
+static var is_spell = true # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var pos = stack.pop_back()

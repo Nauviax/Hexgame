@@ -1,11 +1,12 @@
-# Yanks the top iota to the third position. [c, b, a] becomes [a, c, b]
+# Yanks the top iota to the third position. [cc, bb, aa] becomes [aa, cc, bb]
 static var iota_count = 3
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()
 	var bb = stack.pop_back()
-	var c = stack.pop_back()
+	var cc = stack.pop_back()
 	stack.push_back(aa)
-	stack.push_back(c)
+	stack.push_back(cc)
 	stack.push_back(bb)
 	return ""

@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1pmarwpfkjx5"]
+[gd_scene load_steps=9 format=3 uid="uid://d1pmarwpfkjx5"]
 
 [ext_resource type="Script" path="res://sound_manager/sound_manager.gd" id="1_vk1sj"]
 [ext_resource type="AudioStream" uid="uid://5h6osnw5061h" path="res://resources/sounds/casting_ambiance.ogg" id="2_td37r"]
 [ext_resource type="AudioStream" uid="uid://b7bwdw75gsj4b" path="res://resources/sounds/add_segment.ogg" id="3_cccu0"]
 [ext_resource type="AudioStream" uid="uid://da2lkiyhiq61a" path="res://resources/sounds/normal.ogg" id="4_hyq6s"]
 [ext_resource type="AudioStream" uid="uid://cftdivxtbl1la" path="res://resources/sounds/fail.ogg" id="5_72pj5"]
+[ext_resource type="AudioStream" uid="uid://t44sner8t36c" path="res://resources/sounds/spell.ogg" id="6_atatb"]
+[ext_resource type="AudioStream" uid="uid://c0xx17qe27dgx" path="res://resources/sounds/hermes.ogg" id="7_4beb3"]
+[ext_resource type="AudioStream" uid="uid://d07xe5je7ysed" path="res://resources/sounds/thoth.ogg" id="8_rg1wn"]
 
 [node name="SoundManager" type="Node2D"]
 script = ExtResource("1_vk1sj")
@@ -13,7 +16,7 @@ script = ExtResource("1_vk1sj")
 stream = ExtResource("2_td37r")
 autoplay = true
 
-[node name="Add_Seg" type="AudioStreamPlayer" parent="."]
+[node name="AddSeg" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_cccu0")
 
 [node name="Normal" type="AudioStreamPlayer" parent="."]
@@ -21,3 +24,14 @@ stream = ExtResource("4_hyq6s")
 
 [node name="Fail" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_72pj5")
+
+[node name="Spell" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_atatb")
+
+[node name="Hermes" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_4beb3")
+volume_db = 5.0
+
+[node name="Thoth" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_rg1wn")
+volume_db = 5.0

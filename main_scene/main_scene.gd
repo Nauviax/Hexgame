@@ -152,6 +152,8 @@ func _input(event):
 			hexecutor.execute_pattern(Pattern.new("1Llllll")) # Scribe's Reflection
 			# Execute the iota
 			hexecutor.execute_pattern(Pattern.new("1RrLll")) # Hermes' Gambit
+			# Play a sound
+			SoundManager.play_hermes()
 			return # Done
 		# If scroll wheel, cycle through spellbook patterns (Down for increment, up for decrement)
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:
@@ -161,6 +163,8 @@ func _input(event):
 			hexecutor.caster.node.inc_sb()
 			# Update displays
 			hex_display.update_sb_label(hexecutor.caster.node)
+			# Play a sound
+			SoundManager.play_segment()
 			return # Done
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed:
 			# Increment border score by 1
@@ -169,4 +173,6 @@ func _input(event):
 			hexecutor.caster.node.dec_sb()
 			# Update displays
 			hex_display.update_sb_label(hexecutor.caster.node)
+			# Play a sound
+			SoundManager.play_segment()
 			return # Done

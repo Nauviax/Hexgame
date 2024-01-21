@@ -1,5 +1,6 @@
 # Remove the iota on the end of the list at the top of the stack, and add it to the top of the stack.
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var list = stack.pop_back()

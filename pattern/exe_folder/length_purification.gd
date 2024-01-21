@@ -2,6 +2,7 @@
 # Additionally, converts boolean values to 0.0 (f) or 1.0 (t).
 # Additionallier, converts arrays to their size.
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var iota = stack.pop_back()

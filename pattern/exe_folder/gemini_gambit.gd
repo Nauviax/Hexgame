@@ -2,6 +2,7 @@
 # (A count of 2 results in two of the iota on the stack, not three.)
 # num > 1000 will fail.
 static var iota_count = 2
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()

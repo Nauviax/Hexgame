@@ -1,6 +1,7 @@
 # Takes a position (b) and a direction (a) and returns the SIDE of the tile hit by the raycast, or null if none is found.
 # If this hits the south face of a tile, it would return (0, 1) 
 static var iota_count = 2
+static var is_spell = true # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var dir = stack.pop_back()

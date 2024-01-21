@@ -2,6 +2,7 @@
 # Returns Bad_Iota if there is no level to exit to.
 # Takes the caster as an iota, to help prevent accidental use.
 static var iota_count = 1
+static var is_spell = true # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var caster = stack.pop_back()

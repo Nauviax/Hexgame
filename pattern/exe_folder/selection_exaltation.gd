@@ -3,6 +3,7 @@
 # The top iota, num2, is the upper bound.
 # Nums must be in range, though can be ordered backwards to return [].
 static var iota_count = 3
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var num2 = stack.pop_back()

@@ -1,5 +1,6 @@
 # Duplicates the top iota of the stack.
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

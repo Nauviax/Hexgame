@@ -3,6 +3,7 @@
 # 0 refers to the top of stack, which gets removed/consumed by this pattern. Error if 0.
 # 1 effectively duplicates the top element to the top.
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()

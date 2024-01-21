@@ -1,5 +1,6 @@
 # Removes num (iota) elements from the stack, then creates a new list with the removed elements.
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()

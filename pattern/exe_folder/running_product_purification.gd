@@ -1,5 +1,6 @@
 # Takes a list from the stack and computes its running product, for example inputting [1,2,5] would return [1,2,10].
 static var iota_count = 1
+static var is_spell = false # If this pattern interacts with the level in any way.
 static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var list = stack.pop_back()
