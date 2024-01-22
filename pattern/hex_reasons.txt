@@ -173,7 +173,8 @@ Spells
 
 	Blue Sun's Nadir (ent ->)
 		- Currently only Nadir/Zenith
-		- Reduce player friction and allow over spikes (Lose on exit spikes)
+		- Reduce player friction and allow over spikes (Lose on exit spikes) and flight.
 		- For others, allow survive impulse over spikes once (Can be over many spikes)
 			- Lost after impulse
+		- Applying to already floating entity will remove the effect.
 		

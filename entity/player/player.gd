@@ -45,6 +45,7 @@ var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal gri
 
 # Variables for player flight
 var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
+var can_fly = false # Whether the player can start flying or not.
 var flying = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
 var stuck_flying = false # If true, player can't stop flying. Used in world_view.
 var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
@@ -97,9 +98,9 @@ func _physics_process(delta):
 		input_dir.x -= 1
 	if Input.is_action_pressed("move_right"):
 		input_dir.x += 1
-	if entity.is_floating and Input.is_action_pressed("fly"):
+	if entity.is_floating and can_fly and Input.is_action_pressed("fly"): # All flight conditions met
 		# Flight chargeup control
-		if fly_chargeup < 50:
+		if  fly_chargeup < 50:
 			fly_chargeup += 1
 			camera.zoom -= Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
 			body.scale += Vector2(0.01, 0.01) # Scale up visibly while charging (Until 1.5, 1.5)
