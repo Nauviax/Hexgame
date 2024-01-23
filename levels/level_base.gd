@@ -12,6 +12,9 @@ var main_scene
 # Level background theme
 @export var bg_theme: String = "Inside"
 
+# World to load on player transition
+@export var belongs_to_world: int
+
 # True if level has been validated (And validator returned true)
 var validated = false
 
@@ -93,7 +96,7 @@ func _physics_process(_delta):
 			player.position = player.respawn_point # Move player to respawn point
 		check_player_roof() # Check player roofiness: hide/show roof layer + set can_fly
 		if player.flying and player.position.distance_to(level_centre) > level_size * (transition_multiplier + 0.1): # If player is flying and is far away from the level centre
-			main_scene.transition_to_world(0) # !!! Only loads main world currently !!!
+			main_scene.transition_to_world(belongs_to_world) # Transition player to given world map
 
 # Check player roofiness (Seperate function from _physics_process so it can be called on level ready)
 # If player is below any roof tile, set can_fly to false and hide roof layer

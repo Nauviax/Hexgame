@@ -8,6 +8,7 @@
 [node name="LevelBase" instance=ExtResource("1_vdye0")]
 validator = ExtResource("2_t2xbk")
 initiator = ExtResource("3_anpa7")
+belongs_to_world = 1
 
 [node name="TileMap" parent="." index="3"]
 z_index = -10

@@ -11,4 +11,4 @@ static var levels: Array = [
 static var theme: String = "Outside"
 
 # World description to be shown in UI
-static var desc: String = "Between levels. You can see other islands from here."
+static var desc: String = "Between hubs. You can see other islands from here."
