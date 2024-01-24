@@ -7,4 +7,4 @@ static func execute(hexecutor, _pattern):
 	var bb = stack.pop_back()
 	stack.push_back(aa)
 	stack.push_back(bb)
-	return ""
+	return true

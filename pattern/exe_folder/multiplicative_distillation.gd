@@ -2,7 +2,7 @@
 # With two vectors, returns the dot product.
 static var iota_count = 2
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()
 	var bb = stack.pop_back()
@@ -20,6 +20,6 @@ static func execute(hexecutor, _pattern):
 		aa.y *= bb
 		stack.push_back(aa)
 	else:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Attempted to multiply non-numeric and non-vector value"
-	return ""
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_PAIR, pattern.name, aa, bb))
+		return false
+	return true

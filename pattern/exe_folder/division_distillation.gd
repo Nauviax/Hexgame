@@ -6,31 +6,31 @@
 #   See "stackoverflow.com/questions/243945"
 static var iota_count = 2
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()
 	var bb = stack.pop_back()
 	# Ensure that both values are floats or vectors
 	if aa is float and bb is float:
 		if aa == 0:
-			stack.push_back(Bad_Iota.new())
-			return "Error: Attempted to divide by zero (You fool)"
+			stack.push_back(Bad_Iota.new(ErrorMM.DIV_BY_ZERO, pattern.name))
+			return false
 		else:
 			stack.push_back(bb / aa)
 	elif aa is Vector2 and bb is Vector2:
 		stack.push_back((bb.x * aa.y) - (bb.y * aa.x))
 	elif aa is float and bb is Vector2:
 		if aa == 0:
-			stack.push_back(Bad_Iota.new())
-			return "Error: Attempted to divide by zero (You fool)"
+			stack.push_back(Bad_Iota.new(ErrorMM.DIV_BY_ZERO, pattern.name))
+			return false
 		else:
 			bb.x /= aa
 			bb.y /= aa
 			stack.push_back(bb)
 	elif aa is Vector2 and bb is float:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Can't divide a float by an array"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number", aa))
+		return false
 	else:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Attempted to multiply non-numeric and non-vector value"
-	return ""
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_PAIR, pattern.name, aa, bb))
+		return false
+	return true

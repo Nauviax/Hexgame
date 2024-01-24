@@ -4,27 +4,30 @@
 # Nums must be in range, though can be ordered backwards to return [].
 static var iota_count = 3
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var num2 = stack.pop_back()
 	if not num2 is float:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not a number"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number", num2))
+		return false
 	num2 = int(num2) # Just in case
 	var num1 = stack.pop_back()
 	if not num1 is float:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not a number"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "number", num1))
+		return false
 	num1 = int(num1)
 	var list = stack.pop_back()
 	if not list is Array:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not an array"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 2, "list", list))
+		return false
 	# Ensure nums within bounds
-	if num1 < 0 or num1 >= list.size() or num2 < 0 or num2 >= list.size():
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not in range"
+	if num1 < 0 or num1 >= list.size():
+		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 1, 0, list.size() - 1, num1))
+		return false
+	if num2 < 0 or num2 >= list.size():
+		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 0, 0, list.size() - 1, num2))
+		return false
 	# Push the sublist
 	var sublist = list.slice(num1, num2)
 	stack.push_back(sublist)
-	return ""
+	return true

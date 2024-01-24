@@ -11,4 +11,4 @@ static func execute(hexecutor, _pattern):
 		stack.push_back(iota.size() != 0)
 	else:
 		stack.push_back(iota != null)
-	return ""
+	return true

@@ -9,10 +9,10 @@ static func execute(hexecutor, pattern):
 	# Ensure stack is large enough to remove items
 	var count = int(log(value) / log(2)) + 1
 	if count > stack.size():
-		# Add garbage to bottom of stack until it is large enough
+		# Add garbage to BOTTOM of stack until it is large enough
 		for ii in range(stack.size(), count):
-			stack.push_front(Bad_Iota.new())
-		return "Error: Not enough iotas in stack"
+			stack.push_front(Bad_Iota.new(ErrorMM.WRONG_ARG_COUNT, pattern.name, count, count - stack.size() - 1))
+		return false
 	
 	# Remove the specified items from the stack
 	var target = stack.size() - 1 # Start at top of stack
@@ -21,4 +21,4 @@ static func execute(hexecutor, pattern):
 			stack.pop_at(target)
 		target -= 1
 		value = value >> 1
-	return ""
+	return true

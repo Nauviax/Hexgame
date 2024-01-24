@@ -189,7 +189,7 @@ func entity_at(pos):
 # Tile ID for tilemap:
 # Layer 0
 #  00 = Undefined / Out of map
-#  01 = Wall
+#  01 = Wall (Includes that wall tile with no collision)
 #  02 = Glass
 #  03 = Basic floor (White, Grass etc)
 #  04 = Green floor

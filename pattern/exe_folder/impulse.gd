@@ -2,22 +2,22 @@
 # If entity is floating, does NOT collide with spikes.
 static var iota_count = 2
 static var is_spell = true # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var vector = stack.pop_back()
 	if not vector is Vector2:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not vector"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "vector", vector))
+		return false
 	var length = vector.length()
 	if length > 16 or length < 0.1:
-		stack.push_back(Bad_Iota.new())
-		return "Error: vector length was too large or invalid"
+		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 0, "length 0.1", "length 16", "length " + str(length)))
+		return false
 	var entity = stack.pop_back()
 	if not entity is Entity:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not entity"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "entity", entity))
+		return false
 	if not entity.moveable: # If can't move entity, just return silently
-		return ""
+		return true
 	var pos_real = entity.get_pos() # Actual pos (For raycasting)
 	var pos = Entity.real_to_fake(pos_real) # Fake pos (For interpolation)
 	var level_base = hexecutor.level_base # Used to do raycasting
@@ -29,7 +29,7 @@ static func execute(hexecutor, _pattern):
 		if (not entity.is_floating) and level_base.get_tile_id(tile, 1) == 21: # Spike check
 			var dead = level_base.remove_entity(entity) # Attempt to push poor entity into spikes
 			if dead:
-				return "" # Woo
+				return true # Woo
 			else:
 				continue # Player can't be killed, so keep looking for safe spot.
 		var tile_id = level_base.get_tile_id(tile, 0)
@@ -37,13 +37,13 @@ static func execute(hexecutor, _pattern):
 			continue # Can't land here, nope.
 		if tile_id == 0: # Out of Bounds check (Regardless of is_floating)
 			if level_base.remove_entity(entity): # Attempt to push poor entity out of map
-				return "" # Woo
-			# If not dead, still set pos. See what happens. (Likely the player, and will respawn)
+				return true # Woo
+			# Else, if not dead, still set pos. See what happens. (Likely the player, and will respawn)
 		entity.set_fake_pos(tile)
 		entity.is_floating = false # Clear floating status (Irrelevant if entity is not floating)
-		return ""
+		return true
 	entity.is_floating = false # Still clear floating status
-	return "" # Just don't impulse
+	return true # Just don't impulse
 
 # Returns a set of points from p1 to p0 using linear interpolation
 static func interpolated_line(p0, p1):

@@ -4,4 +4,4 @@ static var is_spell = false # If this pattern interacts with the level in any wa
 static func execute(hexecutor, _pattern):
 	hexecutor.stack.push_back(Pattern_Metalist.new())
 	hexecutor.introspection_depth += 1
-	return ""
+	return true

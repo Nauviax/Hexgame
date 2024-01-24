@@ -36,15 +36,16 @@ func _init(p_code: String):
 func execute(hexecutor):
 	var iota_count = p_exe.iota_count
 	if hexecutor.stack.size() < iota_count:
-		hexecutor.stack.push_back(Bad_Iota.new())
-		return "Error: Not enough iotas in stack"
+		hexecutor.stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_COUNT, name, iota_count, hexecutor.stack.size()))
+		return false
 	return p_exe.execute(hexecutor, self)
 
 # _to_string override for fancy display
 func _to_string():
+	var text
 	if is_valid:
 		if name == "Numerical Reflection":
-			return "Numerical Reflection (" + str(value) + ")"
+			text = "Numerical Reflection (" + str(value) + ")"
 		elif name == "Bookkeeper's Gambit":
 			var val_clone = value
 			var str_gambit = ""
@@ -57,10 +58,11 @@ func _to_string():
 				val_clone = val_clone >> 1
 			if str_gambit == "": # For the do-nothing gambit
 				str_gambit = "-"
-			return "Bookkeeper's Gambit (" + str_gambit + ")"
+			text = "Bookkeeper's Gambit (" + str_gambit + ")"
 		# Default case
 		else:
-			return name
+			text = name
 	else:
-		return "Invalid Pattern (" + p_code + ")"
+		text = "Invalid Pattern (" + p_code + ")"
+	return "[url=P" + p_code + "]" + text + "[/url]" # Text will contain p_code as metadata
 	

@@ -5,4 +5,4 @@ static func execute(hexecutor, _pattern):
 	var stack = hexecutor.stack
 	var iota = stack.pop_back()
 	stack.push_back([iota])
-	return ""
+	return true

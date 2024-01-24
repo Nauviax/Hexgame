@@ -9,5 +9,5 @@ static func execute(hexecutor, _pattern):
 	stack.push_back(bb)
 	stack.push_back(aa)
 	stack.push_back(cc)
-	return ""
+	return true
 	

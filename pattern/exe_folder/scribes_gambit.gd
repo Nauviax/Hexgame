@@ -4,4 +4,4 @@ static var is_spell = false # If this pattern interacts with the level in any wa
 static func execute(hexecutor, _pattern):
 	var player = hexecutor.caster.node
 	player.sb[player.sb_sel] = hexecutor.stack.pop_back()
-	return ""
+	return true

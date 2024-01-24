@@ -2,13 +2,13 @@
 # Replaces the list with -1 if the iota doesn't exist in the list.
 static var iota_count = 2
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var iota = stack.pop_back()
 	var list = stack.pop_back()
 	if not list is Array:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not an array"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "list", list))
+		return false
 	var index = -1
 	for ii in range(list.size()):
 		if iota is Pattern: # Special case
@@ -20,4 +20,4 @@ static func execute(hexecutor, _pattern):
 				index = ii
 				break
 	stack.push_back(float(index))
-	return ""
+	return true

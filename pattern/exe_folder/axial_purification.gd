@@ -3,7 +3,7 @@
 # In both cases, zero is unaffected.
 static var iota_count = 1
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var iota = stack.pop_back()
 	if iota is float:
@@ -19,13 +19,13 @@ static func execute(hexecutor, _pattern):
 		var yy = iota.y
 		if xx == 0 and yy == 0:
 			stack.push_back(unitVector) # Just push 0,0.
-			return ""
+			return true
 		if xx > yy:
 			unitVector.x = 1 if iota.x > 0 else -1
 		elif xx <= yy: # On tie, y wins.
 			unitVector.y = 1 if iota.y > 0 else -1
 		stack.push_back(unitVector)
 	else:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Invalid iota type"
-	return ""
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number/vector", iota))
+		return false
+	return true

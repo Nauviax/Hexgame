@@ -8,4 +8,4 @@ static func execute(hexecutor, _pattern):
 		hexecutor.stack.push_back(iota.duplicate(true)) # Deep copy
 	else:
 		hexecutor.stack.push_back(iota)
-	return ""
+	return true

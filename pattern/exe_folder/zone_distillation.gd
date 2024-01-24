@@ -3,18 +3,21 @@
 # Max distance is capped at 5 tiles. (Prevent getting every entity on map) Position can be any distance away.
 static var iota_count = 2
 static var is_spell = true # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var dst = stack.pop_back()
-	var pos = stack.pop_back()
-	if not dst is float or not pos is Vector2:
-		stack.push_back(Bad_Iota.new())
-		return "Error: invalid iota type recieved"
-	if dst > 5:
-		stack.push_back(Bad_Iota.new())
-		return "Error: max search radius is 5 tiles"
-	pos = Entity.fake_to_real(pos) # Convert to real position
+	if not dst is float:
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number", dst))
+		return false
+	if dst < 0 or dst > 5:
+		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 0, 0, 5, dst))
+		return false
 	dst = Entity.FAKE_SCALE * dst # Convert to real distance
+	var pos = stack.pop_back()
+	if not pos is Vector2:
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "vector", pos))
+		return false
+	pos = Entity.fake_to_real(pos) # Convert to real position
 	var entities = hexecutor.level_base.entities
 	var result_unsorted = []
 	for entity in entities:
@@ -22,7 +25,7 @@ static func execute(hexecutor, _pattern):
 		if dist <= dst:
 			result_unsorted.append([entity, dist])
 	stack.push_back(dist_sort(result_unsorted))
-	return ""
+	return true
 
 # Takes a result_unsorted list and returns a list of just sorted entities
 # Sort determines which entity is further, using the second element of the list.

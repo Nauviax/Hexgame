@@ -2,14 +2,15 @@
 # This means adding 1 then 2 to stack then executing, (So 2 is on top,) will give (1, 2).
 static var iota_count = 2
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()
+	if not aa is float:
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number", aa))
+		return false
 	var bb = stack.pop_back()
-	# Ensure type
-	if aa is float and bb is float:
-		stack.push_back(Vector2(bb, aa))
-	else:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Invalid iota type"
-	return ""
+	if not bb is float:
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "number", bb))
+		return false
+	stack.push_back(Vector2(bb, aa))
+	return true

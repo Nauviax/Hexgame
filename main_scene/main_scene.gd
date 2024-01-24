@@ -126,8 +126,8 @@ func new_pattern_drawn(pattern):
 
 # Update hex_display (Normally after a pattern is executed)
 # Takes hexecutor to get stack/caster info etc
-func update_hex_display(err_str = ""):
-	hex_display.update_all_hexy(hexecutor, err_str) # Update stack display
+func update_hex_display():
+	hex_display.update_all_hexy(hexecutor) # Update stack display
 
 # Update border size display, also located in hex_display.
 func update_border_display():

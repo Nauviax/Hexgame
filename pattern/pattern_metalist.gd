@@ -27,7 +27,6 @@ func add_pattern(hexecutor: Hexecutor, pattern: Pattern): # Defined type
 
 	else:
 		patterns.push_back(pattern)
-	return ""
 
 # Show pattern names as a list, closing the [] only if complete
 func _to_string():

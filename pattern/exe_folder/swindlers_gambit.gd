@@ -14,24 +14,21 @@
 
 static var iota_count = 1
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()
 	if not num is float:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Iota was not a number"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number", num))
+		return false
 	if num < 0 or num > 119:
-		stack.push_back(Bad_Iota.new())
-		if num < 0 or num > 719:
-			return "Error: Iota was not in range 0-119"
-		else: # 120-719, attempted 6 long permutation
-			return "Error: Iota was not in range 0-119. (6 long permutations not implemented, sorry)"
+		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 0, 0, 119, num))
+		return false
 	var code = lehmer[int(num)]
 	var iotas = [] # Stored in order abcde (flipped compared to lehmer code)
 	# Ensure enough iotas
 	if len(code) > stack.size():
-		stack.push_back(Bad_Iota.new())
-		return "Error: Not enough iotas in stack for given permutation"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_COUNT, pattern.name, len(code), stack.size()))
+		return false
 	# Rearrange elements and return
 	for ii in range(len(code)):
 		iotas.append(stack.pop_back())
@@ -47,7 +44,7 @@ static func execute(hexecutor, _pattern):
 				stack.push_back(iotas[3])
 			"e":
 				stack.push_back(iotas[4])
-	return ""
+	return true
 
 # Input order edcba where a is top of stack
 static var lehmer = {

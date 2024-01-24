@@ -9,4 +9,4 @@ static func execute(hexecutor, _pattern):
 		stack.push_back(aa.duplicate(true)) # Deep copy
 	else:
 		stack.push_back(aa)
-	return ""
+	return true

@@ -9,20 +9,20 @@
 
 static var iota_count = 2
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var list = stack.pop_back()
 	if not list is Array:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not a list"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "list", list))
+		return false
 	var patterns = stack.pop_back()
 	if not patterns is Array:
-		stack.push_back(Bad_Iota.new())
-		return "Error: iota was not a list"
-	for iota in patterns:
-		if not iota is Pattern:
-			stack.push_back(Bad_Iota.new())
-			return "Error: List contained non-pattern iota"
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "list", patterns))
+		return false
+	for ii in range(patterns.size()):
+		if not patterns[ii] is Pattern:
+			stack.push_back(Bad_Iota.new(ErrorMM.LIST_CONTAINS_INVALID, pattern.name, 0, "pattern", ii, patterns[ii]))
+			return false
 	
 	hexecutor.execution_depth += 1 # Prevent infinite recursion (!!! Should this be 8 or smth to reduce recursion for thoths?)
 	var results = [] # List of results from each list iota. 
@@ -33,8 +33,8 @@ static func execute(hexecutor, _pattern):
 	for iota in list:
 		hexecutor2.stack = stack.duplicate(true) # Copy stack (Deep copy)
 		hexecutor2.stack.push_back(iota) # Load 
-		for pattern in patterns:
-			var success = hexecutor2.execute_pattern(pattern, false) # False means don't update display on pattern success
+		for next_pattern in patterns:
+			var success = hexecutor2.execute_pattern(next_pattern, false) # False means don't update display on pattern success
 			if hexecutor2.charon_mode or not success:
 				# Leave charon mode set true, as we won't be returning to this hexecutor anyway. Safer to leave true.
 				break # Stop executing patterns for this iota
@@ -47,4 +47,4 @@ static func execute(hexecutor, _pattern):
 	# Note to self, execution depth should be equal at this point, so copying it is redundant. (That's the idea anyway.)
 	hexecutor.execution_depth -= 1
 	stack.push_back(results) # Push results
-	return ""
+	return true

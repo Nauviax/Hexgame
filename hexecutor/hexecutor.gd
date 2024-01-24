@@ -95,11 +95,13 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 		print("Scram mode active, ending hex.")
 		return false # Return early (And "fail" via false, so meta-patterns don't continue)
 	
-	var return_string = ""
+	var success # Return value, true on successful pattern execution, false otherwise.
 	if execution_depth > 128: # Max depth
-		return_string = "Error: Execution depth too high (Max 128)"
+		stack.push_back(Bad_Iota.new(ErrorMM.DELVED_TOO_DEEP, "<-Hexecutor->", execution_depth))
+		success = false
 	elif level_base == null: # No level base, casting disabled
-		return_string = "Error: Casting is unavailable right now."
+		stack.push_back(Bad_Iota.new(ErrorMM.CASTING_DISABLED, "<-Hexecutor->"))
+		success = false
 	else: # Execute normally
 		if consideration_mode: # Single meta-pattern mode, see var declaration.
 			if stack.size() > 0 and stack[-1] is Pattern_Metalist:
@@ -107,14 +109,16 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 			else:
 				stack.push_back(pattern) # Append to stack with no list
 			consideration_mode = false
+			success = true
 		elif introspection_depth > 0 and pattern.name != "Consideration": # Multi meta-pattern mode, see var declaration.
 			if stack.size() > 0 and stack[-1] is Pattern_Metalist:
-				return_string = stack[-1].add_pattern(self, pattern)
+				stack[-1].add_pattern(self, pattern)
+				success = true
 			else:
 				printerr("ERROR: Introspection mode enabled, but top of stack is not a Pattern_Metalist!")
 				return
 		else: # Default mode, just execute the pattern
-			return_string = pattern.execute(self)
+			success = pattern.execute(self)
 
 	# If AFTER meta-execution, charon_mode is true, end hex.
 	if charon_mode and execution_depth == 0:
@@ -123,17 +127,11 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 			main_scene.clear() # Wipe grid and stack
 		return true # Return early
 
-	# Special case for patterns that don't want to update the display on return.
-	# Currently used when meta-executed patterns fail, to prevent error spam. Please don't return null elsewhere.
-	# (I want to change my error system, so this is somewhat temporary (!!!))
-	if return_string == null:
-		return scram_mode # Return false, UNLESS scram mode is on, in which case return true. (Because scram mode is a special fail case)
-
-	var success = return_string.left(5) != "Error" # Check if return string contains "Error"
 	# Can choose to only update display on fail. Good for meta-patterns which run many patterns.
+	# -- To be clear, update_on_success = false will mean the below 'if' will only run if success is false. (And is_main_hexecutor is true)
 	# Additionally, if not is_main_hexecutor, will not run updates. (Useful for oneoff hexecutor instances)
 	if (update_on_success or not success) and is_main_hexecutor:
-		main_scene.update_hex_display(return_string) # Update stack display
+		main_scene.update_hex_display() # Update stack display
 		scan_stack() # Debugging, comment out when not needed anymore (!!!)
 	return success
 

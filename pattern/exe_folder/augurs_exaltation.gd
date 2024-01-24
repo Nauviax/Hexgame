@@ -2,7 +2,7 @@
 # (IF)
 static var iota_count = 3
 static var is_spell = false # If this pattern interacts with the level in any way.
-static func execute(hexecutor, _pattern):
+static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()
 	if aa is bool:
@@ -13,6 +13,6 @@ static func execute(hexecutor, _pattern):
 		else:
 			stack.push_back(c)
 	else:
-		stack.push_back(Bad_Iota.new())
-		return "Error: Iota was not a bool."
-	return ""
+		stack.push_back(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "bool", aa)
+		return false
+	return true
