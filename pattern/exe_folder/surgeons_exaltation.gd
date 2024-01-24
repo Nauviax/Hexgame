@@ -7,11 +7,11 @@ static func execute(hexecutor, pattern):
 	var iota = stack.pop_back()
 	var num = stack.pop_back()
 	if not num is float:
-		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "number", num))
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "number", num))
 		return false
 	var list = stack.pop_back()
 	if not list is Array:
-		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "list", list))
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 2, "list", list))
 		return false
 	if num > 0 or num < list.size():
 		list[num] = iota

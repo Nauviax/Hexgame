@@ -6,7 +6,7 @@ static func execute(hexecutor, pattern):
 	var iota = stack.pop_back()
 	var list = stack.pop_back()
 	if not list is Array:
-		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "list", list))
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "list", list))
 		return false
 	list.push_front(iota)
 	stack.push_back(list)

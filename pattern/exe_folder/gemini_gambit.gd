@@ -1,4 +1,4 @@
-# Takes a number (top) and an iota, then pushes a copies of b onto the stack.
+# Takes a number (top) and an iota, then pushes num copies of iota onto the stack.
 # (A count of 2 results in two of the iota on the stack, not three.)
 # num > 1000 will fail.
 static var iota_count = 2

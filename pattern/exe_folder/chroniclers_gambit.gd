@@ -7,7 +7,7 @@ static func execute(hexecutor, pattern):
 	var iota = stack.pop_back()
 	var entity = stack.pop_back()
 	if not entity is Entity:
-		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "entity", entity))
+		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "entity", entity))
 		return false
 	entity.set_iota(iota)
 	return true
