@@ -14,19 +14,19 @@ level_container = NodePath("HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Le
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 
-[node name="HexDisplay" type="Control" parent="."]
+[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "validate_button", "pattern_info")]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("3_pett3")
-stack_path = NodePath("MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack")
-raven_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind")
-reveal_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal")
-sb_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook")
-border_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Border_Score")
-level_desc_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Desc")
-validate_button_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate")
-pattern_info_path = NodePath("PatternInfo")
+stack_label = NodePath("MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack")
+raven_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind")
+reveal_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal")
+sb_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook")
+border_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Border_Score")
+level_desc_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Desc")
+validate_button = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate")
+pattern_info = NodePath("PatternInfo")
 
 [node name="PatternInfo" parent="HexDisplay" instance=ExtResource("3_f8kac")]
 top_level = true
@@ -63,9 +63,9 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 2.05
 mouse_filter = 2
 
-[node name="Grid" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control" instance=ExtResource("2_qu1ct")]
+[node name="Grid" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control" node_paths=PackedStringArray("main_scene") instance=ExtResource("2_qu1ct")]
 scale = Vector2(1.2, 1.2)
-main_scene_path = NodePath("../../../../../..")
+main_scene = NodePath("../../../../../..")
 
 [node name="Info_SB_Level" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
 clip_contents = true

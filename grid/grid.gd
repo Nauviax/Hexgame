@@ -2,8 +2,7 @@
 extends Node2D
 
 var PointScene = preload("res://grid/point.tscn")
-@export var main_scene_path: NodePath # Set in Inspector
-@onready var main_scene = get_node(main_scene_path)
+@export var main_scene: Node2D # Set in Inspector
 
 const GRIDSIZE = 18 # Amount of points in given direction
 const GRIDSPACING = 32.0 # Distance between points

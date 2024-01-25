@@ -2,29 +2,21 @@ extends Control
 
 @onready var main_scene = get_parent()
 
-@export var stack_path: NodePath # Set in Inspector
-@onready var stack_label: RichTextLabel = get_node(stack_path)
+@export var stack_label: RichTextLabel # Set in Inspector
 
-@export var raven_path: NodePath 
-@onready var raven_label = get_node(raven_path)
+@export var raven_label: RichTextLabel
 
-@export var reveal_path: NodePath
-@onready var reveal_label = get_node(reveal_path)
+@export var reveal_label: RichTextLabel
 
-@export var sb_path: NodePath
-@onready var sb_label = get_node(sb_path)
+@export var sb_label: RichTextLabel
 
-@export var border_path: NodePath
-@onready var border_label = get_node(border_path)
+@export var border_label: Label
 
-@export var level_desc_path: NodePath
-@onready var level_desc_label = get_node(level_desc_path)
+@export var level_desc_label: Label
 
-@export var validate_button_path: NodePath
-@onready var validate_button = get_node(validate_button_path) # For changing color
+@export var validate_button: Button # For changing color
 
-@export var pattern_info_path: NodePath
-@onready var pattern_info = get_node(pattern_info_path)
+@export var pattern_info: PanelContainer
 
 # Update border size counter
 func update_border_label(prev, current, cast):
