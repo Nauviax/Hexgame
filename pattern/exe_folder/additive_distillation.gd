@@ -31,4 +31,5 @@ static func execute(hexecutor, pattern):
 		stack.push_back(aa)
 	else:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_PAIR, pattern.name, aa, bb))
+		return false
 	return true
