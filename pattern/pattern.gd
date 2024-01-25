@@ -7,7 +7,8 @@ extends Resource # Should mean this object gets deleted automatically when not i
 var p_code = ""
 
 # Various pattern features
-var name = ""
+var name = "" # Used for display in gui and identification in code
+var name_short = "" # Shorter, non-unique name for use in lists (Not set for some dynamic patterns. Normally because value is shown instead)
 var is_valid = false # False if no matching pattern found in valid_patterns.gd
 var is_spell = false # Spells interact with the level in some way, and have their own sound effect.
 # (Cont.) For our purposes, this includes patterns that get or read from / write to entities. For simplicity, so are Hermes and Thoth.
@@ -21,7 +22,7 @@ var p_exe = null
 # For numerical reflection, this is just the number.
 # For bookkeeper's gambit, treat as binary where 1 is keep and 0 is discard.
 #	(And a reminder, the last bit (1s column) is the top of the stack)
-var value = 0.0
+var value = null
 
 # Pattern constructor. Takes a code string, then sets up pattern based on that.
 func _init(p_code: String):
@@ -41,28 +42,37 @@ func execute(hexecutor):
 	return p_exe.execute(hexecutor, self)
 
 # _to_string override for fancy display
+# This function returns a shorthand name for the pattern, for use in lists.
+# To get the full length name, use pattern.get_meta_string() (Rather than str(pattern))
 func _to_string():
+	return get_meta_string(true)
+
+# Like _to_string, but returns the full name of the pattern.
+func get_meta_string(short = false):
 	var text
 	if is_valid:
 		if name == "Numerical Reflection":
-			text = "Numerical Reflection (" + str(value) + ")"
+			text = "(" + str(value) + ")" if short else "Numerical Reflection (" + str(value) + ")"
 		elif name == "Bookkeeper's Gambit":
-			var val_clone = value
-			var str_gambit = ""
-			# Treat value as binary, if bit is 1, add "x" to string, if bit is 0, add "-" to string
-			while val_clone > 0:
-				if val_clone % 2 == 1:
-					str_gambit = "x" + str_gambit
-				else:
-					str_gambit = "-" + str_gambit
-				val_clone = val_clone >> 1
-			if str_gambit == "": # For the do-nothing gambit
-				str_gambit = "-"
-			text = "Bookkeeper's Gambit (" + str_gambit + ")"
-		# Default case
-		else:
-			text = name
+			var str_gambit = Pattern.value_to_bookkeeper(value)
+			text = "(" + str_gambit + ")" if short else "Bookkeeper's Gambit (" + str_gambit + ")"
+		else: # Default case
+			text = name_short if short else name
 	else:
-		text = "Invalid Pattern (" + p_code + ")"
+		text = "(" + p_code + ")" if short else "Invalid Pattern (" + p_code + ")"
 	return "[url=P" + p_code + "]" + text + "[/url]" # Text will contain p_code as metadata
 	
+# Static function to convert a value (number) to a bookkeeper's gambit string
+static func value_to_bookkeeper(value):
+	var val_clone = value
+	var str_gambit = ""
+	# Treat value as binary, if bit is 1, add "x" to string, if bit is 0, add "-" to string
+	while val_clone > 0:
+		if val_clone % 2 == 1:
+			str_gambit = "x" + str_gambit
+		else:
+			str_gambit = "-" + str_gambit
+		val_clone = val_clone >> 1
+	if str_gambit == "": # For the do-nothing gambit
+		str_gambit = "-"
+	return str_gambit

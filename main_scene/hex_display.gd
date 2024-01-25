@@ -49,14 +49,22 @@ func update_clear_hexy():
 # Stack label
 func update_stack(stack):
 	stack_label.clear()
+	var text = ""
 	var stack_size = stack.size()
 	for ii in range(stack_size):
-		stack_label.append_text(str(stack[stack_size - ii - 1]) + "\n")
+		var iota = stack[stack_size - ii - 1]
+		if iota is Pattern:
+			text += iota.get_meta_string() + "\n"
+		else:
+			text += str(iota) + "\n"
+	stack_label.append_text(text)
 
 # Ravenmind label
 func update_ravenmind_label(ravenmind):
 	if ravenmind == null:
 		raven_label.text = ""
+	elif ravenmind is Pattern:
+		raven_label.text = "Ravenmind: " + ravenmind.get_meta_string()
 	else:
 		raven_label.text = "Ravenmind: " + str(ravenmind)
 
@@ -64,6 +72,8 @@ func update_ravenmind_label(ravenmind):
 func update_reveal_label(reveal):
 	if reveal == null:
 		reveal_label.text = ""
+	elif reveal is Pattern:
+		reveal_label.text = "Revealed: " + reveal.get_meta_string()
 	else:
 		reveal_label.text = "Revealed: " + str(reveal)
 
@@ -72,11 +82,16 @@ func update_sb_label(player):
 	var text = "- Spellbook -\n"
 	for ii in range(player.sb.size()):
 		if ii == player.sb_sel:
-			text += "-> "
+			text += "-> " + str(ii) + ": "
 		else:
-			text += "   "
+			text += "   " + str(ii) + ": "
 		var iota = player.sb[ii]
-		text += str(ii) + ": " + str(iota if iota != null else "") + "\n"
+		if iota == null:
+			text += "\n"
+		elif iota is Pattern:
+			text += iota.get_meta_string() + "\n"
+		else:
+			text += str(iota) + "\n"
 	sb_label.text = text
 
 # Level description label (Called directly by main_scene)
@@ -96,10 +111,20 @@ func _on_stack_meta_hover_started(meta:Variant):
 	if meta is String: # Either error message or pattern code
 		pattern_info.display(meta)
 
+func _on_spellbook_meta_hover_started(meta:Variant):
+	if meta is String: # Same idea as above
+		pattern_info.display(meta)
+
+func _on_ravenmind_meta_hover_started(meta:Variant):
+	if meta is String:
+		pattern_info.display(meta)
+
+func _on_reveal_meta_hover_started(meta:Variant):
+	if meta is String:
+		pattern_info.display(meta)
+
 func _on_pattern_on_grid_hover(pog: Pattern_Ongrid): # Not yet implemented
 	pattern_info.display(pog.pattern.p_code)
-
-# Spellbook + Ravenmind also (Combine these maybe?)
 
 # ALL rich text labels link to this function, as it's the same functionality for all of them
 func _on_meta_hover_ended(_meta):

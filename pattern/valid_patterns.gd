@@ -17,7 +17,9 @@ static func set_pattern_name(pattern):
 	
 	# Check if raw_code is a static pattern
 	if raw_code in static_patterns:
-		pattern.name = static_patterns[raw_code]
+		var name_pair = static_patterns[raw_code]
+		pattern.name = name_pair[0]
+		pattern.name_short = name_pair[1]
 		pattern.is_valid = true
 		return
 	
@@ -28,174 +30,164 @@ static func set_pattern_name(pattern):
 	
 # ---------------------- #
 
-# Dictionary of static patterns. Key maps to pattern name.
+# Dictionary of static patterns. Key maps to a short array, where the first item is the name of the pattern, and the second is a NON-UNIQUE short name version.
 # Key is the raw_code value, which excludes p_code's initial number (Rotation is irrelevant)
+# Short names for Numerical Reflection and Bookkeeper's Gambit are just their value, and Invalid Pattern just it's p_code.
 static var static_patterns = {
 	# Basic Patterns
-	"LL": "Compass' Purification",
-	"lLl": "Mind's Reflection",
-	"sL": "Alidade's Purification",
-	"sl": "Pace Purification",
-	"Rr": "Reveal",
-	"slLLsRR": "Archer's Distillation",
-	"srRRsLL": "Architect's Distillation",
-	"srLlL": "Scout's Distillation",
+	"LL": ["Compass' Purification", "ComPu"],
+	"lLl": ["Mind's Reflection", "MinRe"],
+	"sL": ["Alidade's Purification", "AliPu"],
+	"sl": ["Pace Purification", "PacPu"],
+	"Rr": ["Reveal", "Rev"],
+	"slLLsRR": ["Archer's Distillation", "ArcDi"],
+	"srRRsLL": ["Architect's Distillation", "ArcDi"], # Same short name, but eh they can hover for full name if confused.
+	"srLlL": ["Scout's Distillation", "ScoDi"],
 
 	# Mathematics
-	"slLls": "Length Purification",
-	"sLLs": "Additive Distillation",
-	"sRRs": "Subtractive Distillation",
-	"sLlLs": "Multiplicative Distillation",
-	"sRrRs": "Division Distillation",
-	"lsr": "Ceiling Purification",
-	"rsl": "Floor Purification",
-	"lllllLss": "Axial Purification",
-	"rlllll": "Vector Distillation",
-	"lrrrrr": "Vector Decomposition",
-	"LRRsLLR": "Modulus Distillation",
-	"srRrs": "Power Distillation",
-	"rlll": "Entropy Reflection",
+	"slLls": ["Length Purification", "LenPu"],
+	"sLLs": ["Additive Distillation", "AddDi"],
+	"sRRs": ["Subtractive Distillation", "SubDi"],
+	"sLlLs": ["Multiplicative Distillation", "MulDi"],
+	"sRrRs": ["Division Distillation", "DivDi"],
+	"lsr": ["Ceiling Purification", "CeiPu"],
+	"rsl": ["Floor Purification", "FloPu"],
+	"lllllLss": ["Axial Purification", "AxiPu"],
+	"rlllll": ["Vector Distillation", "VecDi"],
+	"lrrrrr": ["Vector Decomposition", "VecDe"],
+	"LRRsLLR": ["Modulus Distillation", "ModDi"],
+	"srRrs": ["Power Distillation", "PowDi"],
+	"rlll": ["Entropy Reflection", "EntRe"],
 
 	# Constants
-	"LLl": "Euler's Reflection",
-	"lRsRl": "Arc's Reflection",
-	"rLsLr": "Circle's Reflection",
-	"RrRl": "False Reflection",
-	"LlLr": "True Reflection",
-	"R": "Nullary Reflection",
-	"lllll": "Vector Reflection Zero",
-	"rrrrrlL": "Vector Reflection Neg X",
-	"lllllrL": "Vector Reflection Pos X",
-	"rrrrrlR": "Vector Reflection Neg Y",
-	"lllllrR": "Vector Reflection Pos Y",
+	"LLl": ["Euler's Reflection", "EulRe"],
+	"lRsRl": ["Arc's Reflection", "ArcRe"],
+	"rLsLr": ["Circle's Reflection", "CirRe"],
+	"RrRl": ["False Reflection", "FalRe"],
+	"LlLr": ["True Reflection", "TruRe"],
+	"R": ["Nullary Reflection", "NulRe"],
+	"lllll": ["Vector Reflection Zero", "VecZe"],
+	"rrrrrlL": ["Vector Reflection Neg X", "VecNX"],
+	"lllllrL": ["Vector Reflection Pos X", "VecPX"],
+	"rrrrrlR": ["Vector Reflection Neg Y", "VecNY"],
+	"lllllrR": ["Vector Reflection Pos Y", "VecPY"],
 
 	# Stack Manipulation
-	"LLRLRLLs": "Dioscuri Gambit",
-	"LLRLL": "Gemini Decomposition",
-	"LLRLLRLL": "Gemini Gambit",
-	"RRLR": "Fisherman's Gambit",
-	"LLRL": "Fisherman's Gambit Ii",
-	"LLrRR": "Prospector's Gambit",
-	"LLrLL": "Rotation Gambit",
-	"RRlRR": "Rotation Gambit Ii",
-	"lsLrLslLrLlL": "Flock's Reflection",
-	"LLsRR": "Jester's Gambit",
-	"lLLsRRr": "Swindler's Gambit",
-	"RRlLL": "Undertaker's Gambit",
+	"LLRLRLLs": ["Dioscuri Gambit", "DioGa"],
+	"LLRLL": ["Gemini Decomposition", "GemDe"],
+	"LLRLLRLL": ["Gemini Gambit", "GemGa"],
+	"RRLR": ["Fisherman's Gambit", "FisGa"],
+	"LLRL": ["Fisherman's Gambit II", "FisGa"],
+	"LLrRR": ["Prospector's Gambit", "ProGa"],
+	"LLrLL": ["Rotation Gambit", "RotGa"],
+	"RRlRR": ["Rotation Gambit II", "RotGa"],
+	"lsLrLslLrLlL": ["Flock's Reflection", "FloRe"],
+	"LLsRR": ["Jester's Gambit", "JesGa"],
+	"lLLsRRr": ["Swindler's Gambit", "SwiGa"],
+	"RRlLL": ["Undertaker's Gambit", "UndGa"],
 
 	# Logical Operators
-	"sRs": "Conjunction Distillation",
-	"Ls": "Augur's Purification",
-	"LR": "Equality Distillation",
-	"r": "Maximus Distillation",
-	"rr": "Maximus Distillation II",
-	"LsRR": "Augur's Exaltation",
-	"l": "Minimus Distillation",
-	"ll": "Minimus Distillation II",
-	"Rs": "Negation Purification",
-	"RL": "Inequality Distillation",
-	"sLs": "Disjunction Distillation",
-	"RsL": "Exclusion Distillation",
-	
+	"sRs": ["Conjunction Distillation", "ConDi"],
+	"Ls": ["Augur's Purification", "AugPu"],
+	"LR": ["Equality Distillation", "EquDi"],
+	"r": ["Maximus Distillation", "MaxDi"],
+	"rr": ["Maximus Distillation II", "MaxDi"],
+	"LsRR": ["Augur's Exaltation", "AugEx"],
+	"l": ["Minimus Distillation", "MinDi"],
+	"ll": ["Minimus Distillation II", "MinDi"],
+	"Rs": ["Negation Purification", "NegPu"],
+	"RL": ["Inequality Distillation", "IneDi"],
+	"sLs": ["Disjunction Distillation", "DisDi"],
+	"RsL": ["Exclusion Distillation", "ExcDi"],
+    
 	# Entities
-	"lllllRLlL": "Entity Purification",
-	# "lllllRLlLLss": "Entity Purification: Neutral",
-	# "lllllRLlLLsl": "Entity Purification: Hostile",
-	# "lllllRLlLLsr": "Entity Purification: Friendly",
-	"lllllsRrR": "Zone Distillation",
-	# "lllllsRrRRss": "Zone Distillation: Neutral",
-	# "lllllsRrRRsl": "Zone Distillation: Hostile",
-	# "lllllsRrRRsr": "Zone Distillation: Friendly",
-	# "rrrrrsLlLLss": "Zone Distillation: Non-Neutral",
-	# "rrrrrsLlLLsl": "Zone Distillation: Non-Hostile",
-	# "rrrrrsLlLLsr": "Zone Distillation: Non-Friendly",
+	"lllllRLlL": ["Entity Purification", "EntPu"],
+	"lllllsRrR": ["Zone Distillation", "ZonDi"],
 
 	# List Manipulation
-	"rRlRr": "Integration Distillation",
-	"lLrLl": "Derivation Decomposition",
-	"RRrsrRR": "Speaker's Distillation",
-	"LLlslLL": "Speaker's Decomposition",
-	"llLrLLr": "Vacant Reflection",
-	"RrrrR": "Selection Distillation",
-	"lLrLlsRrR": "Selection Exaltation",
-	"RrRlRr": "Locator's Distillation",
-	"rsRlRsr": "Flock's Gambit",
-	"lsLrLsl": "Flock's Disintegration",
-	"rRlRrsLlL": "Excisor's Distillation",
-	"slLrLls": "Surgeon's Exaltation",
-	"lllLrRr": "Retrograde Purification",
-	"LRrrrR": "Single's Purification",
+	"rRlRr": ["Integration Distillation", "IntDi"],
+	"lLrLl": ["Derivation Decomposition", "DerDe"],
+	"RRrsrRR": ["Speaker's Distillation", "SpeDi"],
+	"LLlslLL": ["Speaker's Decomposition", "SpeDe"],
+	"llLrLLr": ["Vacant Reflection", "VacRe"],
+	"RrrrR": ["Selection Distillation", "SelDi"],
+	"lLrLlsRrR": ["Selection Exaltation", "SelEx"],
+	"RrRlRr": ["Locator's Distillation", "LocDi"],
+	"rsRlRsr": ["Flock's Gambit", "FloGa"],
+	"lsLrLsl": ["Flock's Disintegration", "FloDi"],
+	"rRlRrsLlL": ["Excisor's Distillation", "ExcDi"],
+	"slLrLls": ["Surgeon's Exaltation", "SurEx"],
+	"lllLrRr": ["Retrograde Purification", "RetPu"],
+	"LRrrrR": ["Single's Purification", "SinPu"],
 
 	# Escaping Patterns
-	"lllLs": "Consideration",
-	"lll": "Introspection",
-	"rrr": "Retrospection",
-	"rrrRs": "Evanition",
+	"lllLs": ["Consideration", "Con"],
+	"lll": ["Introspection", "Int"],
+	"rrr": ["Retrospection", "Ret"],
+	"rrrRs": ["Evanition", "Eva"],
 
 	# Reading and Writing
-	"Llllll": "Scribe's Reflection",
-	"sLslslslslsls": "Chronicler's Purification",
-	"lrrsRsrRRs": "Muninn's Reflection",
-	"Llllllr": "Auditor's Reflection",
-	"sLslslslslslsrs": "Auditor's Purification",
-	"Rrrrrrl": "Assessor's Reflection",
-	"sRsrsrsrsrsrsls": "Assessor's Purification",
-	"Rrrrrr": "Scribe's Gambit",
-	"sRsrsrsrsrsrs": "Chronicler's Gambit",
-	"rllsLslLLs": "Huginn's Gambit",
+	"Llllll": ["Scribe's Reflection", "ScrRe"],
+	"sLslslslslsls": ["Chronicler's Purification", "ChrPu"],
+	"lrrsRsrRRs": ["Muninn's Reflection", "MunRe"],
+	"Llllllr": ["Auditor's Reflection", "AudRe"],
+	"sLslslslslslsrs": ["Auditor's Purification", "AudPu"],
+	"Rrrrrrl": ["Assessor's Reflection", "AssRe"],
+	"sRsrsrsrsrsrsls": ["Assessor's Purification", "AssPu"],
+	"Rrrrrr": ["Scribe's Gambit", "ScrGa"],
+	"sRsrsrsrsrsrs": ["Chronicler's Gambit", "ChrGa"],
+	"rllsLslLLs": ["Huginn's Gambit", "HugGa"],
 
 	# Advanced Mathematics
-	"lllllLR": "Cosine Purification",
-	"lllllLL": "Sine Purification",
-	"slllllLRl": "Tangent Purification",
-	"LRrrrrr": "Inverse Cosine Purification",
-	"RRrrrrr": "Inverse Sine Purification",
-	"rLRrrrrrs": "Inverse Tangent Purification",
-	"RrLRrrrrrsR": "Inverse Tangent Purification II",
-	"rlLlr": "Logarithmic Distillation",
+	"lllllLR": ["Cosine Purification", "CosPu"],
+	"lllllLL": ["Sine Purification", "SinPu"],
+	"slllllLRl": ["Tangent Purification", "TanPu"],
+	"LRrrrrr": ["Inverse Cosine Purification", "InvCo"],
+	"RRrrrrr": ["Inverse Sine Purification", "InvSi"],
+	"rLRrrrrrs": ["Inverse Tangent Purification", "InvTa"],
+	"RrLRrrrrrsR": ["Inverse Tangent Purification II", "InvTa"],
+	"rlLlr": ["Logarithmic Distillation", "LogDi"],
 
-	# Sets (Mainly in Logical Operators now)
-	"LsrLlL" : "Uniqueness Purification",
+    # Sets (Mainly in Logical Operators now)
+    "LsrLlL" : ["Uniqueness Purification", "UniPu"],
 
-	# Meta-Evaluation
-	"RrLll" : "Hermes' Gambit",
-	"LlRrr" : "Charon's Gambit",
-	"RLRLR" : "Thoth's Gambit",
+    # Meta-Evaluation
+    "RrLll" : ["Hermes' Gambit", "HerGa"],
+    "LlRrr" : ["Charon's Gambit", "ChaGa"],
+    "RLRLR" : ["Thoth's Gambit", "ThoGa"],
 
+    ## ADDONS ##
 
-	## ADDONS ##
+    # Hexal Math
+    "sLsRrRsLs" : ["Factorial Purification", "FacPu"],
+    "LrL" : ["Running Sum Purification", "RunPu"],
+    "lLLsLLl" : ["Running Product Purification", "RunPu"],
 
-	# Hexal Math
-	"sLsRrRsLs" : "Factorial Purification",
-	"LrL" : "Running Sum Purification",
-	"lLLsLLl" : "Running Product Purification",
+    ### NEW PATTERNS ###
 
+    # Level access
+    "llL": ["Enter", "Ent"],
+    "llR": ["Exit", "Exi"],
 
-	### NEW PATTERNS ###
+    # Spellbook
+    "RRl": ["Verso's Gambit", "VerGa"],
+    "RRs": ["Recto's Gambit", "RecGa"],
+    "LLs": ["Tome's Reflection", "TomRe"],
+    "LLr": ["Tome's Gambit", "TomGa"],
 
-	# Level access
-	"llL": "Enter",
-	"llR": "Exit",
+    ## SPELLS ##
 
-	# Spellbook
-	"RRl": "Verso's Gambit",
-	"RRs": "Recto's Gambit",
-	"LLs": "Tome's Reflection",
-	"LLr": "Tome's Gambit",
+    # Sentinel
+    "sLrLsLr": ["Summon Sentinel", "SumSe"],
+    "lRsRlRs": ["Banish Sentinel", "BanSe"],
+    "sLrLsLrRr": ["Locate Sentinel", "LocSe"],
+    "sLrLsLrRsL": ["Wayfind Sentinel", "WaySe"],
 
-	## SPELLS ##
-
-	# Sentinel
-	"sLrLsLr": "Summon Sentinel",
-	"lRsRlRs": "Banish Sentinel",
-	"sLrLsLrRr": "Locate Sentinel",
-	"sLrLsLrRsL": "Wayfind Sentinel",
-
-	# Other
-	"LLsLLsLL": "Explosion",
-	"LslllsLls": "Impulse",
-	"lllllLssLsLsR": "Blue Sun's Nadir",
-	"sssLllsrrrrrsllsllsssllrllsssll": "Teleport",
+    # Other
+    "LLsLLsLL": ["Explosion", "Exp"],
+    "LslllsLls": ["Impulse", "Imp"],
+    "lllllLssLsLsR": ["Blue Sun's Nadir", "BluNa"],
+    "sssLllsrrrrrsllsllsssllrllsssll": ["Teleport", "Tel"],
 }
 
 # ---------------------- #

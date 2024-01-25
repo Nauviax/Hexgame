@@ -29,6 +29,7 @@ validate_button_path = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tab
 pattern_info_path = NodePath("PatternInfo")
 
 [node name="PatternInfo" parent="HexDisplay" instance=ExtResource("3_f8kac")]
+top_level = true
 layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="HexDisplay"]
@@ -53,6 +54,7 @@ size_flags_vertical = 3
 custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
 size_flags_horizontal = 3
+bbcode_enabled = true
 text = "This is the stack"
 
 [node name="Grid_Control" type="Control" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid"]
@@ -78,40 +80,39 @@ layout_mode = 2
 [node name="Spellbook" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
 layout_mode = 2
 
-[node name="Spellbook" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+[node name="Spellbook" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 2
 size_flags_vertical = 3
+bbcode_enabled = true
 text = "- Spellbook -
 -> 0: iota
    1: 
    2: 
    3: "
-clip_text = true
+autowrap_mode = 0
 
 [node name="Extras" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Ravenmind" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras"]
+[node name="Ravenmind" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras"]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
+bbcode_enabled = true
 text = "Ravenmind"
-autowrap_mode = 3
-clip_text = true
 
-[node name="Reveal" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras"]
+[node name="Reveal" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras"]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
+bbcode_enabled = true
 text = "Revealed Iota"
-autowrap_mode = 3
-clip_text = true
 
 [node name="Level" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
 visible = false
@@ -151,5 +152,11 @@ render_target_update_mode = 4
 
 [connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack" to="HexDisplay" method="_on_stack_meta_hover_started"]
+[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook" to="HexDisplay" method="_on_spellbook_meta_hover_started"]
+[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind" to="HexDisplay" method="_on_ravenmind_meta_hover_started"]
+[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal" to="HexDisplay" method="_on_reveal_meta_hover_started"]
 [connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
 [connection signal="gui_input" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer" method="_on_gui_input"]
