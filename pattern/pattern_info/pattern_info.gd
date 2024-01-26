@@ -22,7 +22,7 @@ func _ready():
 # On process, if visible, move to the mouse position
 func _process(_delta):
 	if visible:
-		position = get_global_mouse_position()
+		position = get_global_mouse_position() + Vector2(5, 5)
 		if first_process: # Refit container on first process
 			first_process = false
 			size.y = 0

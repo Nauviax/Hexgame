@@ -147,7 +147,7 @@ script = ExtResource("4_opbep")
 
 [node name="LevelViewport" type="SubViewport" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer"]
 handle_input_locally = false
-size = Vector2i(200, 200)
+size = Vector2i(882, 736)
 render_target_update_mode = 4
 
 [connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
