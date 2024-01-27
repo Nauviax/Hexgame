@@ -2,6 +2,10 @@ extends Control
 
 @onready var main_scene = get_parent()
 
+@export var toggle_grid_button: Button
+
+@export var grid_control: Control
+
 @export var stack_label: RichTextLabel # Set in Inspector
 
 @export var raven_label: RichTextLabel
@@ -18,10 +22,24 @@ extends Control
 
 @export var pattern_info: PanelContainer
 
+# Handle Toggle Grid button
+# Show/hide grid, rename button text, and set player control
+func _on_toggle_grid_pressed():
+	if Globals.player_control: # Show grid, disable player control
+		Globals.player_control = false
+		toggle_grid_button.text = "Hide Grid <"
+		grid_control.show()
+		grid_control.set_process(true)
+	else: # Hide grid, enable player control
+		Globals.player_control = true
+		toggle_grid_button.text = "Show Grid >"
+		grid_control.hide()
+		grid_control.set_process(false)
+
 # Update border size counter
 func update_border_label(prev, current, cast):
 	var cast_str = (" + " + str(cast)) if cast != 0 else ""
-	border_label.text = "Border score: " + str(prev) + " + " + str(current) + cast_str + " = " + str(prev + current + cast)
+	border_label.text = "Border score:\n" + str(prev) + " + " + str(current) + cast_str + " = " + str(prev + current + cast)
 
 # Update all labels related to hexecutor
 func update_all_hexy(hexecutor):
@@ -56,18 +74,18 @@ func update_ravenmind_label(ravenmind):
 	if ravenmind == null:
 		raven_label.text = ""
 	elif ravenmind is Pattern:
-		raven_label.text = "Ravenmind: " + ravenmind.get_meta_string()
+		raven_label.text = "Ravenmind:\n" + ravenmind.get_meta_string()
 	else:
-		raven_label.text = "Ravenmind: " + str(ravenmind)
+		raven_label.text = "Ravenmind:\n" + str(ravenmind)
 
 # Reveal label
 func update_reveal_label(reveal):
 	if reveal == null:
 		reveal_label.text = ""
 	elif reveal is Pattern:
-		reveal_label.text = "Revealed: " + reveal.get_meta_string()
+		reveal_label.text = "Revealed:\n" + reveal.get_meta_string()
 	else:
-		reveal_label.text = "Revealed: " + str(reveal)
+		reveal_label.text = "Revealed:\n" + str(reveal)
 
 # Spellbook label
 func update_sb_label(player):

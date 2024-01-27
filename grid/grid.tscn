@@ -8,9 +8,9 @@ size = Vector2(592, 503)
 [node name="Grid" type="Node2D"]
 script = ExtResource("1_3evjo")
 
-[node name="TempBackdrop" type="Polygon2D" parent="."]
+[node name="Backdrop" type="Polygon2D" parent="."]
 scale = Vector2(5.92, 5.03)
-color = Color(0, 0, 0, 0.117647)
+color = Color(0, 0, 0, 0.490196)
 polygon = PackedVector2Array(0, 0, 100, 0, 100, 100, 0, 100)
 
 [node name="Grid_Area2D" type="Area2D" parent="."]

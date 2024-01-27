@@ -39,7 +39,7 @@ func _on_mouse_area_input_event(_viewport, event, _shape_idx):
 # Animate based on mouse distance
 func _process(_delta):
 	if Globals.player_control:
-		polygon.scale = Vector2.ZERO
+		# polygon.scale = Vector2.ZERO Not needed currently as grid is hidden while this is true. Left commented jic
 		return
 	var mouse_pos = get_global_mouse_position()
 	var dist = global_position.distance_to(mouse_pos)

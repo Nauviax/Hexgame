@@ -1,89 +1,93 @@
-[gd_scene load_steps=6 format=3 uid="uid://qir8003u2t7e"]
+[gd_scene load_steps=5 format=3 uid="uid://qir8003u2t7e"]
 
 [ext_resource type="Script" path="res://main_scene/main_scene.gd" id="1_7msjx"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="2_qu1ct"]
 [ext_resource type="PackedScene" uid="uid://cgq1sfas21djs" path="res://pattern/pattern_info/pattern_info.tscn" id="3_f8kac"]
 [ext_resource type="Script" path="res://main_scene/hex_display.gd" id="3_pett3"]
-[ext_resource type="Script" path="res://main_scene/level_container.gd" id="4_opbep"]
 
 [node name="MainScene" type="Node2D" node_paths=PackedStringArray("grid", "level_container")]
 script = ExtResource("1_7msjx")
-grid = NodePath("HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control/Grid")
-level_container = NodePath("HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer")
+grid = NodePath("HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridControl/Grid")
+level_container = NodePath("HexDisplay/MainSplit/LevelAndGrid/LevelContainer")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 
-[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "validate_button", "pattern_info")]
+[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "validate_button", "pattern_info")]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("3_pett3")
-stack_label = NodePath("MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack")
-raven_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind")
-reveal_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal")
-sb_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook")
-border_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Border_Score")
-level_desc_label = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Desc")
-validate_button = NodePath("MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate")
+toggle_grid_button = NodePath("MainSplit/LevelAndGrid/GridPopout/ToggleGrid")
+grid_control = NodePath("MainSplit/LevelAndGrid/GridPopout/GridControl")
+stack_label = NodePath("MainSplit/StackAndInfo/StackScroller/Stack")
+raven_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Ravenmind")
+reveal_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Reveal")
+sb_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Spellbook")
+border_label = NodePath("MainSplit/StackAndInfo/LevelInfo/BorderScore")
+level_desc_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelDesc")
+validate_button = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate")
 pattern_info = NodePath("PatternInfo")
 
 [node name="PatternInfo" parent="HexDisplay" instance=ExtResource("3_f8kac")]
 top_level = true
 layout_mode = 1
+offset_left = -300.0
+offset_right = -40.0
+offset_bottom = 320.0
 
-[node name="MarginContainer" type="MarginContainer" parent="HexDisplay"]
-layout_mode = 0
+[node name="MainSplit" type="HBoxContainer" parent="HexDisplay"]
+layout_mode = 1
 offset_right = 1600.0
-offset_bottom = 900.0
+offset_bottom = 896.0
 
-[node name="LR_Split" type="HBoxContainer" parent="HexDisplay/MarginContainer"]
-layout_mode = 2
-
-[node name="Stack_Grid" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
+[node name="StackAndInfo" type="VBoxContainer" parent="HexDisplay/MainSplit"]
 clip_contents = true
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.81
+size_flags_horizontal = 0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid"]
+[node name="LevelInfo" type="HBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Stack" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid/ScrollContainer"]
-custom_minimum_size = Vector2(500, 200)
+[node name="LevelButtons" type="VBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
 layout_mode = 2
 size_flags_horizontal = 3
-bbcode_enabled = true
-text = "This is the stack"
-
-[node name="Grid_Control" type="Control" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid"]
-layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.05
-mouse_filter = 2
+size_flags_stretch_ratio = 0.5
 
-[node name="Grid" parent="HexDisplay/MarginContainer/LR_Split/Stack_Grid/Grid_Control" node_paths=PackedStringArray("main_scene") instance=ExtResource("2_qu1ct")]
-scale = Vector2(1.2, 1.2)
-main_scene = NodePath("../../../../../..")
+[node name="Validate" type="Button" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
+layout_mode = 2
+text = "Validate"
 
-[node name="Info_SB_Level" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split"]
-clip_contents = true
+[node name="LevelDesc" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+text = "Level Name + Description here"
+autowrap_mode = 2
 
-[node name="Info_Tabs" type="TabContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
-clip_contents = true
-custom_minimum_size = Vector2(0, 160)
+[node name="BorderScore" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
+custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Border score:
+0 + 0 = 0"
+autowrap_mode = 2
 
-[node name="Spellbook" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
-layout_mode = 2
-
-[node name="Spellbook" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
-custom_minimum_size = Vector2(600, 0)
+[node name="IotaStorageStuff" type="HBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="Spellbook" type="RichTextLabel" parent="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
 bbcode_enabled = true
 text = "- Spellbook -
 -> 0: iota
@@ -92,71 +96,83 @@ text = "- Spellbook -
    3: "
 autowrap_mode = 0
 
-[node name="Extras" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook"]
+[node name="Extras" type="VBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Ravenmind" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras"]
-custom_minimum_size = Vector2(10, 10)
+[node name="Ravenmind" type="RichTextLabel" parent="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras"]
+custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
 bbcode_enabled = true
 text = "Ravenmind"
 
-[node name="Reveal" type="RichTextLabel" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras"]
-custom_minimum_size = Vector2(10, 10)
+[node name="Reveal" type="RichTextLabel" parent="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras"]
+custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
 bbcode_enabled = true
 text = "Revealed Iota"
 
-[node name="Level" type="HBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs"]
-visible = false
-layout_mode = 2
-
-[node name="Level_Buttons" type="VBoxContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
+[node name="StackScroller" type="ScrollContainer" parent="HexDisplay/MainSplit/StackAndInfo"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
+size_flags_stretch_ratio = 2.0
 
-[node name="Validate" type="Button" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons"]
+[node name="Stack" type="RichTextLabel" parent="HexDisplay/MainSplit/StackAndInfo/StackScroller"]
+custom_minimum_size = Vector2(100, 200)
 layout_mode = 2
-text = "Validate"
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "This is the stack"
 
-[node name="Level_Desc" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
-custom_minimum_size = Vector2(500, 0)
+[node name="LevelAndGrid" type="PanelContainer" parent="HexDisplay/MainSplit"]
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
-size_flags_vertical = 1
-text = "Level Name + Description here"
-autowrap_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
 
-[node name="Border_Score" type="Label" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level"]
-layout_mode = 2
-text = "Border score: 0 + 0 = 0"
-
-[node name="LevelContainer" type="SubViewportContainer" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level"]
+[node name="LevelContainer" type="SubViewportContainer" parent="HexDisplay/MainSplit/LevelAndGrid"]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
-script = ExtResource("4_opbep")
 
-[node name="LevelViewport" type="SubViewport" parent="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer"]
+[node name="LevelViewport" type="SubViewport" parent="HexDisplay/MainSplit/LevelAndGrid/LevelContainer"]
 handle_input_locally = false
-size = Vector2i(882, 736)
+size = Vector2i(1096, 896)
 render_target_update_mode = 4
 
-[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Stack_Grid/ScrollContainer/Stack" to="HexDisplay" method="_on_stack_meta_hover_started"]
-[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Spellbook" to="HexDisplay" method="_on_spellbook_meta_hover_started"]
-[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Ravenmind" to="HexDisplay" method="_on_ravenmind_meta_hover_started"]
-[connection signal="meta_hover_ended" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Spellbook/Extras/Reveal" to="HexDisplay" method="_on_reveal_meta_hover_started"]
-[connection signal="pressed" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/Info_Tabs/Level/Level_Buttons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
-[connection signal="gui_input" from="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer" to="HexDisplay/MarginContainer/LR_Split/Info_SB_Level/LevelContainer" method="_on_gui_input"]
+[node name="GridPopout" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid"]
+custom_minimum_size = Vector2(0, 750)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout"]
+custom_minimum_size = Vector2(888, 0)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Grid" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridControl" node_paths=PackedStringArray("main_scene") instance=ExtResource("2_qu1ct")]
+scale = Vector2(1.5, 1.5)
+main_scene = NodePath("../../../../../..")
+
+[node name="ToggleGrid" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout"]
+custom_minimum_size = Vector2(125, 40)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 25
+text = "Hide Grid <"
+
+[connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_spellbook_meta_hover_started"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras/Ravenmind" to="HexDisplay" method="_on_ravenmind_meta_hover_started"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras/Reveal" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras/Reveal" to="HexDisplay" method="_on_reveal_meta_hover_started"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_stack_meta_hover_started"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/GridPopout/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]

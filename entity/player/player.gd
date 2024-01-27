@@ -34,13 +34,13 @@ var sb_sel: int = 0
 var sentinel_pos = null # Vector2, fake coords (Preserved on grid clear) (Ensure sentinel node is moved when this changes)
 var ravenmind = null # Iota (Not readable/writable by other entities, and lost on grid clear)
 
-# Variables for player movement
-var speed = 1024
-var bounce = 0.25 # Velocity preserved on collision (0.1 means 10% in collision direction)
-var friction = 0.05 # Pull towards 0 when no input
-var tile_gravity = 10 # Pull strength of tiles (When slow enough)
-var tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
-var acceleration = 0.015
+# Variable constants for player movement
+const speed = 1024
+const bounce = 0.25 # Velocity preserved on collision (0.1 means 10% in collision direction)
+const friction = 0.05 # Pull towards 0 when no input
+const tile_gravity = 10 # Pull strength of tiles (When slow enough)
+const tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
+const acceleration = 0.015
 var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
 
 # Variables for player flight
@@ -48,7 +48,11 @@ var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 
 var can_fly = false # Whether the player can start flying or not.
 var flying = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
 var stuck_flying = false # If true, player can't stop flying. Used in world_view.
-var fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
+const fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
+
+# Misc player variables
+var freeze_look_dir = false # Whether player look direction is following mouse, or frozen.
+
 
 # Prepare player object
 func _ready():
@@ -182,10 +186,22 @@ func _physics_process(delta):
 
 # Func for aiming player's look line (Taking in mouse position)
 func set_look_dir(mouse_pos: Vector2):
+	# Check if able to control look direction
+	if freeze_look_dir:
+		return
 	# Set the look line's end position to the mouse position
 	look_line.points[1] = mouse_pos
 	# Adjust entity look unit vector
 	entity.look_dir = mouse_pos.normalized()
+
+# Player mouse input controls
+func _input(event):
+	if not Globals.player_control:
+		return # Player control required
+	if event is InputEventMouseButton:
+		# If left click, freeze look direction
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			freeze_look_dir = !freeze_look_dir
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
 

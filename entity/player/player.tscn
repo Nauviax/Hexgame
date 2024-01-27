@@ -109,8 +109,8 @@ lifetime = 2.0
 
 [node name="ParallaxBG" type="CanvasLayer" parent="."]
 layer = -1
-offset = Vector2(-192, -192)
-transform = Transform2D(1, 0, 0, 1, -192, -192)
+offset = Vector2(-128, -128)
+transform = Transform2D(1, 0, 0, 1, -128, -128)
 
 [node name="FarLayer" type="Sprite2D" parent="ParallaxBG"]
 z_index = -1
@@ -119,7 +119,7 @@ texture_repeat = 2
 texture = ExtResource("5_1h83c")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 1280, 1280)
+region_rect = Rect2(0, 0, 1408, 1408)
 
 [node name="NearLayer" type="Sprite2D" parent="ParallaxBG"]
 z_index = 1
@@ -129,7 +129,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("6_0wx4c")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 640, 640)
+region_rect = Rect2(0, 0, 704, 704)
 
 [connection signal="body_entered" from="Spike_Checker" to="." method="_on_spike_checker_body_entered"]
 [connection signal="body_exited" from="Spike_Checker" to="." method="_on_spike_checker_body_exited"]

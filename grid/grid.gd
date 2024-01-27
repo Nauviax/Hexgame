@@ -14,7 +14,7 @@ var cur_points = [] # List to store points in the current pattern (Ordered first
 var line = null # The line being drawn
 # The gradient used for the line being cast
 static var line_gradient = preload("res://resources/gradients/casting.tres")
-static var line_size = 2 # Line width
+static var line_size = 3 # Line width
 var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
 var patterns = [] # List of patterns (Mainly for deletion afterwards)
