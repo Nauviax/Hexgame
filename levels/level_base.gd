@@ -5,9 +5,17 @@ extends Node2D
 # Should not be used to get hexecutor or anything else. Open to better ways to do this.
 var main_scene
 
+# Reference to scene used to make this level
+# Used to reload level quickly
+var scene
+
 # Validator and initiator for this level
 @export var validator: Script
 @export var initiator: Script
+
+# Level seed (Random on _ready() if -1)
+var level_seed: int = -1
+var rnd: RandomNumberGenerator # Set in _ready()
 
 # Level background theme
 @export var bg_theme: String = "Inside"
@@ -44,6 +52,11 @@ var transition_multiplier = 3.5 # Distance player is placed on transition, and h
 func _ready():
 	# Get entities
 	reload_entities_list()
+	# Set random seed if still -1
+	if level_seed == -1:
+		level_seed = randi()
+	rnd = RandomNumberGenerator.new()
+	rnd.seed = level_seed
 	# Apply initiator to level
 	initiator.initiate(self)
 	# Set background theme

@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8c58"]
 
-[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "description_label")]
+[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "description_label", "background")]
 custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_d8c58")
@@ -17,6 +17,7 @@ is_spell_label = NodePath("MarginContainer/Main/Middle/Info/IsSpell")
 iota_count_label = NodePath("MarginContainer/Main/Middle/Info/IotaCount")
 middle_container = NodePath("MarginContainer/Main/Middle")
 description_label = NodePath("MarginContainer/Main/Desc")
+background = NodePath("NinePatchRect")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 custom_minimum_size = Vector2(64, 0)
@@ -42,7 +43,6 @@ layout_mode = 2
 [node name="Title" type="Label" parent="MarginContainer/Main"]
 custom_minimum_size = Vector2(256, 32)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
 text = "Some Pattern"

@@ -40,7 +40,7 @@ static func execute(hexecutor, pattern):
 				break # Stop executing patterns for this iota
 		
 		results.append_array(hexecutor2.stack) # Append leftover stack to results
-		hexecutor2.reset(true) # Clean up
+		hexecutor2.reset(true) # Clean up, don't reset ravenmind
 		if hexecutor2.charon_mode:
 			break # Don't execute any more list iotas
 

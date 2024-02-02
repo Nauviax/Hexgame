@@ -22,19 +22,34 @@ extends Control
 
 @export var pattern_info: PanelContainer
 
+@export var replay_controls: Control # Should be shown while in replay mode
+
+@export var replay_button: Button # Should be HIDDEN while in replay mode, as it enables it.
+
+@export var replay_timeline_label: RichTextLabel
+
+# Replay mode. Shows replay controls and disables player control.
+# Manual casting will disable this mode.
+var replay_mode: bool = false
+
+# On ready, hide replay controls
+func _ready():
+	replay_timeline_label.clear() # Still shown technically, but empty
+	replay_controls.hide()
+
 # Handle Toggle Grid button
 # Show/hide grid, rename button text, and set player control
 func _on_toggle_grid_pressed():
-	if Globals.player_control: # Show grid, disable player control
+	if grid_control.visible: # Hide grid, enable player control
+		Globals.player_control = not replay_mode # True ONLY if not in replay mode
+		toggle_grid_button.text = "Show Grid >"
+		grid_control.hide()
+		grid_control.set_process(false)
+	else: # Show grid, disable player control
 		Globals.player_control = false
 		toggle_grid_button.text = "Hide Grid <"
 		grid_control.show()
 		grid_control.set_process(true)
-	else: # Hide grid, enable player control
-		Globals.player_control = true
-		toggle_grid_button.text = "Show Grid >"
-		grid_control.hide()
-		grid_control.set_process(false)
 
 # Update border size counter
 func update_border_label(prev, current, cast):
@@ -42,7 +57,8 @@ func update_border_label(prev, current, cast):
 	border_label.text = "Border score:\n" + str(prev) + " + " + str(current) + cast_str + " = " + str(prev + current + cast)
 
 # Update all labels related to hexecutor
-func update_all_hexy(hexecutor):
+func update_all_hexy():
+	var hexecutor = main_scene.hexecutor
 	update_stack(hexecutor.stack)
 	update_ravenmind_label(hexecutor.caster.node.ravenmind)
 	if hexecutor.level_base: # Can be null if not in a level
@@ -117,25 +133,72 @@ func _on_level_validate_pressed():
 	validate_button.modulate = Color(0, 1, 0) if validated else Color(1, 0, 0)
 
 # Handle meta-text and other pattern hovers
-func _on_stack_meta_hover_started(meta:Variant):
-	if meta is String: # Either error message or pattern code
-		pattern_info.display(meta)
+func _on_meta_hover_started(meta:Variant):
+	pattern_info.display(meta)
 
-func _on_spellbook_meta_hover_started(meta:Variant):
-	if meta is String: # Same idea as above
-		pattern_info.display(meta)
-
-func _on_ravenmind_meta_hover_started(meta:Variant):
-	if meta is String:
-		pattern_info.display(meta)
-
-func _on_reveal_meta_hover_started(meta:Variant):
-	if meta is String:
-		pattern_info.display(meta)
-
-func _on_pattern_on_grid_hover(pog: Pattern_Ongrid): # Not yet implemented
-	pattern_info.display(pog.pattern.p_code)
-
-# ALL rich text labels link to this function, as it's the same functionality for all of them
+func _on_meta_hover_started_low(meta:Variant):
+	pattern_info.display(meta, true) # Display above mouse rather than below
+	
 func _on_meta_hover_ended(_meta):
 	pattern_info.stop_display()
+
+# Handle replay and replay controls
+
+var replay_patterns: Array = []
+var replay_index: int = 0 # Current pattern
+
+func begin_replay():
+	replay_patterns = main_scene.hexecutor.replay_list
+	if replay_patterns.size() == 0:
+		return # No replay to begin
+	replay_mode = true
+	Globals.player_control = false
+	main_scene.reload_current_level(false) # Reload level, same state, keep border score
+	replay_controls.show()
+	replay_button.hide()
+	replay_index = 0
+	update_replay_timeline_label()
+	# Get seed then request main_scene to regenerate level with it. (later)
+
+func end_replay():
+	replay_mode = false
+	Globals.player_control = not grid_control.visible # Set player control based on grid visibility	
+	replay_controls.hide()
+	replay_button.show()
+	replay_patterns = []
+	replay_timeline_label.clear() # Still shown technically, but empty
+	# Stay on the new regenerated level.
+
+func update_replay_timeline_label():
+	replay_timeline_label.clear() # Clear text
+	for ii in range(replay_index - 2, replay_index + 4): # 6 total, 3rd drawn (If all 6 drawn) is bold 
+		if ii < 0 or ii >= replay_patterns.size():
+			continue # Skip if out of bounds
+		var pattern = replay_patterns[ii]
+		if pattern == null:
+			pattern = "ClearGrid"
+		var text = ""
+		text += "[b]" + str(pattern) + "[/b]" if ii == replay_index else str(pattern) # Bold if pattern is next step (3rd drawn)
+		if ii + 1 < replay_patterns.size():
+			text += " ->" # Draw if next pattern exists
+		replay_timeline_label.append_text(text) # Append
+	if replay_index >= replay_patterns.size():
+		replay_timeline_label.append_text("   <finished>") # Show if no more patterns to execute
+
+func _on_begin_replay_button_pressed():
+	begin_replay()
+
+func _on_cont_here_pressed():
+	end_replay()
+
+func _on_step_pressed():
+	if replay_index >= replay_patterns.size():
+		return # No more patterns to execute
+	var next = replay_patterns[replay_index]
+	if next == null:
+		main_scene.hexecutor.reset() # Clear grid on null
+		update_clear_hexy() # Update stack display
+	else:
+		main_scene.hexecutor.execute_pattern(next) # Execute next pattern
+	replay_index += 1
+	update_replay_timeline_label()

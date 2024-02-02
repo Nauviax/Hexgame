@@ -32,14 +32,15 @@ func save_then_load_level(level_haver: LevelHaver):
 	load_level_from_scene(scene)
 
 func load_level_from_scene(scene: PackedScene):
-	# Load test level
+	# Load level
 	loaded_level = scene.instantiate()
 	level_viewport.add_child(loaded_level)
 	if Engine.is_editor_hint():
 		return # Don't update rest of scene if in editor
 	
-	# Prepare level with reference to self
+	# Prepare level with reference to self and scene
 	loaded_level.main_scene = self
+	loaded_level.scene = scene
 
 	# Prepare hexecutor with level info
 	hexecutor = Hexecutor.new(loaded_level, loaded_level.player.entity, self)
@@ -47,6 +48,30 @@ func load_level_from_scene(scene: PackedScene):
 	# Update hex_display, level desc
 	update_hex_display()
 	hex_display.update_level_desc_label(loaded_level.validator.desc)
+
+func reload_current_level(reset_border_score: bool, new_seed: int = -1):
+	# Prep new level (Seed is important for reload, as often same or specific seed is wanted)
+	var new_level = loaded_level.scene.instantiate()
+	new_level.main_scene = self
+	new_level.scene = loaded_level.scene
+	new_level.level_seed = loaded_level.level_seed if new_seed == -1 else new_seed # Keep seed if not specified
+
+	# Unload and delete current level
+	level_viewport.remove_child(loaded_level)
+	loaded_level.queue_free()
+	grid.reset(reset_border_score) # Soft reset, saves border score
+
+	# Adopt new level
+	loaded_level = new_level
+	level_viewport.add_child(loaded_level)
+	
+	# Prepare hexecutor with level info
+	hexecutor = Hexecutor.new(loaded_level, loaded_level.player.entity, self)
+
+	# Update hex_display
+	update_hex_display()
+	#hex_display.update_level_desc_label(loaded_level.validator.desc) # Level desc shouldn't change
+
 
 # Unloads the current level and loads the last level in level_list
 # Returns false if there are no levels to load
@@ -88,7 +113,7 @@ func transition_to_world(world_id: int):
 	loaded_level.remove_child(player) # So it can be added to world_view
 	world_view.prepare(player, world_id, loaded_level.scene_file_path) # Load player into new world
 	hexecutor.caster = player.entity # Set caster to new player's entity
-	loaded_level.kill_all_entities() # Prevent living references.
+	loaded_level.kill_all_entities() # Prevent living references. (Player will still be alive and have these references)
 	level_viewport.remove_child(loaded_level)
 	loaded_level.queue_free()
 	level_viewport.add_child(world_view) # New scene being shown.
@@ -100,6 +125,7 @@ func transition_to_world(world_id: int):
 func transition_from_world(selected_level: PackedScene):
 	var new_level = selected_level.instantiate()
 	new_level.main_scene = self # So it can request to transition FROM world
+	new_level.scene = selected_level # For reloading
 	var player = loaded_level.player
 	loaded_level.remove_child(player) # So it can be added to world_view
 	new_level.use_player(player, -player.velocity.normalized()) # Load player into level
@@ -127,7 +153,7 @@ func new_pattern_drawn(pattern):
 # Update hex_display (Normally after a pattern is executed)
 # Takes hexecutor to get stack/caster info etc
 func update_hex_display():
-	hex_display.update_all_hexy(hexecutor) # Update stack display
+	hex_display.update_all_hexy() # Update stack display
 
 # Update border size display, also located in hex_display.
 func update_border_display():
@@ -138,6 +164,11 @@ func clear():
 	grid.reset(false) # Soft reset, keeps previous border score
 	hexecutor.reset()
 	hex_display.update_clear_hexy() # Update/Clear stack display
+
+# End replay mode, normally after player casts a pattern manually
+func end_replay_mode():
+	if hex_display.replay_mode:
+		hex_display.end_replay()
 
 # Player casting functions
 func _input(event):

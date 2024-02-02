@@ -2,8 +2,7 @@ class_name Hexecutor
 extends Resource # So one off instances can be removed automatically.
 
 # Reference to main scene
-# Can be left null, but will not update the stack display. (For when a hexecutor doesn't belong to a grid/display)
-var main_scene = null
+var main_scene: Node2D
 
 # True if this hexecutor should interact with the main scene directly.
 # This includes updating the display, but patterns can still interact using this reference!
@@ -55,6 +54,13 @@ var charon_mode = false
 # Not reset by hexecutor, main_scene should reset this when it needs to use the hexecutor again.
 var scram_mode = false
 
+# Replay List
+# Executed patterns append themselves to the replay list. These patterns can later be executed in order to replicate the original hex.
+# Only saves top level patterns, when execution_depth == 0. (So Hermes would be saved, but not the patterns it executes.)
+# Null in list represents a grid clear. Movements preformed by the player are NOT recorded, though currently the manual cast action IS saved. (It runs patterns directly)
+# Should be (Inherently?) reset only on level reset, or when entering replay mode. List will effectively rebuild itself during any replay so manual casting can safely resume anytime.
+var replay_list = []
+
 # Constructor
 # If not is_main_hexecutor, will not update the stack display.
 func _init(level_base, caster, main_scene, is_main_hexecutor = true):
@@ -87,6 +93,8 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 	else: # Pattern is invalid or failed to execute
 		SoundManager.play_fail()
 		pattern_og.line.gradient = fail_gradient
+	# End replay mode if it was active
+	main_scene.end_replay_mode()
 
 # Executes a given pattern (Of note: NOT a Pattern_Ongrid)
 func execute_pattern(pattern: Pattern, update_on_success = true):
@@ -103,6 +111,8 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 		stack.push_back(Bad_Iota.new(ErrorMM.CASTING_DISABLED, "<-Hexecutor->"))
 		success = false
 	else: # Execute normally
+		if execution_depth == 0: # If top level, add to replay list
+			replay_list.push_back(pattern)
 		if consideration_mode: # Single meta-pattern mode, see var declaration.
 			if stack.size() > 0 and stack[-1] is Pattern_Metalist:
 				stack[-1].patterns.push_back(pattern)
@@ -157,5 +167,6 @@ func reset(keep_raven = false):
 	stack = []
 	if not keep_raven: # Thoths keeps ravenmind intact.
 		caster.node.ravenmind = null
+		replay_list.push_back(null) # Null in list represents a grid clear. Keep_raven required as otherwise not "true" grid clear.
 	consideration_mode = false
 	introspection_depth = 0

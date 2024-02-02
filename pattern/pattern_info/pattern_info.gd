@@ -15,6 +15,9 @@ var current_pattern: Pattern = null
 # On first process after being shown, set size to 0 to force refit container
 var first_process = false
 
+# If true, show the pattern info above mous instead of below
+var show_above = false
+
 # Onready, hide
 func _ready():
 	visible = false	
@@ -22,7 +25,7 @@ func _ready():
 # On process, if visible, move to the mouse position
 func _process(_delta):
 	if visible:
-		position = get_global_mouse_position() + Vector2(5, 5)
+		position = get_global_mouse_position() + Vector2(5, -5-background.size.y if show_above else 5.0)
 		if first_process: # Refit container on first process
 			first_process = false
 			size.y = 0
@@ -30,7 +33,8 @@ func _process(_delta):
 # Displays pattern info for a given p_code (Starts with "P" for pattern/p_code)
 # Displays entity info for a given entity (Starts with "E" for entity) # Not implemented at all right now
 # Displays error message for given error (Starts with "B" for bad_iota)
-func display(meta: String):
+func display(meta: String, show_above: bool = false):
+	self.show_above = show_above
 	# Split meta into parts: First part is type, the first character. Second part is the rest of the string
 	var type = meta[0]
 	var rest = meta.substr(1)
