@@ -49,12 +49,13 @@ func load_level_from_scene(scene: PackedScene):
 	update_hex_display()
 	hex_display.update_level_desc_label(loaded_level.validator.desc)
 
-func reload_current_level(reset_border_score: bool, new_seed: int = -1):
+# Reset level, optionally keep seed or border score
+func reload_current_level(reset_border_score: bool, same_seed: bool = true):
 	# Prep new level (Seed is important for reload, as often same or specific seed is wanted)
 	var new_level = loaded_level.scene.instantiate()
 	new_level.main_scene = self
 	new_level.scene = loaded_level.scene
-	new_level.level_seed = loaded_level.level_seed if new_seed == -1 else new_seed # Keep seed if not specified
+	new_level.level_seed = loaded_level.level_seed if same_seed else -1 # Keep seed by default, -1 to force random
 
 	# Unload and delete current level
 	level_viewport.remove_child(loaded_level)

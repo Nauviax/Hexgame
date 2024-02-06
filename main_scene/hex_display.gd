@@ -24,7 +24,7 @@ extends Control
 
 @export var replay_controls: Control # Should be shown while in replay mode
 
-@export var replay_button: Button # Should be HIDDEN while in replay mode, as it enables it.
+@export var preplay_controls: Control # Should be HIDDEN while in replay mode, as it enables it.
 
 @export var replay_timeline_label: RichTextLabel
 
@@ -155,7 +155,7 @@ func begin_replay():
 	Globals.player_control = false
 	main_scene.reload_current_level(false) # Reload level, same state, keep border score
 	replay_controls.show()
-	replay_button.hide()
+	preplay_controls.hide()
 	replay_index = 0
 	update_replay_timeline_label()
 	# Get seed then request main_scene to regenerate level with it. (later)
@@ -164,7 +164,7 @@ func end_replay():
 	replay_mode = false
 	Globals.player_control = not grid_control.visible # Set player control based on grid visibility	
 	replay_controls.hide()
-	replay_button.show()
+	preplay_controls.show()
 	replay_patterns = []
 	replay_timeline_label.clear() # Still shown technically, but empty
 	# Stay on the new regenerated level.
@@ -188,10 +188,29 @@ func update_replay_timeline_label():
 func _on_begin_replay_button_pressed():
 	begin_replay()
 
+func _on_reset_level_pressed():
+	main_scene.reload_current_level(true, false) # Hard reset, new seed
+
 func _on_cont_here_pressed():
 	end_replay()
 
 func _on_step_pressed():
+	if skipping:
+		skipping = false # Stop skipping if it's on, rather than stepping
+	else:
+		step_replay()
+
+var skipping: bool = false
+func _on_skip_pressed():
+	skipping = not skipping # Toggle skipping, which will also toggle it off if pressed a second time
+	while skipping and replay_index < replay_patterns.size():
+		step_replay()
+		await get_tree().create_timer(0.25).timeout # Wait 0.25 seconds between each step
+	if skipping:
+		end_replay()
+		skipping = false
+
+func step_replay():
 	if replay_index >= replay_patterns.size():
 		return # No more patterns to execute
 	var next = replay_patterns[replay_index]
@@ -202,3 +221,5 @@ func _on_step_pressed():
 		main_scene.hexecutor.execute_pattern(next) # Execute next pattern
 	replay_index += 1
 	update_replay_timeline_label()
+
+	
