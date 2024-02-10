@@ -9,14 +9,14 @@ static func execute(hexecutor, pattern):
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "vector", vector))
 		return false
 	var length = vector.length()
-	if length > 16 or length < 0.1:
-		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 0, "length 0.1", "length 16", "length " + str(length)))
+	if length > 16:
+		stack.push_back(Bad_Iota.new(ErrorMM.OUT_OF_RANGE, pattern.name, 0, "length 0", "length 16", "length " + str(length)))
 		return false
 	var entity = stack.pop_back()
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "entity", entity))
 		return false
-	if not entity.moveable: # If can't move entity, just return silently
+	if (not entity.moveable) or (length < 0.1): # If can't move entity, or distance is ~0, just return silently
 		return true
 	var pos_real = entity.get_pos() # Actual pos (For raycasting)
 	var pos = Entity.real_to_fake(pos_real) # Fake pos (For interpolation)
