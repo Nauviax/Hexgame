@@ -8,7 +8,7 @@
 # Order of saving to results list is tip to tail, with bottom of first (first = list[0] iota) stack being the first element.
 
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var list = stack.pop_back()

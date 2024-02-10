@@ -1,7 +1,7 @@
 # Takes an entity (b) and a vector (a), then pushes the entity in the given direction by the vector magnitude. (Max magnitude is 16)
 # If entity is floating, does NOT collide with spikes.
 static var iota_count = 2
-static var is_spell = true # If this pattern interacts with the level in any way.
+static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var vector = stack.pop_back()

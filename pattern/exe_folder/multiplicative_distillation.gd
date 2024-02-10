@@ -1,7 +1,7 @@
 # Takes the top two iotas in stack, returns the product.
 # With two vectors, returns the dot product.
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

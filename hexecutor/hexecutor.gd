@@ -129,8 +129,8 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 				return
 		else: # Default mode, just execute the pattern
 			success = pattern.execute(self)
-			# If success, pattern is a spell, and execution depth is 0, request level validation update
-			if success and pattern.is_spell and execution_depth == 0:
+			# If success, pattern is a spell, and execution depth is 0, request level validation update (Excluding if in scram mode, from casting enter)
+			if success and pattern.is_spell and execution_depth == 0 and not scram_mode:
 				main_scene.validate_level()
 
 	# If AFTER meta-execution, charon_mode is true, end hex.

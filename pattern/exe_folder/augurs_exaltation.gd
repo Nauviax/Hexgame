@@ -1,7 +1,7 @@
 # If the first argument is True, keeps the second and discards the third; otherwise discards the second and keeps the third.
 # (IF)
 static var iota_count = 3
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

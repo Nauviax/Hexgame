@@ -1,6 +1,6 @@
 # Pushes the caster's sentinel position onto the stack
 static var iota_count = 0
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var sentinel_pos = hexecutor.caster.node.sentinel_pos

@@ -5,7 +5,7 @@
 #   Can be used to determine whether rotating from b to a moves in a counter clockwise or clockwise direction
 #   See "stackoverflow.com/questions/243945"
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

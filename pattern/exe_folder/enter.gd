@@ -1,6 +1,6 @@
 # Upon casting, this pattern will cause the caster to enter the level given by the supplied level_haver
 static var iota_count = 1
-static var is_spell = true # If this pattern interacts with the level in any way.
+static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var entity = stack.pop_back()

@@ -2,7 +2,7 @@
 # WARNING: Inputs larger than 21 will be inaccurate due to floating point precision.
 # Also worth noting that decimal point will be removed, so 4.5 will be treated as 4.
 static var iota_count = 1
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()

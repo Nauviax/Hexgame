@@ -1,7 +1,7 @@
 # Takes the modulus of two numbers. (5 % 3 is 2)
 # When applied on vectors, performs the above operation elementwise
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

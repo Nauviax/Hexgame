@@ -1,7 +1,7 @@
 # If the first argument is less than or equal to the second, return True. Otherwise, return False.
 # (<=)
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

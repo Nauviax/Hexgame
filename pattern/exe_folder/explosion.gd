@@ -1,7 +1,7 @@
 # Takes a position (b) and a size (a), then deletes all entities within "size" tiles of the position (Square shape)
 # Position is rounded to center on tile. Size can not be less than 1 (Will kill at least the neighbours)
 static var iota_count = 2
-static var is_spell = true # If this pattern interacts with the level in any way.
+static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var size = stack.pop_back()

@@ -1,7 +1,7 @@
 # Takes two numbers and creates a vector. (b, a) where a is on top of the stack.
 # This means adding 1 then 2 to stack then executing, (So 2 is on top,) will give (1, 2).
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

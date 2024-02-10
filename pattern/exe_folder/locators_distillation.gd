@@ -1,7 +1,7 @@
 # Remove the top iota, then replace the list at the top with the first index of that iota within the list (starting from 0).
 # Replaces the list with -1 if the iota doesn't exist in the list.
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var iota = stack.pop_back()

@@ -13,7 +13,7 @@
 # Note: I give up on coding this properly for now, so I'm hardcoding it with a dictionary up to 5 long.
 
 static var iota_count = 1
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()

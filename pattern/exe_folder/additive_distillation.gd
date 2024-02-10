@@ -1,7 +1,7 @@
 # Takes the top two iotas in stack, returns the sum
 # For Arrays, appends list aa to the end of list bb
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()

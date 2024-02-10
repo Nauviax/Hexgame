@@ -1,7 +1,7 @@
 # Remove the number (num) at the top of the stack, then remove the num-th element of the list at the top of the stack
 # Does nothing if the number is out of bounds
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var num = stack.pop_back()

@@ -2,7 +2,7 @@
 # With a number and a vector, raises each component of the vector to the number's power.
 # With two vectors, combines them into the vector projection of a onto b.
 static var iota_count = 2
-static var is_spell = false # If this pattern interacts with the level in any way.
+static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
 	var stack = hexecutor.stack
 	var aa = stack.pop_back()
