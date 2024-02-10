@@ -9,7 +9,6 @@ size = Vector2(56, 56)
 [node name="IotaHaver" type="StaticBody2D"]
 collision_mask = 3
 script = ExtResource("1_fbb2e")
-look_dir = Vector2(0, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_my1yg")

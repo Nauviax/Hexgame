@@ -26,8 +26,11 @@ var rnd: RandomNumberGenerator # Set in _ready()
 # True if level has been validated (And validator returned true)
 var validated = false
 
-# List of entities in the level
+# List of entities in the level (Entity object, not Node2D)
 var entities: Array
+
+# List of objects in the level (Actual Node2D, can be queue_free-ed) (Like entities but less functionality)
+var objects: Array
 
 # Player object for the level 
 @onready var player: Player = $Player
@@ -50,7 +53,7 @@ var transition_multiplier = 3.5 # Distance player is placed on transition, and h
 
 # Generate rest of base level info
 func _ready():
-	# Get entities
+	# Get entities and objecets
 	reload_entities_list()
 	# Set random seed if still -1
 	if level_seed == -1:
@@ -64,14 +67,18 @@ func _ready():
 	# Check player roofiness: hide/show roof layer + set can_fly
 	check_player_roof()
 
-# Reload entities list
+# Reload entities and objects list
 #  Get all children, add to entities array if they are an entity
 #  (Includes player)
 func reload_entities_list():
 	entities = []
+	objects = []
 	for child in get_children():
-		if "entity" in child:
+		if "entity" in child: # All entity nodes have an entity object
 			entities.append(child.entity)
+		if "obj_name" in child: # All objects have an obj_name variable
+			objects.append(child)
+	
 
 # Takes a player entity, and replaces the current player with the new one.
 # Also takes a direction to move the player to, as a normalised vector2. (As this function is called when a player is entering the level)
