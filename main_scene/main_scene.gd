@@ -138,13 +138,15 @@ func transition_from_world(selected_level: PackedScene):
 	update_hex_display() # Refresh display (New level desc etc)
 	hex_display.update_level_desc_label(new_level.validator.desc)
 
-# Validates the current level (Returns bool)
-func validate_level() -> bool:
+# Validates the current level, and calls appropriate functions to update UI
+func validate_level():
 	if loaded_level.has_method("validate"):
-		return loaded_level.validate() # Saves result to level also.
+		var validated = loaded_level.validate() # Saves result to level also.
+		hex_display.set_validate_result(validated) # Update UI to reflect validation result
+		hex_display.update_level_desc_label(loaded_level.validator.desc, false) # Refresh level desc, as validator can sometimes change this.
 	else:
-		return false # World view for instance, can't be validated.
-	
+		hex_display.set_validate_result(false) # No validator, assume false (Likely world view)
+
 # Validate the current hex on multiple versions of the level, to ensure the hex works on all versions.
 # Returns [] on fail, and [hex size, border score] on success
 func extra_validate_level() -> Array:

@@ -72,7 +72,6 @@ func update_all_hexy():
 	else:
 		update_reveal_label(null) # Clear
 	update_sb_label(hexecutor.caster.node)
-	validate_label.text = "" # Clear validation label
 
 # Update all labels related to clearing the grid, and clear error history
 func update_clear_hexy():
@@ -128,20 +127,28 @@ func update_sb_label(player):
 	sb_label.text = text
 
 # Level description label (Called directly by main_scene)
-func update_level_desc_label(text):
+func update_level_desc_label(text: String, reset_valid = true):
 	level_desc_label.text = text
-	# Reset validate button color
-	validate_button.modulate = Color(1, 1, 1)
+	if reset_valid: # If level desc changes due to level change, we want to reset the validation labels
+		validate_label.text = ""
+		validate_button.modulate = Color(1, 1, 1)
 
 # Handle UI buttons
 func _on_level_validate_pressed():
-	var validated = main_scene.validate_level()
+	main_scene.validate_level() # Will call set_validate_result in this script
+
+# Seperate call so hexecutor can call this code via main_scene
+func set_validate_result(validated: bool):
+	print("a")
 	if validated:
+		print("Validated: " + str(validated))
 		validate_button.modulate = Color(0, 1, 0) 
 		validate_label.text = "Validated!\nNow try ExValidate!"
 	else:
+		print("Validated: " + str(validated))
 		validate_button.modulate = Color(1, 0, 0)
-		validate_label.text = "Invalid! Try again."
+		validate_label.text = "Level not valid yet."
+	
 
 func _on_extra_validate_pressed(): # The repeating one
 	var validated = main_scene.validate_level()
