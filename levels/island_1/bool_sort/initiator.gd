@@ -1,8 +1,8 @@
 # Bool Sort Initiator
+static var true_count = 0
 static func initiate(level_base):
 	var rnd = level_base.rnd
 	var entities = level_base.entities
-	var true_count = 0
 	var iota_havers = []
 	for entity in entities:
 		if entity.name == "IotaHaver":
@@ -15,3 +15,4 @@ static func initiate(level_base):
 	if true_count == 0 or true_count == entities.size():
 		var iota_haver = iota_havers[rnd.randi_range(0, iota_havers.size() - 1)]
 		iota_haver.node.iota = true_count == 0 # True if there are no true entities, false if all entities are true
+		true_count += (1 if iota_haver.node.iota else -1) # Update true count

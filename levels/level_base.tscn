@@ -23,6 +23,7 @@ enabled = false
 collision_mask = 14
 
 [node name="TileMap" type="TileMap" parent="."]
+z_index = -1
 position = Vector2(-32, -32)
 tile_set = ExtResource("1_2okn0")
 format = 2

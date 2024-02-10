@@ -216,6 +216,15 @@ func get_tile_id(pos, layer):
 		return 0
 	return data.get_custom_data("TileID")
 
+# Return a list of entities on a given tile
+# Takes a tile ID, assumes layer 0. Optionally get entities not on the tile.
+func entities_on_tile(tile_id, on_tile = true):
+	var entities_on_tile = []
+	for entity in entities:
+		if (get_tile_id(entity.get_fake_pos(), 0) == tile_id) == on_tile:
+			entities_on_tile.append(entity)
+	return entities_on_tile
+
 # Force kill all entities in the level, excluding player.
 # Used to prevent old entities being used when a level is left.
 # NOT required on level exit. Exit clears the player spellbook so no references remain.
