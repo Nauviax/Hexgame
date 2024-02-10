@@ -139,7 +139,7 @@ func remove_entity(entity):
 static var raycast_dist = 1024 # (16 * 64, or 16 tiles)
 
 # Can optionally use dir magnitude as distance, but uses 16 tiles by default
-func block_raycast(pos, dir, normalized = true):
+func block_raycast(pos, dir, normalized = true): # Ignores glass
 	if normalized:
 		raycast_b.target_position = dir * raycast_dist
 	else:
@@ -152,7 +152,7 @@ func block_raycast(pos, dir, normalized = true):
 	var adj_pos = hit_pos - (raycast_b.get_collision_normal() * Entity.FAKE_SCALE / 2) # Nudge half a tile's width (Correct tile selection)
 	return Vector2(tilemap.local_to_map(adj_pos))
 
-func block_side_raycast(pos, dir):
+func block_side_raycast(pos, dir): # Ignores glass
 	raycast_b.target_position = dir * raycast_dist
 	raycast_b.position = pos
 	raycast_b.force_raycast_update() # Works while disabled

@@ -1,5 +1,5 @@
 # Takes an entity (b) and a vector (a), then teleports the entity by the vector if the destination is an unblocked gate.
-# This pattern does NOT require line of sight.
+# This pattern can teleport through glass, but not through walls.
 static var iota_count = 2
 static var is_spell = true # If this pattern interacts with the level in any way.
 static func execute(hexecutor, pattern):
