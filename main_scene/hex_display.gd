@@ -139,13 +139,10 @@ func _on_level_validate_pressed():
 
 # Seperate call so hexecutor can call this code via main_scene
 func set_validate_result(validated: bool):
-	print("a")
 	if validated:
-		print("Validated: " + str(validated))
 		validate_button.modulate = Color(0, 1, 0) 
 		validate_label.text = "Validated!\nNow try ExValidate!"
 	else:
-		print("Validated: " + str(validated))
 		validate_button.modulate = Color(1, 0, 0)
 		validate_label.text = "Level not valid yet."
 	
