@@ -194,6 +194,10 @@ func inc_cast_score(amnt):
 	cast_score += amnt
 	main_scene.update_border_display()
 
+# Return total border score
+func get_score():
+	return border_score + perimeter + cast_score
+
 # Clear history, used when pattern completes
 func clear_history():
 	history.clear()

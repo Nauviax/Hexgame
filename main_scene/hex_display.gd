@@ -1,5 +1,8 @@
 extends Control
 
+# Logic for UI buttons and text display.
+# Contains level replay logic and controls.
+
 @onready var main_scene = get_parent()
 
 @export var toggle_grid_button: Button
@@ -20,6 +23,8 @@ extends Control
 
 @export var validate_button: Button # For changing color
 
+@export var validate_label: Label # For announcing validation results
+
 @export var pattern_info: PanelContainer
 
 @export var replay_controls: Control # Should be shown while in replay mode
@@ -36,6 +41,7 @@ var replay_mode: bool = false
 func _ready():
 	replay_timeline_label.clear() # Still shown technically, but empty
 	replay_controls.hide()
+	validate_label.text = "" # Clear validation label
 
 # Handle Toggle Grid button
 # Show/hide grid, rename button text, and set player control
@@ -66,6 +72,7 @@ func update_all_hexy():
 	else:
 		update_reveal_label(null) # Clear
 	update_sb_label(hexecutor.caster.node)
+	validate_label.text = "" # Clear validation label
 
 # Update all labels related to clearing the grid, and clear error history
 func update_clear_hexy():
@@ -129,8 +136,26 @@ func update_level_desc_label(text):
 # Handle UI buttons
 func _on_level_validate_pressed():
 	var validated = main_scene.validate_level()
-	print ("Valid level: " + str(validated))
-	validate_button.modulate = Color(0, 1, 0) if validated else Color(1, 0, 0)
+	if validated:
+		validate_button.modulate = Color(0, 1, 0) 
+		validate_label.text = "Validated!\nNow try ExValidate!"
+	else:
+		validate_button.modulate = Color(1, 0, 0)
+		validate_label.text = "Invalid! Try again."
+
+func _on_extra_validate_pressed(): # The repeating one
+	var validated = main_scene.validate_level()
+	if validated:
+		var ex_result = main_scene.extra_validate_level()
+		if ex_result.size() == 2:
+			validate_button.modulate = Color(0, 1, 0)
+			validate_label.text = "You Win!\nHex size: " + str(ex_result[0]) + "\nBorder size: " + str(ex_result[1])
+		else:
+			validate_button.modulate = Color(1, 0, 0)
+			validate_label.text = "Failed, replay for bad seed shown."
+	else:
+		validate_button.modulate = Color(1, 0, 0)
+		validate_label.text = "Level isn't even valid yet."
 
 # Handle meta-text and other pattern hovers
 func _on_meta_hover_started(meta:Variant):
@@ -147,8 +172,8 @@ func _on_meta_hover_ended(_meta):
 var replay_patterns: Array = []
 var replay_index: int = 0 # Current pattern
 
-func begin_replay():
-	replay_patterns = main_scene.hexecutor.replay_list
+func begin_replay(patterns = null): # Optionally specify patterns to replay with
+	replay_patterns = main_scene.hexecutor.replay_list if patterns == null else patterns # Get replay patterns
 	if replay_patterns.size() == 0:
 		return # No replay to begin
 	replay_mode = true
@@ -222,4 +247,4 @@ func step_replay():
 	replay_index += 1
 	update_replay_timeline_label()
 
-	
+ 

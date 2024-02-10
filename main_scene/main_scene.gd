@@ -73,10 +73,9 @@ func reload_current_level(reset_border_score: bool, same_seed: bool = true):
 	update_hex_display()
 	#hex_display.update_level_desc_label(loaded_level.validator.desc) # Level desc shouldn't change
 
-
 # Unloads the current level and loads the last level in level_list
 # Returns false if there are no levels to load
-func exit_level():
+func exit_level() -> bool:
 	if level_list.size() == 0:
 		# No levels to load, return false
 		return false
@@ -139,13 +138,34 @@ func transition_from_world(selected_level: PackedScene):
 	update_hex_display() # Refresh display (New level desc etc)
 	hex_display.update_level_desc_label(new_level.validator.desc)
 
-
-# Validates the current level
-func validate_level():
+# Validates the current level (Returns bool)
+func validate_level() -> bool:
 	if loaded_level.has_method("validate"):
-		return loaded_level.validate()
+		return loaded_level.validate() # Saves result to level also.
 	else:
-		return false
+		return false # World view for instance, can't be validated.
+	
+# Validate the current hex on multiple versions of the level, to ensure the hex works on all versions.
+# Returns [] on fail, and [hex size, border score] on success
+func extra_validate_level() -> Array:
+	var hex = hexecutor.replay_list
+	if hex.size() == 0:
+		return [] # No patterns yet
+	var border_score = grid.hex_border.get_score()
+	# Consider blocking user input during validation? !!!
+	for ii in range(10): # 10 random levels
+		# Reload level with new seed
+		reload_current_level(true, false)
+		# Execute the hex
+		for pattern in hex:
+			hexecutor.execute_pattern(pattern)
+		# Validate the level
+		if not validate_level():
+			# On fail, regenerate level with same seed and enable replay mode
+			reload_current_level(true, true)
+			hex_display.begin_replay(hex) # Start with given hex
+			return [] # Failed
+	return [hex.size(), border_score] # Passed
 
 # Called with new patterns from grid. Executes them using hexecutor
 func new_pattern_drawn(pattern):

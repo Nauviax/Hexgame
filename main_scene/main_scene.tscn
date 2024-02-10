@@ -13,7 +13,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelAndGrid/LevelContainer")
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 
-[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "validate_button", "pattern_info", "replay_controls", "preplay_controls", "replay_timeline_label")]
+[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "validate_button", "validate_label", "pattern_info", "replay_controls", "preplay_controls", "replay_timeline_label")]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
@@ -27,6 +27,7 @@ sb_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Spellbook")
 border_label = NodePath("MainSplit/StackAndInfo/LevelInfo/BorderScore")
 level_desc_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelDesc")
 validate_button = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate")
+validate_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/YouWin")
 pattern_info = NodePath("PatternInfo")
 replay_controls = NodePath("MainSplit/LevelAndGrid/ReplayBar/ReplayButtons")
 preplay_controls = NodePath("MainSplit/LevelAndGrid/ReplayBar/PreplayButtons")
@@ -63,6 +64,18 @@ size_flags_stretch_ratio = 0.5
 [node name="Validate" type="Button" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
 layout_mode = 2
 text = "Validate"
+
+[node name="ExValidate" type="Button" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
+layout_mode = 2
+text = "ExValidate"
+
+[node name="YouWin" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+text = "ExValidated!
+Hex size:
+40"
+autowrap_mode = 2
 
 [node name="LevelDesc" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
 custom_minimum_size = Vector2(300, 0)
@@ -213,6 +226,7 @@ layout_mode = 2
 text = "Continue Here"
 
 [connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/ExValidate" to="HexDisplay" method="_on_extra_validate_pressed"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Extras/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
