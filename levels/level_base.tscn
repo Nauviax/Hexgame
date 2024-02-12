@@ -1,14 +1,15 @@
 [gd_scene load_steps=5 format=3 uid="uid://dp0v5jhyadmwq"]
 
-[ext_resource type="TileSet" uid="uid://dhmy420vajm2h" path="res://resources/tiles/Level_tileset.tres" id="1_2okn0"]
 [ext_resource type="Script" path="res://levels/level_base.gd" id="1_3xh2x"]
+[ext_resource type="TileSet" uid="uid://dhmy420vajm2h" path="res://resources/tiles/level_tileset.tres" id="2_3lued"]
 [ext_resource type="PackedScene" uid="uid://crqwgh2ejsj6j" path="res://entity/player/player.tscn" id="2_avtny"]
-[ext_resource type="Texture2D" uid="uid://qv4r1lh202yr" path="res://resources/sprites/Sentinel.png" id="4_k5sq3"]
+[ext_resource type="Texture2D" uid="uid://qv4r1lh202yr" path="res://resources/sprites/sentinel.png" id="4_2wcq7"]
 
 [node name="LevelBase" type="Node2D"]
 texture_filter = 1
 texture_repeat = 2
 script = ExtResource("1_3xh2x")
+bg_theme = "inside"
 
 [node name="Hex_Entity_Raycast" type="RayCast2D" parent="."]
 enabled = false
@@ -25,7 +26,7 @@ collision_mask = 14
 [node name="TileMap" type="TileMap" parent="."]
 z_index = -1
 position = Vector2(-32, -32)
-tile_set = ExtResource("1_2okn0")
+tile_set = ExtResource("2_3lued")
 format = 2
 layer_0/name = "Tiles"
 layer_0/tile_data = PackedInt32Array(0, 65536, 0, 65536, 65536, 0, 131072, 65536, 0, 196608, 65536, 0, 262144, 65536, 0, 327680, 65536, 0, 393216, 65536, 0, 458752, 65536, 0, 1, 65536, 0, 2, 65536, 0, 3, 65536, 0, 4, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 65543, 65536, 0, 262151, 65536, 0, 327687, 65536, 0, 393223, 65536, 0, 458758, 65536, 0, 458757, 65536, 0, 458756, 65536, 0, 458755, 65536, 0, 458754, 65536, 0, 458753, 65536, 0, 131079, 65536, 0, 196615, 65536, 0, 458759, 65536, 0, 65540, 65536, 1, 65539, 65536, 1, 65538, 65536, 1, 65537, 65536, 1, 131073, 65536, 1, 196609, 65536, 1, 262145, 65536, 1, 327681, 65536, 1, 393217, 65536, 1, 393218, 65536, 1, 393219, 65536, 1, 393220, 65536, 1, 393221, 65536, 1, 393222, 65536, 1, 327686, 65536, 1, 262150, 65536, 1, 196614, 65536, 1, 131078, 65536, 1, 65542, 65536, 1, 65541, 65536, 1, 131075, 65536, 1, 131074, 65536, 1, 196612, 65536, 1, 196613, 65536, 1, 196611, 65536, 1, 131076, 65536, 1, 131077, 65536, 1, 196610, 65536, 1, 262146, 65536, 1, 327682, 65536, 1, 327683, 65536, 1, 327684, 65536, 1, 262148, 65536, 1, 262149, 65536, 1, 262147, 65536, 1, 327685, 65536, 1)
@@ -45,7 +46,7 @@ sentinel = NodePath("../Player_Sentinel")
 [node name="Player_Sentinel" type="Sprite2D" parent="."]
 visible = false
 z_index = 6
-texture = ExtResource("4_k5sq3")
+texture = ExtResource("4_2wcq7")
 
 [node name="Bottom_Right_Point" type="Node2D" parent="."]
 position = Vector2(448, 448)

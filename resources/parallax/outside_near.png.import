@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvu063wg0qb3k"
-path="res://.godot/imported/InsideFar.png-ceed753cd379352b7408381bd813e633.ctex"
+uid="uid://bwtd38rt40h3t"
+path="res://.godot/imported/outside_near.png-6ad88fd0325f7d738331657b16a46c34.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/parallax/InsideFar.png"
-dest_files=["res://.godot/imported/InsideFar.png-ceed753cd379352b7408381bd813e633.ctex"]
+source_file="res://resources/parallax/outside_near.png"
+dest_files=["res://.godot/imported/outside_near.png-6ad88fd0325f7d738331657b16a46c34.ctex"]
 
 [params]
 

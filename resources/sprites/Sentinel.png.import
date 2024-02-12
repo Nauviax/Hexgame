@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://qv4r1lh202yr"
-path="res://.godot/imported/Sentinel.png-0ffe52a3255ab2827c02f2d95b350616.ctex"
+path="res://.godot/imported/sentinel.png-c065ee085fc3d967bcee563965861886.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/sprites/Sentinel.png"
-dest_files=["res://.godot/imported/Sentinel.png-0ffe52a3255ab2827c02f2d95b350616.ctex"]
+source_file="res://resources/sprites/sentinel.png"
+dest_files=["res://.godot/imported/sentinel.png-c065ee085fc3d967bcee563965861886.ctex"]
 
 [params]
 

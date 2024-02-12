@@ -209,8 +209,8 @@ func _input(event):
 # Options: "Inside", "Outside"
 func set_background_theme(theme: String):
 	# Set background theme 
-	parallax_near.texture = load("res://resources/parallax/" + theme + "Near.png")
-	parallax_far.texture = load("res://resources/parallax/" + theme + "Far.png")
+	parallax_near.texture = load("res://resources/parallax/" + theme + "_near.png")
+	parallax_far.texture = load("res://resources/parallax/" + theme + "_far.png")
 
 # Scroll background by given amount
 func scroll_background(amount: Vector2):

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bjgwscbdyxshm"]
 
 [ext_resource type="Script" path="res://entity/objects/gate.gd" id="1_34ixo"]
-[ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/ShittyEntitySprite.png" id="1_lv340"]
+[ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/shitty_entity_sprite.png" id="2_nd8vq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lirxu"]
 size = Vector2(64, 192)
@@ -13,7 +13,7 @@ script = ExtResource("1_34ixo")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.784314, 0, 0, 1)
-texture = ExtResource("1_lv340")
+texture = ExtResource("2_nd8vq")
 region_enabled = true
 region_rect = Rect2(64, 64, 64, 192)
 

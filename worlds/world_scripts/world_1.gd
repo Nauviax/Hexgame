@@ -9,7 +9,7 @@ static var levels: Array = [
 ]
 
 # Backgroud theme for this world
-static var theme: String = "Inside"
+static var theme: String = "inside"
 
 # World description to be shown in UI
 static var desc: String = "Between levels. Entity references from the last level have expired."

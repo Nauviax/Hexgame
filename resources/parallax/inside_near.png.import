@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkenq7bgqh8cl"
-path="res://.godot/imported/LookLine.png-9ac3c82554a0da455bebbde21882684d.ctex"
+uid="uid://b38nwebauukxu"
+path="res://.godot/imported/inside_near.png-2e717b7e9eee8501016d195dfd2736ee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/sprites/LookLine.png"
-dest_files=["res://.godot/imported/LookLine.png-9ac3c82554a0da455bebbde21882684d.ctex"]
+source_file="res://resources/parallax/inside_near.png"
+dest_files=["res://.godot/imported/inside_near.png-2e717b7e9eee8501016d195dfd2736ee.ctex"]
 
 [params]
 

@@ -1,11 +1,11 @@
 [gd_scene load_steps=15 format=3 uid="uid://crqwgh2ejsj6j"]
 
 [ext_resource type="Script" path="res://entity/player/player.gd" id="1_vgx7j"]
-[ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/LookLine.png" id="3_f244p"]
+[ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/look_line.png" id="3_bh7jj"]
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="3_xybjd"]
-[ext_resource type="Texture2D" uid="uid://dut64si8c4ne4" path="res://resources/particles/Poof.png" id="4_1otv8"]
-[ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/InsideFar.png" id="5_1h83c"]
-[ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/InsideNear.png" id="6_0wx4c"]
+[ext_resource type="Texture2D" uid="uid://dut64si8c4ne4" path="res://resources/particles/poof.png" id="4_6ucrj"]
+[ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/inside_far.png" id="5_e7e8m"]
+[ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/inside_near.png" id="6_2e5eb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r3tw1"]
 size = Vector2(40, 40)
@@ -82,7 +82,7 @@ texture = ExtResource("3_xybjd")
 show_behind_parent = true
 points = PackedVector2Array(0, 0, 0, -100)
 width = 64.0
-texture = ExtResource("3_f244p")
+texture = ExtResource("3_bh7jj")
 texture_mode = 1
 
 [node name="Poofer" type="GPUParticles2D" parent="."]
@@ -91,7 +91,7 @@ material = SubResource("CanvasItemMaterial_xquuw")
 emitting = false
 amount = 128
 process_material = SubResource("ParticleProcessMaterial_57jpk")
-texture = ExtResource("4_1otv8")
+texture = ExtResource("4_6ucrj")
 lifetime = 2.0
 one_shot = true
 explosiveness = 1.0
@@ -102,7 +102,7 @@ material = SubResource("CanvasItemMaterial_xquuw")
 emitting = false
 amount = 16
 process_material = SubResource("ParticleProcessMaterial_vp5b2")
-texture = ExtResource("4_1otv8")
+texture = ExtResource("4_6ucrj")
 lifetime = 2.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -116,7 +116,7 @@ transform = Transform2D(1, 0, 0, 1, -128, -128)
 z_index = -1
 texture_filter = 1
 texture_repeat = 2
-texture = ExtResource("5_1h83c")
+texture = ExtResource("5_e7e8m")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 1408, 1408)
@@ -126,7 +126,7 @@ z_index = 1
 texture_filter = 1
 texture_repeat = 2
 scale = Vector2(2, 2)
-texture = ExtResource("6_0wx4c")
+texture = ExtResource("6_2e5eb")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 704, 704)

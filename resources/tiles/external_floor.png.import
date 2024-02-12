@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cicqmvqwp8vi8"
-path="res://.godot/imported/ShittyEntitySprite.png-ea1bc2c5efb652d99ee1c56dd9a8faf8.ctex"
+uid="uid://dtnmvgn0f4fba"
+path="res://.godot/imported/external_floor.png-152043c3840f0faeaae50c66e4abf18f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resources/sprites/ShittyEntitySprite.png"
-dest_files=["res://.godot/imported/ShittyEntitySprite.png-ea1bc2c5efb652d99ee1c56dd9a8faf8.ctex"]
+source_file="res://resources/tiles/external_floor.png"
+dest_files=["res://.godot/imported/external_floor.png-152043c3840f0faeaae50c66e4abf18f.ctex"]
 
 [params]
 

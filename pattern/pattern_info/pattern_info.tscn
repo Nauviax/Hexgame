@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b64fs4i6xedgl" path="res://resources/ui/popup_bg.png" id="1_ho7y6"]
 [ext_resource type="Script" path="res://pattern/pattern_info/pattern_info.gd" id="1_v4881"]
-[ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/SimpleBorder.tres" id="3_axet7"]
+[ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="3_n3cin"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8c58"]
 
@@ -66,7 +66,7 @@ size_flags_horizontal = 3
 [node name="Code" type="Label" parent="MarginContainer/Main/Middle/Info"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-theme_override_styles/normal = ExtResource("3_axet7")
+theme_override_styles/normal = ExtResource("3_n3cin")
 text = "1LlsrR"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -75,7 +75,7 @@ autowrap_mode = 3
 [node name="IsSpell" type="Label" parent="MarginContainer/Main/Middle/Info"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-theme_override_styles/normal = ExtResource("3_axet7")
+theme_override_styles/normal = ExtResource("3_n3cin")
 text = "Spell"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -83,7 +83,7 @@ vertical_alignment = 1
 [node name="IotaCount" type="Label" parent="MarginContainer/Main/Middle/Info"]
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-theme_override_styles/normal = ExtResource("3_axet7")
+theme_override_styles/normal = ExtResource("3_n3cin")
 text = "Params: 2
 "
 horizontal_alignment = 1
