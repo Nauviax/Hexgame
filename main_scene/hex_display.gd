@@ -224,20 +224,20 @@ func _on_cont_here_pressed():
 	end_replay()
 
 func _on_step_pressed():
-	if skipping:
-		skipping = false # Stop skipping if it's on, rather than stepping
+	if playing_replay:
+		playing_replay = false # Stop playing replay if it's on, rather than stepping
 	else:
 		step_replay()
 
-var skipping: bool = false
-func _on_skip_pressed():
-	skipping = not skipping # Toggle skipping, which will also toggle it off if pressed a second time
-	while skipping and replay_index < replay_patterns.size():
+var playing_replay: bool = false
+func _on_play_pause_pressed():
+	playing_replay = not playing_replay # Toggle playing replay, which will also toggle it off if pressed a second time
+	while playing_replay and replay_index < replay_patterns.size():
 		step_replay()
 		await get_tree().create_timer(0.25).timeout # Wait 0.25 seconds between each step
-	if skipping:
+	if playing_replay:
 		end_replay()
-		skipping = false
+		playing_replay = false
 
 func step_replay():
 	if replay_index >= replay_patterns.size():
@@ -250,5 +250,3 @@ func step_replay():
 		main_scene.hexecutor.execute_pattern(next) # Execute next pattern
 	replay_index += 1
 	update_replay_timeline_label()
-
- 

@@ -17,14 +17,14 @@ layer_2/tile_data = PackedInt32Array()
 [node name="Player" parent="." index="4"]
 position = Vector2(64, 256)
 
-[node name="Some_Level_1" parent="." index="6" instance=ExtResource("6_j44ca")]
+[node name="SomeLevel1" parent="." index="6" instance=ExtResource("6_j44ca")]
 position = Vector2(384, 256)
 level_iota = ["Key_0"]
 
-[node name="Some_Level_2" parent="." index="7" instance=ExtResource("6_j44ca")]
+[node name="SomeLevel2" parent="." index="7" instance=ExtResource("6_j44ca")]
 position = Vector2(128, -64)
 level_iota = ["Key_1"]
 
-[node name="Some_Level_3" parent="." index="8" instance=ExtResource("6_j44ca")]
+[node name="SomeLevel3" parent="." index="8" instance=ExtResource("6_j44ca")]
 position = Vector2(576, 0)
 level_iota = ["Key_2"]

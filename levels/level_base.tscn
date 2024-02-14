@@ -11,15 +11,15 @@ texture_repeat = 2
 script = ExtResource("1_3xh2x")
 bg_theme = "inside"
 
-[node name="Hex_Entity_Raycast" type="RayCast2D" parent="."]
+[node name="HexEntityRaycast" type="RayCast2D" parent="."]
 enabled = false
 collision_mask = 3
 
-[node name="Hex_Block_Raycast" type="RayCast2D" parent="."]
+[node name="HexBlockRaycast" type="RayCast2D" parent="."]
 enabled = false
 collision_mask = 2
 
-[node name="Hex_Impulse_Raycast" type="RayCast2D" parent="."]
+[node name="HexImpulseRaycast" type="RayCast2D" parent="."]
 enabled = false
 collision_mask = 14
 
@@ -41,12 +41,12 @@ layer_2/tile_data = PackedInt32Array(65537, 0, 0, 131073, 0, 0, 196609, 0, 0, 26
 [node name="Player" parent="." node_paths=PackedStringArray("sentinel") instance=ExtResource("2_avtny")]
 z_index = 5
 position = Vector2(64, 64)
-sentinel = NodePath("../Player_Sentinel")
+sentinel = NodePath("../PlayerSentinel")
 
-[node name="Player_Sentinel" type="Sprite2D" parent="."]
+[node name="PlayerSentinel" type="Sprite2D" parent="."]
 visible = false
 z_index = 6
 texture = ExtResource("4_2wcq7")
 
-[node name="Bottom_Right_Point" type="Node2D" parent="."]
+[node name="BottomRightPoint" type="Node2D" parent="."]
 position = Vector2(448, 448)

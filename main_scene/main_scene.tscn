@@ -213,9 +213,9 @@ autowrap_mode = 0
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="Skip" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons"]
+[node name="PlayPause" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons"]
 layout_mode = 2
-text = "Skip to End"
+text = "Play/Pause"
 
 [node name="Step" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons"]
 layout_mode = 2
@@ -240,6 +240,6 @@ text = "Continue Here"
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PreplayButtons/ResetLevel" to="HexDisplay" method="_on_reset_level_pressed"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_hover_started_low"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/Skip" to="HexDisplay" method="_on_skip_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/PlayPause" to="HexDisplay" method="_on_play_pause_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/Step" to="HexDisplay" method="_on_step_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/ContHere" to="HexDisplay" method="_on_cont_here_pressed"]

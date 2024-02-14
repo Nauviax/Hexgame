@@ -42,14 +42,14 @@ var revealed_iota = null
 @onready var tilemap = $TileMap
 
 # Tilemap calculated centre and size (Real coords not fake)
-@onready var level_centre = $Bottom_Right_Point.position / 2
+@onready var level_centre = $BottomRightPoint.position / 2
 @onready var level_size = max(level_centre.x, level_centre.y) * 2
 var transition_multiplier = 3.5 # Distance player is placed on transition, and how far to go to leave.
 
 # Raycast objects for the level (Enabled = false)
-@onready var raycast_b = $Hex_Block_Raycast
-@onready var raycast_e = $Hex_Entity_Raycast
-@onready var raycast_i = $Hex_Impulse_Raycast
+@onready var raycast_b = $HexBlockRaycast
+@onready var raycast_e = $HexEntityRaycast
+@onready var raycast_i = $HexImpulseRaycast
 
 # Generate rest of base level info
 func _ready():
@@ -85,7 +85,7 @@ func reload_entities_list():
 func use_player(player_new: Player, dir: Vector2):
 	# Ensure relevant @onready things are got (Normally skipped when this is called quickly)
 	player = $Player
-	level_centre = $Bottom_Right_Point.position / 2
+	level_centre = $BottomRightPoint.position / 2
 	level_size = max(level_centre.x, level_centre.y) * 2
 	# Remove and delte old player
 	remove_child(player)
@@ -98,7 +98,7 @@ func use_player(player_new: Player, dir: Vector2):
 	player.stuck_flying = false # Player can land again
 	player.position = level_centre + (dir * level_size * transition_multiplier) # Move player to edge of level
 	# Reload sentinel
-	player.sentinel = $Player_Sentinel
+	player.sentinel = $PlayerSentinel
 	player.sentinel_pos = null
 
 # Update function for the level.
