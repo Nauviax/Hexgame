@@ -23,6 +23,7 @@ func add_pattern(hexecutor: Hexecutor, pattern: Pattern): # Defined type
 		if patterns.size() > 0:
 			patterns.pop_back()
 		else:
+			hexecutor.introspection_depth = 0 # Stop introspection
 			hexecutor.stack.pop_back() # Remove this metalist from the stack
 
 	else:
