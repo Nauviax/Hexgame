@@ -1,4 +1,7 @@
 # Takes the top two iotas in stack, returns b - a (a being the top iota)
+static var descs = [
+	"Given two numbers or vectors, returns SECOND - TOP. Given a number TOP, and a vector SECOND, subtracts TOP from each component of SECOND.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

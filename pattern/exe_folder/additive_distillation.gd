@@ -1,5 +1,9 @@
 # Takes the top two iotas in stack, returns the sum
 # For Arrays, appends list aa to the end of list bb
+static var descs = [
+	"Given two numbers or vectors, returns their sum. Given one of each, adds the number to each component of the vector.",
+	"Given two lists, appends the TOP list to the end of the SECOND list."
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
@@ -23,12 +27,6 @@ static func execute(hexecutor, pattern):
 	elif aa is Array and bb is Array:
 		bb += aa
 		stack.push_back(bb)
-	elif aa is Array and bb is Vector2:
-		bb.append(aa)
-		stack.push_back(bb)
-	elif aa is Vector2 and bb is Array:
-		aa.append(bb)
-		stack.push_back(aa)
 	else:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_PAIR, pattern.name, aa, bb))
 		return false

@@ -1,5 +1,9 @@
 # Takes an entity, then gives them floating for their next impulse. Will remove floating if they already have it.
 # Also allows player entities to fly.
+static var descs = [
+	"Toggles floating status on a moveable entity. This allows them to be moved over hazards, though only once.",
+	"Additionally, allows players to fly, and gives them ice physics."
+]
 static var iota_count = 1
 static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

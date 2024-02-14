@@ -1,4 +1,7 @@
 # Push true if the specified entity's spellbook can be written to externally, false otherwise.
+static var descs = [
+	"Returns true if the given entity's spellbook can be written to externally, false otherwise.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

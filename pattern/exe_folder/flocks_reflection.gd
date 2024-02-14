@@ -1,4 +1,7 @@
-# Pushes the size of the stack to the stack
+# Returns the size of the stack to the stack
+static var descs = [
+	"Returns the size of the stack to the stack.",
+]
 static var iota_count = 0
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):

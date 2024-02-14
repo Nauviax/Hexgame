@@ -2,6 +2,11 @@
 # With two numbers, combines them into a bitset containing every "on" bit present in exactly one of the bitsets.
 # With two lists, this creates a SET with every unique element that appears in exactly ONE of the lists.
 # (XOR)
+static var descs = [
+	"Given two booleans, returns True if exactly one is True, otherwise False.",
+	"Given two numbers, returns a number containing every bit that is 'on' in exactly one of the numbers. Ignores decimal part of inputs.",
+	"Given two lists, returns a list containing every unique element that exists in exactly ONE of the lists."
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

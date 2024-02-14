@@ -1,5 +1,8 @@
 # Takes a position (b) and a direction (a) and returns the SIDE of the tile hit by the raycast, or null if none is found.
 # If this hits the south face of a tile, it would return (0, 1) 
+static var descs = [
+	"Given a position (SECOND) and a direction (TOP), returns the normal of the tile hit by a raycast, or null if no tile was hit. Max distance 16 tiles. Ignores glass and entities.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

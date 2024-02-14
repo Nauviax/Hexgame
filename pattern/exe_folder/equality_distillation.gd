@@ -1,5 +1,10 @@
 # If the first argument equals the second (within a small tolerance, 0.0001), return True. Otherwise, return False.
 # (~=)
+static var descs = [
+	"Given two booleans, returns True if they are equal, and False otherwise.",
+	"Given two numbers, returns True if they are equal (within a small tolerance, 0.0001), and False otherwise.",
+	"Given two lists, returns True if they are the same, and False otherwise. (By value, not by reference.)"
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

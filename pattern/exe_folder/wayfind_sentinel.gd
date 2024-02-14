@@ -1,4 +1,7 @@
 # Takes a position, then returns a vector from the position to the caster's sentinel.
+static var descs = [
+	"Given a position, returns a vector from the position to the caster's sentinel. Fails if sentinel does not exist.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

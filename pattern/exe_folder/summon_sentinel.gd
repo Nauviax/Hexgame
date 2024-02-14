@@ -1,4 +1,7 @@
 # Summons/Moves the caster's sentinel to the given position
+static var descs = [
+	"Given a position, moves the caster's sentinel to that position. Creates a sentinel if one doesn't exist.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

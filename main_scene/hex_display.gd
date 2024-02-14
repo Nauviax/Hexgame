@@ -167,6 +167,9 @@ func _on_meta_hover_started(meta:Variant):
 
 func _on_meta_hover_started_low(meta:Variant):
 	pattern_info.display(meta, true) # Display above mouse rather than below
+
+func _on_meta_clicked(_meta:Variant):
+	pattern_info.lock() # Stop info from following mouse or disappearing
 	
 func _on_meta_hover_ended(_meta):
 	pattern_info.stop_display()

@@ -1,6 +1,9 @@
 # Takes a number (top) and an iota, then pushes num copies of iota onto the stack.
 # (A count of 2 results in two of the iota on the stack, not three.)
 # num > 1000 will fail.
+static var descs = [
+	"Given a number (TOP) and an iota (SECOND), returns num copies of the second iota. Caps at 1000 copies.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

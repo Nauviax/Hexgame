@@ -1,4 +1,7 @@
 # Pushes the caster's sentinel position onto the stack
+static var descs = [
+	"Returns the caster's sentinel position. Fails if the caster has no sentinel.",
+]
 static var iota_count = 0
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

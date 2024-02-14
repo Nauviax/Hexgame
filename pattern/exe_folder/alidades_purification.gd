@@ -1,4 +1,7 @@
 # Turns an entity on the stack into the direction it's looking
+static var descs = [
+	"Given an entity, returns the vector direction it's looking in.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

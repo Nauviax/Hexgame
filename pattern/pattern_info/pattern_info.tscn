@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8c58"]
 
-[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "description_label", "background")]
+[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "desc_button", "description_label", "background")]
 custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_d8c58")
@@ -16,6 +16,7 @@ code_label = NodePath("MarginContainer/Main/Middle/Info/Code")
 is_spell_label = NodePath("MarginContainer/Main/Middle/Info/IsSpell")
 iota_count_label = NodePath("MarginContainer/Main/Middle/Info/IotaCount")
 middle_container = NodePath("MarginContainer/Main/Middle")
+desc_button = NodePath("MarginContainer/Main/Middle/Info/NextDesc")
 description_label = NodePath("MarginContainer/Main/Desc")
 background = NodePath("NinePatchRect")
 
@@ -89,9 +90,40 @@ text = "Params: 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="NextDesc" type="Button" parent="MarginContainer/Main/Middle/Info"]
+layout_mode = 2
+text = "Desc ->"
+
 [node name="Desc" type="Label" parent="MarginContainer/Main"]
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 text = "Some long and lengthy description here, which can force the popup to expand vertically. This along with the \"Middle\" section can be hidden based on displayed contents."
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="PopupButtons" type="MarginContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 12
+
+[node name="Drag" type="Button" parent="MarginContainer/PopupButtons"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_default_cursor_shape = 13
+text = "III"
+
+[node name="Close" type="Button" parent="MarginContainer/PopupButtons"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "X"
+
+[connection signal="pressed" from="MarginContainer/Main/Middle/Info/NextDesc" to="." method="_on_next_desc_pressed"]
+[connection signal="button_down" from="MarginContainer/PopupButtons/Drag" to="." method="_on_drag_button_down"]
+[connection signal="button_up" from="MarginContainer/PopupButtons/Drag" to="." method="_on_drag_button_up"]
+[connection signal="pressed" from="MarginContainer/PopupButtons/Close" to="." method="_on_close_pressed"]

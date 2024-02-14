@@ -1,5 +1,8 @@
 # If the first argument is True, keeps the second and discards the third; otherwise discards the second and keeps the third.
 # (IF)
+static var descs = [
+	"If the TOP iota is True, keeps the second iota and discards the third; Otherwise discards the second and keeps the third.",
+]
 static var iota_count = 3
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

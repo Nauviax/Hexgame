@@ -1,6 +1,9 @@
 # Takes a position (b) and a direction (a) and returns the tile hit by the raycast.
 # Tile position is returned in fake coordinates, representing the centre of the tile hit. (Or null if no tile was hit)
 # Raycast distance should be 16 tiles.
+static var descs = [
+	"Given a position (SECOND) and a direction (TOP), returns the centre tile coordinates hit by a raycast, or null if no hit. Max distance 16 tiles. Ignores glass and entities.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
