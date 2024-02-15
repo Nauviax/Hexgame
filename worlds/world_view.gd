@@ -65,7 +65,7 @@ func prepare(player_new: Player, world_id: int, from_filepath: String):
 	player.set_background_theme(world_script.theme)
 
 	# Connect player's spike checker Area2D to the relevant function here
-	player.get_node("Spike_Checker").area_entered.connect(_on_player_area_entered)
+	player.get_node("SpikeChecker").area_entered.connect(_on_player_area_entered)
 
 # Function for loading a level from the world
 # - As player starts inside an area, the first call is ignored.
