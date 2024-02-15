@@ -23,6 +23,9 @@ var rnd: RandomNumberGenerator # Set in _ready()
 # World to load on player transition
 @export var belongs_to_world: int
 
+# If true, show validate and replay buttons, and keep track of patterns executed for replay.
+@export var is_solvable_level: bool = true # False for level hubs mainly
+
 # True if level has been validated (And validator returned true)
 var validated = false
 

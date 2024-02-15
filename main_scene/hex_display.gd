@@ -21,6 +21,8 @@ extends Control
 
 @export var level_desc_label: Label
 
+@export var level_controls: Control # For hiding/showing level controls, normally when a level isn't solvable.
+
 @export var validate_button: Button # For changing color
 
 @export var validate_label: Label # For announcing validation results
@@ -30,6 +32,8 @@ extends Control
 @export var replay_controls: Control # Should be shown while in replay mode
 
 @export var preplay_controls: Control # Should be HIDDEN while in replay mode, as it enables it.
+
+@export var preplay_begin_replay_button: Button # Hidden when level isn't solvable
 
 @export var replay_timeline_label: RichTextLabel
 
@@ -127,11 +131,15 @@ func update_sb_label(player):
 	sb_label.text = text
 
 # Level description label (Called directly by main_scene)
-func update_level_desc_label(text: String, reset_valid = true):
-	level_desc_label.text = text
+func update_level_specific_labels(desc: String, solveable: bool, reset_valid = true):
+	level_desc_label.text = desc
 	if reset_valid: # If level desc changes due to level change, we want to reset the validation labels
 		validate_label.text = ""
 		validate_button.modulate = Color(1, 1, 1)
+	# Hide/show controls based on if level is intended to be solved
+	level_controls.visible = solveable
+	preplay_begin_replay_button.visible = solveable
+	
 
 # Handle UI buttons
 func _on_level_validate_pressed():

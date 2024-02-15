@@ -13,7 +13,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelAndGrid/LevelContainer")
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 
-[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "validate_button", "validate_label", "pattern_info", "replay_controls", "preplay_controls", "replay_timeline_label")]
+[node name="HexDisplay" type="Control" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "level_controls", "validate_button", "validate_label", "pattern_info", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 2
@@ -26,11 +26,13 @@ reveal_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Reveal")
 sb_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Spellbook")
 border_label = NodePath("MainSplit/StackAndInfo/LevelInfo/BorderScore")
 level_desc_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelDesc")
+level_controls = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons")
 validate_button = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate")
 validate_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/YouWin")
 pattern_info = NodePath("PatternInfo")
 replay_controls = NodePath("MainSplit/LevelAndGrid/ReplayBar/ReplayButtons")
 preplay_controls = NodePath("MainSplit/LevelAndGrid/ReplayBar/PreplayButtons")
+preplay_begin_replay_button = NodePath("MainSplit/LevelAndGrid/ReplayBar/PreplayButtons/BeginReplayButton")
 replay_timeline_label = NodePath("MainSplit/LevelAndGrid/ReplayBar/PatternTimeline")
 
 [node name="PatternInfo" parent="HexDisplay" instance=ExtResource("3_f8kac")]
