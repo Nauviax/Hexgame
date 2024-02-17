@@ -1,6 +1,11 @@
 # Replaces a number with its absolute value, or a vector with its length.
 # Additionally, converts boolean values to 0.0 (f) or 1.0 (t).
 # Additionallier, converts arrays to their size.
+static var descs = [
+	"Given a number, returns its absolute value. Given a vector, returns its length.",
+	"Given a boolean, returns 0.0 for false, 1.0 for true.",
+	"Given a list, returns the number of elements in it.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

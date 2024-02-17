@@ -1,6 +1,10 @@
 # Takes a number from the stack and computes its factorial, for example inputting 4 would return 4*3*2*1=24.
 # WARNING: Inputs larger than 21 will be inaccurate due to floating point precision.
 # Also worth noting that decimal point will be removed, so 4.5 will be treated as 4.
+static var descs = [
+	"Given a number, returns the factorial of that number. For example, 4 would return 4*3*2*1=24.",
+	"Of note: Inputs larger than 21 will be inaccurate due to floating point precision. Decimal value of any input is ignored."
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

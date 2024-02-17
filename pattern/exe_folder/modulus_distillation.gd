@@ -1,5 +1,9 @@
 # Takes the modulus of two numbers. (5 % 3 is 2)
 # When applied on vectors, performs the above operation elementwise
+static var descs = [
+	"Given two numbers, returns the modulus of the SECOND number by the TOP number. (5 % 3 is 2)",
+	"Given a vector (SECOND) and a number (TOP), preforms the modulus on each vector component.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

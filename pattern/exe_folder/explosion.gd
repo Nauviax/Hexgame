@@ -1,5 +1,9 @@
 # Takes a position (b) and a size (a), then deletes all entities within "size" tiles of the position (Square shape)
 # Position is rounded to center on tile. Size can not be less than 1 (Will kill at least the neighbours)
+static var descs = [
+	"Given a position (SECOND) and a size (TOP), deletes all entities within 'size' tiles of the position (Square shape).",
+	"Minimum size is 1, meaning an entity neighbouring the position will always be deleted. This spell fails if player is in range."
+]
 static var iota_count = 2
 static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

@@ -1,5 +1,8 @@
 # Remove the top iota, then replace the list at the top with the first index of that iota within the list (starting from 0).
 # Replaces the list with -1 if the iota doesn't exist in the list.
+static var descs = [
+	"Given an iota (TOP) and a list (SECOND), returns the index of the first instance of that iota in the list. If not found, returns -1. (0-indexed).",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

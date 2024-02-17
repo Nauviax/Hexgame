@@ -1,6 +1,11 @@
-# With two numbers, combines them by raising the b to the power of the a. (a is top of stack)
+# With two numbers, combines them by raising bb to the power of aa. (aa is top of stack)
 # With a number and a vector, raises each component of the vector to the number's power.
-# With two vectors, combines them into the vector projection of a onto b.
+# With two vectors, combines them into the vector projection of aa onto bb.
+static var descs = [
+	"Given two numbers, raises the SECOND number to the power of the TOP number.",
+	"Given a number (TOP) and a vector (SECOND), raises each component of the vector to the power of the number.",
+	"Given two vectors, returns the vector projection of the TOP vector onto the SECOND vector."
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

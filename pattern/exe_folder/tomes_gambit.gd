@@ -1,4 +1,7 @@
 # Sets the caster's selected spellbook page to num (top of stack)
+static var descs = [
+	"Given a number, sets the caster's selected spellbook page to that number.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

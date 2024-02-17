@@ -1,4 +1,7 @@
-# Take a position, then return the first entity at that position																																																																																																																																																																																																										)
+# Take a position, then return the first entity at that position
+static var descs = [
+	"Given a vector, returns the entity at that position vector, or null if no entity is found. Must exactly match entity position.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

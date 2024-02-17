@@ -1,5 +1,8 @@
 # Converts iota to boolean
 # 0, Null, and empty list (Normal or meta pattern) are false, ANYTHING else is true
+static var descs = [
+	"Given an iota, converts it to a boolean. 0, Null, and empty list are false, ANYTHING else is true.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):

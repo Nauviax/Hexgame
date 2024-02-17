@@ -1,4 +1,7 @@
 # Turns an entity on the stack into it's position
+static var descs = [
+	"Given an entity, returns the tile position of the entity.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

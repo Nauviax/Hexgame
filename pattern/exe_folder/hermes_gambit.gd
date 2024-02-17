@@ -1,5 +1,8 @@
 # Remove a pattern or list of patterns from the stack, then cast them.
 # Max depth 128.
+static var descs = [
+	"Given a pattern or list of patterns, will cast them in order as if they were casted manually. Max depth is 128.",
+]
 static var iota_count = 1
 static var is_spell = true # If this pattern changes the level in any way. (Meta pattern assume true, as can be either)
 static func execute(hexecutor, pattern):

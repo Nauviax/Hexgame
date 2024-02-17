@@ -1,4 +1,7 @@
 # Duplicates the top two iotas on the stack.
+static var descs = [
+	"Returns copies of the top two iotas, resulting in two copies of each. Both copies are placed above both originals on the stack.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):

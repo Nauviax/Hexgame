@@ -1,4 +1,7 @@
 # Pushes (0,-1)
+static var descs = [
+	"Returns a vector pointing up. (0, -1)",
+]
 static var iota_count = 0
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):

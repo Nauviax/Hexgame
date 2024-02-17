@@ -1,4 +1,7 @@
 # Turns an entity on the stack into it's velocity (Tiles per second hopefully)
+static var descs = [
+	"Given an entity, returns it's velocity vector. Most of the time, this will be (0,0).",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

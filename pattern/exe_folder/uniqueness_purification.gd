@@ -1,4 +1,7 @@
 # Removes duplicate entries from a list.
+static var descs = [
+	"Given a list, returns a new list with all duplicate entries removed.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

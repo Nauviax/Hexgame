@@ -2,6 +2,10 @@
 # If the number is negative, instead moves the top element of the stack down that many elements.
 # 0 refers to the top of stack, which gets removed/consumed by this pattern. This element is consumed, so do nothing.
 # 1 effectively does nothing, as it just brings the top element to the top.
+static var descs = [
+	"Given a number, REMOVES the iota at that index in the stack and returns it to the top. If negative, instead moves the top iota down 'number' places.",
+	"0 refers to the top of the stack, which is the number that gets removed. 1 would just bring the (now) top element to the top. Both of these inputs will do nothing."
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

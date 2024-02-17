@@ -1,4 +1,7 @@
 # Pushes true (Boolean)
+static var descs = [
+	"Returns true, a boolean value.",
+]
 static var iota_count = 0
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):

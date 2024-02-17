@@ -2,6 +2,10 @@
 # If the number is negative, instead copies the top element of the stack below that many elements.
 # 0 refers to the top of stack, which gets removed/consumed by this pattern. Return the number to the stack and finish.
 # 1 effectively duplicates the top element to the top.
+static var descs = [
+	"Given a number, COPIES the iota at that index in the stack and returns it to the top. If negative, instead inserts a copy of top iota below 'number' iotas in stack.",
+	"0 refers to the top of the stack, which means the removed number just gets copied back. 1 will simply duplicate the (now) top element to just below it."
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

@@ -1,4 +1,7 @@
 # Takes the tangent of an angle in radians, yielding the slope of that angle drawn on a circle.
+static var descs = [
+	"Given a number, returns the TANGENT of that number in radians.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

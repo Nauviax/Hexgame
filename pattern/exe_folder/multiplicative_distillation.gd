@@ -1,5 +1,9 @@
 # Takes the top two iotas in stack, returns the product.
 # With two vectors, returns the dot product.
+static var descs = [
+	"Given two numbers, returns their product. Given a number and a vector, scales the vector by the number.",
+	"Given two vectors, returns their dot product.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

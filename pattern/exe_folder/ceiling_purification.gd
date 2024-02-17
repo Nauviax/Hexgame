@@ -1,5 +1,8 @@
 # Ceilings the top iota of the stack
 # For vectors, ceil each element
+static var descs = [
+	"Given a number or vector, rounds it UP to an integer and returns it. Vector components are rounded up individually to create a new vector.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

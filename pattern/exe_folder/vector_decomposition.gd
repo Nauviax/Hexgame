@@ -1,5 +1,8 @@
 # Takes a vector of two values and pushes the contents to the stack.
 # For vector [x, y], x is pushed first, then by. (Leaving y on top)
+static var descs = [
+	"Given a vector, returns the components of the vector. Return order is x then y, so y will be on top of stack.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

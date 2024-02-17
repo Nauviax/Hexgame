@@ -1,6 +1,9 @@
 # Upon casting, this pattern will cause the caster to unload and exit the level.
 # Returns Bad_Iota if there is no level to exit to.
 # Takes the caster as an iota, to help prevent accidental use.
+static var descs = [
+	"Cast this spell to exit a level. Requires the caster as an argument to prevent accidental use.",
+]
 static var iota_count = 1
 static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

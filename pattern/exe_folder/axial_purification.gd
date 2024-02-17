@@ -1,6 +1,9 @@
 # For a vector, coerce it to its nearest axial direction, a unit vector.
 # For a number, return the sign of the number; 1 if positive, -1 if negative.
 # In both cases, zero is unaffected.
+static var descs = [
+	"Given a vector, returns the nearest axial direction as a unit vector. Given a number, returns 1 if positive, -1 if negative. In both cases, zero is unaffected.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

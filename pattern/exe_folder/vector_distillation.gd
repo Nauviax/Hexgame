@@ -1,5 +1,8 @@
 # Takes two numbers and creates a vector. (b, a) where a is on top of the stack.
 # This means adding 1 then 2 to stack then executing, (So 2 is on top,) will give (1, 2).
+static var descs = [
+	"Given two numbers TOP (y) and SECOND (x), returns a vector (SECOND, TOP).",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

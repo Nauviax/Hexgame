@@ -1,4 +1,7 @@
 # Remove the top iota, then add it as the first element to the list at the top of the stack.
+static var descs = [
+	"Given an iota (TOP) and a list (SECOND), append the iota to the start of the list and return the result.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

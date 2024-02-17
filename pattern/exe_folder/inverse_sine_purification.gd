@@ -1,4 +1,7 @@
 # Takes the inverse sine of a value with absolute value 1 or less, yielding the angle whose sine is that value.
+static var descs = [
+	"Given a number, returns the INVERSE SINE of that number in radians.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

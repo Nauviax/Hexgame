@@ -1,5 +1,8 @@
 # Takes the inverse tangent of a Y (aa) and X (bb) value,
 # Yielding the angle between the X-axis and a line from the origin to that point. (!!! Should this be a vector?)
+static var descs = [
+	"Given two numbers X (SECOND) and Y (TOP), returns the angle between the X-axis and a line from the origin to that point.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

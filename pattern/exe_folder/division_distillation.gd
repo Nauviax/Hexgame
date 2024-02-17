@@ -1,9 +1,13 @@
 # Takes the top two iotas in stack, returns returns b / a (a being the top iota)
 # With two vectors, returns the 2D cross product.
 #   Obviously a 2D cross product isn't possible
-#   This code returns the magnitude (z) of the cross product vector, assuming a and b's Z values are 0
+#   This code returns the SIGNED magnitude (z) of the cross product vector, assuming a and b's Z values are 0
 #   Can be used to determine whether rotating from b to a moves in a counter clockwise or clockwise direction
 #   See "stackoverflow.com/questions/243945"
+static var descs = [
+	"Given two numbers, returns SECOND / TOP. Given a number (TOP) and a vector (SECOND), divides each vector component by the number.",
+	"Given two vectors, returns the 2D cross product, SECOND x TOP. Specifically, returns the Z component of the cross product vector, assuming the Z values of the input vectors are 0. Example: (1,2) x (1,-3) -> (0,0,-5) -> return -5."
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

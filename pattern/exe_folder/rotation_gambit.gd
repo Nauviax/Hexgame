@@ -1,4 +1,7 @@
 # Yanks the iota third from the top of the stack to the top. [cc, bb, aa] becomes [bb, aa, cc]
+static var descs = [
+	"Takes the third iota from the top, and brings it to the top of the stack. [third, second, TOP] becomes [second, TOP, third].",
+]
 static var iota_count = 3
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):

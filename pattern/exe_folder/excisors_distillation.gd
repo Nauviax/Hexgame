@@ -1,5 +1,8 @@
 # Remove the number (num) at the top of the stack, then remove the num-th element of the list at the top of the stack
 # Does nothing if the number is out of bounds
+static var descs = [
+	"Given a number (TOP) and a list (SECOND), removes the num-th element of the list and returns the new list. (0-indexed)",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

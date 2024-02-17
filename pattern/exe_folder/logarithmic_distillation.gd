@@ -1,4 +1,7 @@
-# Removes the top number (aa), then takes the logarithm of the next number (bb) using 'a' as its base.
+# Removes the top number (aa), then takes the logarithm of the next number (bb) using 'aa' as its base.
+static var descs = [
+	"Given two numbers, returns the logarithm of the SECOND number using the TOP number as the base.",
+]
 static var iota_count = 2
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

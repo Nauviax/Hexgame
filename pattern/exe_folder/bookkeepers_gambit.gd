@@ -1,6 +1,9 @@
 # Remove iotas from stack based on value
 # Value as a binary number will look something like 10101, where 1 means remove and 0 means keep.
 # The rightmost/least significant bit is the top of the stack/last item in list.
+static var descs = [
+	"Removes iotas from the stack based on the exact pattern drawn. '-' represents keep, '\\/' represents remove. Last drawn keep/remove affects the top of stack.",
+]
 static var iota_count = 0
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

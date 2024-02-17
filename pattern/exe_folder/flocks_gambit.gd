@@ -1,4 +1,7 @@
 # Removes num (iota) elements from the stack, then creates a new list with the removed elements.
+static var descs = [
+	"Given a number, removes that many iotas after the number and returns a list of the removed iotas. The first (TOP) iota removed (Not the initial num) will be the last item in the list.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

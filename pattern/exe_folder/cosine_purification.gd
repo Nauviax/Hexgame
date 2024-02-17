@@ -1,4 +1,7 @@
 # Takes the cosine of an angle in radians, yielding the horizontal component of that angle drawn on a unit circle.
+static var descs = [
+	"Given a number, returns the COSINE of that number in radians.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

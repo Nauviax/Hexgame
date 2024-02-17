@@ -1,5 +1,9 @@
 # Takes an entity (b) and a vector (a), then pushes the entity in the given direction by the vector magnitude. (Max magnitude is 16)
 # If entity is floating, does NOT collide with spikes.
+static var descs = [
+	"Given an entity (SECOND) and a vector (TOP), pushes the entity in the given direction by the vector magnitude.",
+	"Must be a moveable entity. Max magnitude is 16. Entities that aren't floating will collide with spikes and die."
+]
 static var iota_count = 2
 static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

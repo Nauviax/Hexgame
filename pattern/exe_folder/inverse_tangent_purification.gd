@@ -1,4 +1,7 @@
 # Takes the inverse tangent of a value, yielding the angle whose tangent is that value.
+static var descs = [
+	"Given a number, returns the INVERSE TANGENT of that number in radians.",
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

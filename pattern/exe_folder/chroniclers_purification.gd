@@ -1,5 +1,9 @@
 # Remove an entity iota, and pushes the entity's iota. (Or entity's spellbook selected iota)
 # Always returns <null> if the entity can't be read from externally.
+static var descs = [
+	"Given an entity iota, returns a copy of the iota contained in the entity. If the entity isn't readable for any reason, returns null.",
+	"If given a player entity, the iota is copied from the player's selected spellbook page"
+]
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

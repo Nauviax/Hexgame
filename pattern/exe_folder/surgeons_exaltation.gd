@@ -1,5 +1,8 @@
 # Remove the top iota (iota) then a number (num), then set the num-th element of the top list to that iota.
 # Does nothing if the number is out of bounds.
+static var descs = [
+	"Given an iota (TOP), a number (SECOND) and a list (THIRD), sets the number-th element of the list to the given iota and returns the list. Iota is lost if number is out of bounds.",
+]
 static var iota_count = 3
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):

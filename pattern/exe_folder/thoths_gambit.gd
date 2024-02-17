@@ -6,7 +6,12 @@
 # Then, after all is said and done, pushes the list of saved iotas onto the main stack.
 
 # Order of saving to results list is tip to tail, with bottom of first (first = list[0] iota) stack being the first element.
-
+static var descs = [
+	"Given a list of iotas (TOP) and a list of PATTERNS (SECOND), will execute the patterns over each element of TOP. Specifics next page.",
+	"For EACH element in TOP, will copy the initial stack and add the element to the top, then executes each pattern in SECOND on the new stack. The iotas left in the stack afterward are saved to a list, and the list is pushed to the main stack once all elements have been used.",
+	"Order of saving stack results to return list is tip to tail, with bottom of stack from first iota (TOP[0]) being the first element in the return list.",
+	"This is your 'foreach' loop. Use it well."
+]
 static var iota_count = 2
 static var is_spell = true # If this pattern changes the level in any way. (Meta pattern assume true, as can be either)
 static func execute(hexecutor, pattern):
