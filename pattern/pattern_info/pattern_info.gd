@@ -6,6 +6,7 @@ extends Control
 @export var iota_count_label: Label
 
 @export var middle_container: Control
+@export var graphic_parent: Control
 @export var desc_button: Button # Grey out when < 2 descs
 @export var description_label: Label
 @export var background: NinePatchRect
@@ -53,25 +54,29 @@ func display(meta: String, show_above: bool = false):
 		if current_pattern == null or rest != current_pattern.p_code: # If the p_code is different, refresh contents
 			middle_container.visible = true # Used for pattern info
 			current_pattern = Pattern.new(rest) # Create a new pattern with the given p_code
+
 			var p_name = current_pattern.name
 			title_label.text = p_name
 			if p_name == "Numerical Reflection":
 				title_label.text += " | " + str(current_pattern.value)
 			elif p_name == "Bookkeeper's Gambit":
 				title_label.text += " | " + Pattern.value_to_bookkeeper(current_pattern.value)
+
 			code_label.text = current_pattern.p_code
 			is_spell_label.text = "Spell" if current_pattern.p_exe.is_spell else "Pattern"
 			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe.iota_count)
 			desc_page = 0 # Reset page if new pattern
-			if ("descs" in current_pattern.p_exe): # Temporary code while patterns are being updated (!!!)
-				description_label.text = current_pattern.p_exe.descs[0]
-				if current_pattern.p_exe.descs.size() > 1: # Disable button if only one description
-					desc_button.disabled = false
-				else:
-					desc_button.disabled = true
+
+			description_label.text = current_pattern.p_exe.descs[0]
+			if current_pattern.p_exe.descs.size() > 1: # Disable button if only one description
+				desc_button.disabled = false
 			else:
-				description_label.text = "No description available."
 				desc_button.disabled = true
+
+			var pattern_line = Pattern.create_line(current_pattern.p_code)
+			if graphic_parent.get_child_count() != 0: # Remove old graphic if exists
+				graphic_parent.get_child(0).queue_free()
+			graphic_parent.add_child(pattern_line) # Add new graphic
 	else: # Non-patterns get less info shown
 		current_pattern = null # Clear current pattern
 		middle_container.visible = false

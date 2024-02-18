@@ -159,7 +159,7 @@ stretch = true
 
 [node name="LevelViewport" type="SubViewport" parent="HexDisplay/MainSplit/LevelAndGrid/LevelContainer"]
 handle_input_locally = false
-size = Vector2i(200, 200)
+size = Vector2i(1096, 896)
 render_target_update_mode = 4
 
 [node name="GridPopout" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid"]

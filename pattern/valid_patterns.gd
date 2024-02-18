@@ -33,7 +33,7 @@ static func set_pattern_name(pattern):
 # Dictionary of static patterns. Key maps to a short array, where the first item is the name of the pattern, and the second is a NON-UNIQUE short name version.
 # Key is the raw_code value, which excludes p_code's initial number (Rotation is irrelevant)
 # Short names for Numerical Reflection and Bookkeeper's Gambit are just their value, and Invalid Pattern just it's p_code.
-static var static_patterns = {
+static var static_patterns = { # !!! I would like to remove short names somehow, but need lists of patterns to display nicer.
 	# Basic Patterns
 	"LL": ["Compass' Purification", "ComPu"],
 	"lLl": ["Mind's Reflection", "MinRe"],

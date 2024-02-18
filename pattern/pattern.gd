@@ -76,3 +76,49 @@ static func value_to_bookkeeper(value):
 	if str_gambit == "": # For the do-nothing gambit
 		str_gambit = "-"
 	return str_gambit
+
+# For use in create_line
+static var line_gradient = preload("res://resources/gradients/casting.tres")
+static var vector_offsets = [ # Unit distance * 50
+	Vector2(25, -43.3), # Top right
+	Vector2(50, 0), # Right
+	Vector2(25, 43.3), # Bottom right
+	Vector2(-25, 43.3), # Bottom left 
+	Vector2(-50, 00), # Left
+	Vector2(-25, -43.3) # Top left
+]
+
+# Creates and returns a Line2D object that represents the pattern.
+# Static so pattern object isn't required.
+static func create_line(p_code: String):
+	var line = Line2D.new()
+	line.add_point(Vector2(0, 0))
+	line.gradient = line_gradient
+	line.width = 6
+	# Line initial point at 0,0. Every char in p_code places a new point 1 unit away from the last.
+	# First char is initial direction, 1 being top right, 2 being right, etc to 6 being top left.
+	# Afterwards, L, l, s, r, R are hard left, left, straight, right, hard right. All on hex coordinates.
+	var first = p_code.substr(0, 1).to_int()
+	var dir = first - 1 # 1 is top right, which is index 0.
+	var pos = vector_offsets[dir] # Initial position
+	line.add_point(pos) 
+	var rest = p_code.substr(1)
+	for cc in rest:
+		match cc:
+			"L": dir = (dir - 2) % 6
+			"l": dir = (dir - 1) % 6
+			"s": pass # No change
+			"r": dir = (dir + 1) % 6
+			"R": dir = (dir + 2) % 6
+		pos += vector_offsets[dir]
+		line.add_point(pos)
+	# Scale line based on number of points, inversely proportional to number of points.
+	var scale = 50.0 / (45.0 + line.points.size())
+	line.scale = Vector2(scale, scale)
+	# Centre the line
+	var average = Vector2(0, 0)
+	for point in line.points:
+		average += point
+	average /= line.points.size()
+	line.position = -average * scale
+	return line

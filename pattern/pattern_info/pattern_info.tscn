@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8c58"]
 
-[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "desc_button", "description_label", "background")]
+[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "graphic_parent", "desc_button", "description_label", "background")]
 custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_d8c58")
@@ -16,6 +16,7 @@ code_label = NodePath("MarginContainer/Main/Middle/Info/Code")
 is_spell_label = NodePath("MarginContainer/Main/Middle/Info/IsSpell")
 iota_count_label = NodePath("MarginContainer/Main/Middle/Info/IotaCount")
 middle_container = NodePath("MarginContainer/Main/Middle")
+graphic_parent = NodePath("MarginContainer/Main/Middle/CenterContainer/GraphicParent")
 desc_button = NodePath("MarginContainer/Main/Middle/Info/NextDesc")
 description_label = NodePath("MarginContainer/Main/Desc")
 background = NodePath("NinePatchRect")
@@ -54,11 +55,15 @@ autowrap_mode = 3
 [node name="Middle" type="HBoxContainer" parent="MarginContainer/Main"]
 layout_mode = 2
 
-[node name="Graphic" type="Control" parent="MarginContainer/Main/Middle"]
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/Main/Middle"]
+clip_contents = true
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
+
+[node name="GraphicParent" type="Control" parent="MarginContainer/Main/Middle/CenterContainer"]
+layout_mode = 2
 
 [node name="Info" type="VBoxContainer" parent="MarginContainer/Main/Middle"]
 layout_mode = 2

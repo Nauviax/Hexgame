@@ -5,13 +5,13 @@ static func initiate(level_base):
 	if level_base.player.sb != [null, null, null, null]:
 		return
 	# Sample hex will get the entity player is looking at, and try to enter it.
-	var hex_strings = ["1lLl", "2LL", "3lLl", "4sL", "5srLlL", "6llL"]
+	var hex_strings = ["1lLl", "2LL", "1lLl", "2sL", "2srLlL", "6llL"]
 	var hex = []
 	for ii in hex_strings:
 		hex.append(Pattern.new(ii))
 	level_base.player.sb[0] = hex
 	# Next hex will give the caster levitation, for quick flight
-	hex_strings = ["1lLl", "2lllllLssLsLsR"]
+	hex_strings = ["1lLl", "5lllllLssLsLsR"]
 	hex = []
 	for ii in hex_strings:
 		hex.append(Pattern.new(ii))
