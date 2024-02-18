@@ -1,5 +1,7 @@
 # Bool Sort Validator
-static var desc = "Bool Sort: Move any haver containing true to the green area. Kill any haver containing false. You cannot write to the havers."
+static var descs = [
+	"Bool Sort: Move any haver containing true to the green area. Kill any haver containing false. You cannot write to the havers."
+]
 static func validate(level_base):
 	var greens = level_base.entities_on_tile(4)
 	if level_base.entities.size() - greens.size() > 1:

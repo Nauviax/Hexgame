@@ -54,6 +54,10 @@ var transition_multiplier = 3.5 # Distance player is placed on transition, and h
 @onready var raycast_e = $HexEntityRaycast
 @onready var raycast_i = $HexImpulseRaycast
 
+# Description info for the level
+var level_desc = "No description set" # Displayed description. Can be updated by validator.
+var level_progress = 0 # Progress through level. Used by validator to determine what to validate and which description to show.
+
 # Generate rest of base level info
 func _ready():
 	# Get entities and objecets
@@ -63,6 +67,8 @@ func _ready():
 		level_seed = randi()
 	rnd = RandomNumberGenerator.new()
 	rnd.seed = level_seed
+	# Get initial description
+	level_desc = validator.descs[0]
 	# Apply initiator to level
 	initiator.initiate(self)
 	# Set background theme
