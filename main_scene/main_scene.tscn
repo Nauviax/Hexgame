@@ -79,12 +79,12 @@ Hex size:
 40"
 autowrap_mode = 2
 
-[node name="LevelDesc" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
+[node name="LevelDesc" type="RichTextLabel" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
+bbcode_enabled = true
 text = "Level Name + Description here"
 autowrap_mode = 2
 
@@ -229,6 +229,9 @@ text = "Continue Here"
 
 [connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/ExValidate" to="HexDisplay" method="_on_extra_validate_pressed"]
+[connection signal="meta_clicked" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_clicked"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="meta_clicked" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_clicked"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_started"]

@@ -19,7 +19,7 @@ extends Control
 
 @export var border_label: Label
 
-@export var level_desc_label: Label
+@export var level_desc_label: RichTextLabel
 
 @export var level_controls: Control # For hiding/showing level controls, normally when a level isn't solvable.
 

@@ -43,6 +43,7 @@ func _process(_delta):
 # Displays pattern info for a given p_code (Starts with "P" for pattern/p_code)
 # Displays entity info for a given entity (Starts with "E" for entity) # Not implemented at all right now
 # Displays error message for given error (Starts with "B" for bad_iota)
+# Displays plain text (Starts with "M" for message) (!!! Possibly allow meta to specify custom title?)
 func display(meta: String, show_above: bool = false):
 	if locked_display: # If locked, don't change display
 		return
@@ -80,8 +81,11 @@ func display(meta: String, show_above: bool = false):
 	else: # Non-patterns get less info shown
 		current_pattern = null # Clear current pattern
 		middle_container.visible = false
-		if type == "B": # Error (E reserved for entities, possibly change later (!!!))
+		if type == "B": # Error (E reserved for entities, possibly change later, and make this a match not elif (!!!))
 			title_label.text = "Error"
+			description_label.text = rest
+		elif type == "M": # Message, basically plain text
+			title_label.text = "Message" # !!! Possibly hide title? Or allow 'rest' to specify it?
 			description_label.text = rest
 		else:
 			title_label.text = "Unknown"

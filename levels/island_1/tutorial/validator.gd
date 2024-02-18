@@ -1,10 +1,10 @@
 # Reveal Iota Validator
-static var desc = "Tutorial step 1: Reveal yourself by casting Mind's Reflection then Reveal."
+static var desc = "Tutorial step 1: Reveal yourself by casting [url=P1lLl]Mind's Reflection[/url] then [url=P1Rr]Reveal[/url]."
 static var step = -1 # Starts at -1 so next step is index 0 for steps list. Jank, but ehhhh
 static var steps = [
-	"Tutorial step 2: Reveal the iota contained in the entity in the next room.",
-	"Tutorial step 3: Move the entity onto the red area past the spikes.",
-	"Tutorial step 4: Finish on the green area by teleporting through the glass.",
+	"Tutorial step 2: Reveal the iota contained in the entity in the next room. [url=P2srLlL]Scout's[/url] can be used to get the entity, and [url=P2sLslslslslsls]Chronicler's[/url] to read it's iota. Remember to see Hexbook for other needed patterns.",
+	"Tutorial step 3: Move the entity onto the red area past the spikes. [url=P5lllllLssLsLsR]Blue Sun's[/url] and [url=P4LslllsLls]Impulse[/url] should be used. Number/Vector patterns are in the Hexbook.",
+	"Tutorial step 4: Finish on the green area by teleporting through the glass using [url=P2sssLllsrrrrrsllsllsssllrllsssll]Teleport[/url].",
 ]
 static func validate(level_base):
 	match step:
