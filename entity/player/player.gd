@@ -136,12 +136,12 @@ func _physics_process(delta):
 			velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_floating else friction)
 			var vel_len = velocity.length()
 			# If close enough and slow enough, snap to grid
-			var tile_center = position.snapped(tile_snap)
-			var tile_dir = tile_center - position
+			var tile_centre = position.snapped(tile_snap)
+			var tile_dir = tile_centre - position
 			if tile_dir.length() < 1 and vel_len < 25:
-				position = tile_center
+				position = tile_centre
 				velocity = Vector2.ZERO
-			# Otherwise, apply velocity towards nearest tile center
+			# Otherwise, apply velocity towards nearest tile centre
 			elif vel_len < tile_gravity_max_vel:
 				velocity += tile_dir.normalized() * tile_gravity
 		var collision = move_and_collide(velocity * delta)

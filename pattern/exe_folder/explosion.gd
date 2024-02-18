@@ -1,5 +1,5 @@
 # Takes a position (b) and a size (a), then deletes all entities within "size" tiles of the position (Square shape)
-# Position is rounded to center on tile. Size can not be less than 1 (Will kill at least the neighbours)
+# Position is rounded to centre on tile. Size can not be less than 1 (Will kill at least the neighbours)
 static var descs = [
 	"Given a position (SECOND) and a size (TOP), deletes all entities within 'size' tiles of the position (Square shape).",
 	"Minimum size is 1, meaning an entity neighbouring the position will always be deleted. This spell fails if player is in range."
@@ -19,7 +19,7 @@ static func execute(hexecutor, pattern):
 	if not pos is Vector2:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "vector", pos))
 		return false
-	pos = pos.round() # Round to center on tile and prevent cheese (No edge sniping single targets in group)
+	pos = pos.round() # Round to centre on tile and prevent cheese (No edge sniping single targets in group)
 	var level_base = hexecutor.level_base
 	var entities = level_base.entities
 	var close_entities = []
