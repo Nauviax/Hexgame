@@ -17,7 +17,7 @@ var writeable = false
 var killable = true # Explosion, Impulse into spikes
 var moveable = true # Teleport, Impulse, Floating etc (set_pos and similar still function, this must be checked per spell!)
 
-# True if this entity is floating. (Via Blue Sun's Nadir, Floating spell)
+# True if this entity is floating. (Via Float spell, Floating spell)
 var is_floating = false
 
 # Constructor

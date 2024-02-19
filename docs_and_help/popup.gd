@@ -35,7 +35,7 @@ func _ready():
 func _process(_delta):
 	if visible and not locked_movement:
 		# Offset upwards by size if showing above, and offset towards top left if locked (Dragging)
-		position = get_global_mouse_position() + Vector2(5, -5-background.size.y if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
+		position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
 		if first_process: # Refit container on first process
 			first_process = false
 			size.y = 0

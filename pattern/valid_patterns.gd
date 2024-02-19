@@ -186,7 +186,7 @@ static var static_patterns = { # !!! I would like to remove short names somehow,
     # Other
     "LLsLLsLL": ["Explosion", "Exp"],
     "LslllsLls": ["Impulse", "Imp"],
-    "lllllLssLsLsR": ["Blue Sun's Nadir", "BluNa"],
+    "lllllLssLsLsR": ["Float", "Flo"],
     "sssLllsrrrrrsllsllsssllrllsssll": ["Teleport", "Tel"],
 }
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cgq1sfas21djs"]
+[gd_scene load_steps=6 format=3 uid="uid://cgq1sfas21djs"]
 
 [ext_resource type="Texture2D" uid="uid://b64fs4i6xedgl" path="res://resources/ui/popup_bg.png" id="1_ho7y6"]
-[ext_resource type="Script" path="res://pattern/pattern_info/pattern_info.gd" id="1_v4881"]
+[ext_resource type="Script" path="res://docs_and_help/popup.gd" id="1_v4881"]
 [ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="3_n3cin"]
+[ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="4_5kk7m"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8c58"]
 
@@ -97,6 +98,7 @@ vertical_alignment = 1
 
 [node name="NextDesc" type="Button" parent="MarginContainer/Main/Middle/Info"]
 layout_mode = 2
+theme_override_styles/focus = ExtResource("4_5kk7m")
 text = "Desc ->"
 
 [node name="Desc" type="Label" parent="MarginContainer/Main"]
@@ -119,6 +121,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 13
+theme_override_styles/focus = ExtResource("4_5kk7m")
 text = "III"
 
 [node name="Close" type="Button" parent="MarginContainer/PopupButtons"]
@@ -126,6 +129,7 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+theme_override_styles/focus = ExtResource("4_5kk7m")
 text = "X"
 
 [connection signal="pressed" from="MarginContainer/Main/Middle/Info/NextDesc" to="." method="_on_next_desc_pressed"]

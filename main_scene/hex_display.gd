@@ -5,7 +5,7 @@ extends Control
 
 @onready var main_scene = get_parent()
 
-@export var toggle_grid_button: Button
+@export var toggle_grid_button: Button # Text control
 
 @export var grid_control: Control
 
@@ -27,7 +27,9 @@ extends Control
 
 @export var validate_label: Label # For announcing validation results
 
-@export var pattern_info: PanelContainer
+@export var popup: PanelContainer
+
+@export var hexbook_holder: Control
 
 @export var replay_controls: Control # Should be shown while in replay mode
 
@@ -60,6 +62,10 @@ func _on_toggle_grid_pressed():
 		toggle_grid_button.text = "Hide Grid <"
 		grid_control.show()
 		grid_control.set_process(true)
+
+# Handle Hexbook button
+func _on_hexbook_pressed():
+	hexbook_holder.visible = not hexbook_holder.visible
 
 # Update border size counter
 func update_border_label(prev, current, cast):
@@ -171,16 +177,16 @@ func _on_extra_validate_pressed(): # The repeating one
 
 # Handle meta-text and other pattern hovers
 func _on_meta_hover_started(meta:Variant):
-	pattern_info.display(meta)
+	popup.display(meta)
 
 func _on_meta_hover_started_low(meta:Variant):
-	pattern_info.display(meta, true) # Display above mouse rather than below
+	popup.display(meta, true) # Display above mouse rather than below
 
 func _on_meta_clicked(_meta:Variant):
-	pattern_info.lock() # Stop info from following mouse or disappearing
+	popup.lock() # Stop info from following mouse or disappearing
 	
 func _on_meta_hover_ended(_meta):
-	pattern_info.stop_display()
+	popup.stop_display()
 
 # Handle replay and replay controls
 
