@@ -112,13 +112,25 @@ static func create_line(p_code: String):
 			"R": dir = (dir + 2) % 6
 		pos += vector_offsets[dir]
 		line.add_point(pos)
-	# Scale line based on number of points, inversely proportional to number of points.
-	var scale = 50.0 / (45.0 + line.points.size())
-	line.scale = Vector2(scale, scale)
-	# Centre the line
+	# Scale and centre the line
 	var average = Vector2(0, 0)
-	for point in line.points:
+	var max_x = 0
+	var max_y = 0
+	var min_x = 0
+	var min_y = 0
+	for point in line.points: # Calculate average, and get min + max points
 		average += point
+		if point.x > max_x:
+			max_x = point.x
+		elif point.x < min_x:
+			min_x = point.x
+		if point.y > max_y:
+			max_y = point.y
+		elif point.y < min_y:
+			min_y = point.y
 	average /= line.points.size()
+	var largest_dist = max(max_x - min_x, max_y - min_y)
+	var scale = 100 / largest_dist
+	line.scale = Vector2(scale, scale)
 	line.position = -average * scale
 	return line
