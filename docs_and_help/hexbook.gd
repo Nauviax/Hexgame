@@ -5,11 +5,25 @@ extends Control
 
 @export var tree: Tree
 @export var graphic_parent: Control
+@export var title_label: Label
+@export var middle_container: Control
+@export var code_label: Label
+@export var is_spell_label: Label
+@export var iota_count_label: Label
+@export var description_label: Label
 
 @onready var static_pattern_dict = Valid_Patterns.static_patterns
 
 # If true, follow mouse
 var follow_mouse = false
+
+# Pattern being displayed. Can be null
+var current_pattern = null
+
+# Default description to show when no pattern is selected
+const default_description = "
+This is the Hexbook. It contains all available patterns, but will not be enough to teach hexcasting from zero.\n\n
+There are some changes from original hexcasting, mainly related to vectors being 2D and most spells being removed or significantly changed."
 
 func _process(_delta):
 	if follow_mouse:
@@ -17,7 +31,15 @@ func _process(_delta):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Clear hexbook text
+	title_label.text = ""
+	middle_container.visible = false
+	description_label.text = default_description
+
+	# Create tree
 	tree.create_item() # Initial root item
+	var top_item = make_item("Hexbook", true) # Title page
+	tree.set_selected(top_item, 0) # Select the first item
 	add_category("Basic Patterns", [
 		"1lLl", # Mind's Reflection
 		"1Rr", # Reveal
@@ -30,7 +52,7 @@ func _ready():
 		"6llL", # Enter
 		"6llR", # Exit
 	])
-	add_numerical_cat()
+	make_item("Number Literals", true, null, "3LlLLssLLsL") # Number Literals standalone
 	add_category("Mathematics", [
 		"1sLLs", # Additive Distillation
 		"6sRRs", # Subtractive Distillation
@@ -59,7 +81,7 @@ func _ready():
 		"6rLsLr", # Circle's Reflection
 		"2LLl", # Euler's Reflection
 	])
-	add_bookkeeper_cat()
+	make_item("Bookkeeper's Gambit", true, null, "3LrsrLRL") # Bookkeeper's Gambit standalone
 	add_category("Stack Manipulation", [
 		"2LLsRR", # Jester's Gambit
 		"2LLrLL", # Rotation Gambit
@@ -131,21 +153,21 @@ func _ready():
 		"2rrrRs", # Evanition
 	])
 	add_category("Reading and Writing", [
-        "2Llllll", # Scribe's Reflection
-        "2Rrrrrr", # Scribe's Gambit
-        "2sLslslslslsls", # Chronicler's Purification
-        "2sRsrsrsrsrsrs", # Chronicler's Gambit
-        "2Llllllr", # Auditor's Reflection
-        "2sLslslslslslsrs", # Auditor's Purification
-        "2Rrrrrrl", # Assessor's Reflection
-        "2sRsrsrsrsrsrsls", # Assessor's Purification
-        "6rllsLslLLs", # Huginn's Gambit
-        "1lrrsRsrRRs", # Muninn's Reflection
+		"2Llllll", # Scribe's Reflection
+		"2Rrrrrr", # Scribe's Gambit
+		"2sLslslslslsls", # Chronicler's Purification
+		"2sRsrsrsrsrsrs", # Chronicler's Gambit
+		"2Llllllr", # Auditor's Reflection
+		"2sLslslslslslsrs", # Auditor's Purification
+		"2Rrrrrrl", # Assessor's Reflection
+		"2sRsrsrsrsrsrsls", # Assessor's Purification
+		"6rllsLslLLs", # Huginn's Gambit
+		"1lrrsRsrRRs", # Muninn's Reflection
 		"3RRl", # Verso's Gambit
 		"3RRs", # Recto's Gambit
 		"4LLs", # Tome's Reflection
 		"4LLr", # Tome's Gambit
-    ])
+	])
 	add_category("Advanced Mathematics", [
 		"3lllllLL", # Sine Purification
 		"3lllllLR", # Cosine Purification
@@ -194,19 +216,6 @@ func add_category(cat_name: String, patterns: Array):
 			true, category, pattern
 		)
 	category.collapsed = true # To fit all categories in the tree view
-
-# Special cases for dynamic patterns
-func add_numerical_cat():
-	var category = make_item("Number Literals", true)
-	category.collapsed = true
-
-func add_bookkeeper_cat():
-	var category = make_item("Bookkeeper's Gambit", true)
-	make_item (
-		"Novice's Gambit", # Not a real pattern
-		true, category, "3L"
-	)
-	category.collapsed = true
 	
 # Handle display of given pattern or category
 func _on_pattern_select_item_selected():
@@ -214,11 +223,36 @@ func _on_pattern_select_item_selected():
 		graphic_parent.get_child(0).queue_free()
 	var item = tree.get_selected()
 	if item:
-		var code = item.get_metadata(0)
-		if code: # Item has pattern tied to it
-			#var pattern = Pattern.new(code)
-			var pattern_line = Pattern.create_line(code)
-			graphic_parent.add_child(pattern_line) # Add new graphic
+		var p_code = item.get_metadata(0)
+		if p_code: # Item has a pattern tied to it
+			current_pattern = Pattern.new(p_code) # Create a new pattern with the given code
+
+			# Display pattern line
+			var p_line = Pattern.create_line(p_code) 
+			graphic_parent.add_child(p_line)
+			
+			# Set title
+			var p_name = current_pattern.name
+			title_label.text = p_name
+
+			# Set misc labels
+			middle_container.visible = true
+			code_label.text = current_pattern.p_code
+			is_spell_label.text = "Spell" if current_pattern.p_exe.is_spell else "Pattern"
+			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe.iota_count)
+			
+			# Set description
+			var desc_text = ""
+			if p_name == "Numerical Reflection" or p_name == "Bookkeeper's Gambit":
+				desc_text = "THIS IS A DYNAMIC PATTERN. The example shown above is just one of many possible patterns.\n\n"
+			for desc in current_pattern.p_exe.descs:
+				desc_text += desc + "\n\n"
+			description_label.text = desc_text
+
+		else: # Item is not tied to a pattern
+			title_label.text = ""
+			middle_container.visible = false
+			description_label.text = default_description
 
 # On click, toggle collapse of category. Works even if already selected.
 func _on_pattern_select_item_mouse_selected(_position, _mouse_button_index):

@@ -1,16 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://dj45rcuk0lphe"]
+[gd_scene load_steps=5 format=3 uid="uid://dj45rcuk0lphe"]
 
 [ext_resource type="Script" path="res://docs_and_help/hexbook.gd" id="1_66vxv"]
 [ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="1_t2cdo"]
 [ext_resource type="Texture2D" uid="uid://b64fs4i6xedgl" path="res://resources/ui/popup_bg.png" id="2_lhpwn"]
+[ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="4_yc0yh"]
 
-[node name="Hexbook" type="PanelContainer" node_paths=PackedStringArray("tree", "graphic_parent")]
+[node name="Hexbook" type="PanelContainer" node_paths=PackedStringArray("tree", "graphic_parent", "title_label", "middle_container", "code_label", "is_spell_label", "iota_count_label", "description_label")]
 offset_right = 654.0
 offset_bottom = 350.0
 theme_override_styles/panel = ExtResource("1_t2cdo")
 script = ExtResource("1_66vxv")
 tree = NodePath("MarginContainer/UDSplit/LRSplit/PatternSelect")
-graphic_parent = NodePath("MarginContainer/UDSplit/LRSplit/CenterContainer/GraphicParent")
+graphic_parent = NodePath("MarginContainer/UDSplit/LRSplit/Main/Middle/CenterContainer/GraphicParent")
+title_label = NodePath("MarginContainer/UDSplit/LRSplit/Main/Title")
+middle_container = NodePath("MarginContainer/UDSplit/LRSplit/Main/Middle")
+code_label = NodePath("MarginContainer/UDSplit/LRSplit/Main/Middle/Info/Code")
+is_spell_label = NodePath("MarginContainer/UDSplit/LRSplit/Main/Middle/Info/IsSpell")
+iota_count_label = NodePath("MarginContainer/UDSplit/LRSplit/Main/Middle/Info/IotaCount")
+description_label = NodePath("MarginContainer/UDSplit/LRSplit/Main/DescScroll/Desc")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 modulate = Color(0.392157, 0.392157, 0.392157, 1)
@@ -69,21 +76,97 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 
 [node name="PatternSelect" type="Tree" parent="MarginContainer/UDSplit/LRSplit"]
-custom_minimum_size = Vector2(350, 350)
+custom_minimum_size = Vector2(275, 350)
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_t2cdo")
 theme_override_styles/focus = ExtResource("1_t2cdo")
 hide_root = true
+scroll_horizontal_enabled = false
 
-[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/UDSplit/LRSplit"]
+[node name="Main" type="VBoxContainer" parent="MarginContainer/UDSplit/LRSplit"]
+custom_minimum_size = Vector2(256, 500)
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main"]
+custom_minimum_size = Vector2(335, 32)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+text = "Some Pattern"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Middle" type="HBoxContainer" parent="MarginContainer/UDSplit/LRSplit/Main"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/UDSplit/LRSplit/Main/Middle"]
 clip_contents = true
-custom_minimum_size = Vector2(350, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="GraphicParent" type="Control" parent="MarginContainer/UDSplit/LRSplit/CenterContainer"]
+[node name="GraphicParent" type="Control" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/CenterContainer"]
 layout_mode = 2
+
+[node name="Info" type="VBoxContainer" parent="MarginContainer/UDSplit/LRSplit/Main/Middle"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Code" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/Info"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_yc0yh")
+text = "1LlsrR"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="IsSpell" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/Info"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_yc0yh")
+text = "Spell"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IotaCount" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/Info"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_yc0yh")
+text = "Params: 2
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PopupPrompt" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/Info"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_styles/normal = ExtResource("4_yc0yh")
+text = "Click for popup
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="DescScroll" type="ScrollContainer" parent="MarginContainer/UDSplit/LRSplit/Main"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="Desc" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main/DescScroll"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Some long and lengthy description here, which can force the popup to expand vertically. This along with the \"Middle\" section can be hidden based on displayed contents."
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [connection signal="button_down" from="MarginContainer/UDSplit/PopupButtons/Drag" to="." method="_on_drag_button_down"]
 [connection signal="button_up" from="MarginContainer/UDSplit/PopupButtons/Drag" to="." method="_on_drag_button_up"]

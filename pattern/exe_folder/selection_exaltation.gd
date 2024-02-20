@@ -3,7 +3,7 @@
 # The top iota, num2, is the upper bound.
 # Nums must be in range, though can be ordered backwards to return [].
 static var descs = [
-	"Given two numbers (TOP, SECOND) and a list (THIRD), returns a sublist from the list between the two numbers. Details next page.",
+	"Given two numbers (TOP, SECOND) and a list (THIRD), returns a sublist from the list between the two numbers. Details next desc.",
 	"Lower bound (SECOND) inclusive, upper bound (TOP) exclusive. If TOP is less than SECOND, returns [].",
 ]
 static var iota_count = 3

@@ -12,7 +12,7 @@
 
 # Note: I give up on coding this properly for now, so I'm hardcoding it with a dictionary up to 5 long.
 static var descs = [
-	"Given a number (TOP) Rearranges the rest of the top elements on the stack based on the given numerical code (TOP). See 'Lehmer codes' for info, or see next page.",
+	"Given a number (TOP) Rearranges the rest of the top elements on the stack based on the given numerical code (TOP). See 'Lehmer codes' for info, or see next desc.",
     "This game only supports rearranging up to 5 elements, based on those at github.com/FallingColors/HexMod/wiki/Table-of-Lehmer-Codes-for-Swindler's-Gambit. Good luck copying that link though.", # !!! Include a link to ingame resource later somehow?
     "An example of what to expect: given a stack 'cba' where a is top iota, code 0 gives cba, 1 -> cab, 2 -> bca, 3 -> bac, 4 -> acb, 5 -> abc etc. etc. This goes on for a long time.",
 ]
