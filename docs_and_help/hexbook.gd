@@ -29,7 +29,7 @@ There are some changes from original hexcasting, mainly related to vectors being
 
 func _process(_delta):
 	if follow_mouse:
-		position = get_global_mouse_position() - Vector2(30, 30)
+		position = get_global_mouse_position() - Vector2(35, 25)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
