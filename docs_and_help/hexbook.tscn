@@ -141,17 +141,16 @@ text = "Params: 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PopupPrompt" type="Label" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/Info"]
-custom_minimum_size = Vector2(0, 32)
+[node name="PopupPrompt" type="Button" parent="MarginContainer/UDSplit/LRSplit/Main/Middle/Info"]
+custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
-theme_override_styles/normal = ExtResource("4_yc0yh")
-text = "Click for popup
+theme_override_styles/focus = ExtResource("1_t2cdo")
+text = "Click for
+popup
 "
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
+clip_text = true
 
 [node name="DescScroll" type="ScrollContainer" parent="MarginContainer/UDSplit/LRSplit/Main"]
 custom_minimum_size = Vector2(0, 300)
@@ -173,3 +172,4 @@ autowrap_mode = 3
 [connection signal="pressed" from="MarginContainer/UDSplit/PopupButtons/Close" to="." method="_on_close_pressed"]
 [connection signal="item_mouse_selected" from="MarginContainer/UDSplit/LRSplit/PatternSelect" to="." method="_on_pattern_select_item_mouse_selected"]
 [connection signal="item_selected" from="MarginContainer/UDSplit/LRSplit/PatternSelect" to="." method="_on_pattern_select_item_selected"]
+[connection signal="pressed" from="MarginContainer/UDSplit/LRSplit/Main/Middle/Info/PopupPrompt" to="." method="_on_popup_prompt_pressed"]

@@ -34,7 +34,7 @@ func _ready():
 # On process, if visible and not locked, move to the mouse position
 func _process(_delta):
 	if visible and not locked_movement:
-		# Offset upwards by size if showing above, and offset towards top left if locked (Dragging)
+		# Offset away from mouse to avoid overlap, offset upwards by size if showing above, and offset towards top left if locked (Dragging)
 		position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
 		if first_process: # Refit container on first process
 			first_process = false
@@ -44,9 +44,12 @@ func _process(_delta):
 # Displays entity info for a given entity (Starts with "E" for entity) # Not implemented at all right now
 # Displays error message for given error (Starts with "B" for bad_iota)
 # Displays plain text (Starts with "M" for message) (!!! Possibly allow meta to specify custom title?)
-func display(meta: String, show_above: bool = false):
-	if locked_display: # If locked, don't change display
+func display(meta: String, show_above: bool = false, force_display: bool = false):
+	if locked_display and not force_display: # If locked, don't change display unless forced
 		return
+	if force_display: # If forced, lock display and move to mouse position
+		lock()
+		position = get_global_mouse_position() - Vector2(30, 30) # Offset to place drag button under mouse, like in _process()
 	self.show_above = show_above
 	# Split meta into parts: First part is type, the first character. Second part is the rest of the string
 	var type = meta[0]

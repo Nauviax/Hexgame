@@ -3,6 +3,9 @@ extends Control
 # Parent controls visibility, so get reference
 @onready var parent_container = get_parent()
 
+# Reference to popup to show patterns on demand
+@export var popup: Control
+
 @export var tree: Tree
 @export var graphic_parent: Control
 @export var title_label: Label
@@ -21,8 +24,7 @@ var follow_mouse = false
 var current_pattern = null
 
 # Default description to show when no pattern is selected
-const default_description = "
-This is the Hexbook. It contains all available patterns, but will not be enough to teach hexcasting from zero.\n\n
+const default_description = "This is the Hexbook. It contains all available patterns, but will not be enough to teach hexcasting from zero.\n
 There are some changes from original hexcasting, mainly related to vectors being 2D and most spells being removed or significantly changed."
 
 func _process(_delta):
@@ -269,3 +271,8 @@ func _on_drag_button_up():
 # Close button, to hide hexbook
 func _on_close_pressed():
 	parent_container.hide()
+
+# Popup button, to set/show and auto-lock a pattern popup
+func _on_popup_prompt_pressed():
+	popup.display("P" + current_pattern.p_code, false, true) # Show pattern. Force display, so works even if already shown
+	
