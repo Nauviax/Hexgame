@@ -33,11 +33,13 @@ func _ready():
 
 # On process, if visible and not locked, move to the mouse position
 func _process(_delta):
-	if visible and not locked_movement:
-		# Offset away from mouse to avoid overlap, offset upwards by size if showing above, and offset towards top left if locked (Dragging)
-		position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
+	if visible:
+		if not locked_movement:
+			# Offset away from mouse to avoid overlap, offset upwards by size if showing above, and offset towards top left if locked (Dragging)
+			position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
 		if first_process: # Refit container on first process
 			first_process = false
+			size.x = 0
 			size.y = 0
 
 # Displays pattern info for a given p_code (Starts with "P" for pattern/p_code)

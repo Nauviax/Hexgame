@@ -12,7 +12,7 @@ custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_d8c58")
 script = ExtResource("1_v4881")
-title_label = NodePath("MarginContainer/Main/Title")
+title_label = NodePath("MarginContainer/Main/Header/HeaderSplit/Title")
 code_label = NodePath("MarginContainer/Main/Middle/Info/Code")
 is_spell_label = NodePath("MarginContainer/Main/Middle/Info/IsSpell")
 iota_count_label = NodePath("MarginContainer/Main/Middle/Info/IotaCount")
@@ -43,15 +43,42 @@ theme_override_constants/margin_bottom = 15
 custom_minimum_size = Vector2(256, 0)
 layout_mode = 2
 
-[node name="Title" type="Label" parent="MarginContainer/Main"]
-custom_minimum_size = Vector2(256, 32)
+[node name="Header" type="MarginContainer" parent="MarginContainer/Main"]
 layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 12
+
+[node name="HeaderSplit" type="HBoxContainer" parent="MarginContainer/Main/Header"]
+layout_mode = 2
+
+[node name="Drag" type="Button" parent="MarginContainer/Main/Header/HeaderSplit"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_default_cursor_shape = 13
+theme_override_styles/focus = ExtResource("4_5kk7m")
+text = "III"
+
+[node name="Title" type="Label" parent="MarginContainer/Main/Header/HeaderSplit"]
+custom_minimum_size = Vector2(192, 32)
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
 text = "Some Pattern"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 3
+
+[node name="Close" type="Button" parent="MarginContainer/Main/Header/HeaderSplit"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_styles/focus = ExtResource("4_5kk7m")
+text = "X"
 
 [node name="Middle" type="HBoxContainer" parent="MarginContainer/Main"]
 layout_mode = 2
@@ -108,31 +135,7 @@ text = "Some long and lengthy description here, which can force the popup to exp
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="PopupButtons" type="MarginContainer" parent="MarginContainer"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 3
-theme_override_constants/margin_right = 12
-
-[node name="Drag" type="Button" parent="MarginContainer/PopupButtons"]
-custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-mouse_default_cursor_shape = 13
-theme_override_styles/focus = ExtResource("4_5kk7m")
-text = "III"
-
-[node name="Close" type="Button" parent="MarginContainer/PopupButtons"]
-custom_minimum_size = Vector2(25, 0)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-theme_override_styles/focus = ExtResource("4_5kk7m")
-text = "X"
-
+[connection signal="button_down" from="MarginContainer/Main/Header/HeaderSplit/Drag" to="." method="_on_drag_button_down"]
+[connection signal="button_up" from="MarginContainer/Main/Header/HeaderSplit/Drag" to="." method="_on_drag_button_up"]
+[connection signal="pressed" from="MarginContainer/Main/Header/HeaderSplit/Close" to="." method="_on_close_pressed"]
 [connection signal="pressed" from="MarginContainer/Main/Middle/Info/NextDesc" to="." method="_on_next_desc_pressed"]
-[connection signal="button_down" from="MarginContainer/PopupButtons/Drag" to="." method="_on_drag_button_down"]
-[connection signal="button_up" from="MarginContainer/PopupButtons/Drag" to="." method="_on_drag_button_up"]
-[connection signal="pressed" from="MarginContainer/PopupButtons/Close" to="." method="_on_close_pressed"]

@@ -231,6 +231,8 @@ func _on_pattern_select_item_selected():
 
 			# Display pattern line
 			var p_line = Pattern.create_line(p_code) 
+			p_line.scale *= 1.3 # Make slightly larger, as more area than a popup
+			p_line.position *= 1.3
 			graphic_parent.add_child(p_line)
 			
 			# Set title
