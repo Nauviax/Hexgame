@@ -10,9 +10,9 @@ var is_main_hexecutor
 
 # Various gradients for pattern lines, to be set depending on state.
 # Static as they can be shared between all instances of this class.
-static var normal_gradient = preload("res://resources/gradients/normal.tres")
-static var fail_gradient = preload("res://resources/gradients/fail.tres")
-static var meta_gradient = preload("res://resources/gradients/meta.tres")
+static var normal_gradient = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
+static var fail_gradient = preload("res://resources/shaders/cast_line/gradient_textures/fail.tres")
+static var meta_gradient = preload("res://resources/shaders/cast_line/gradient_textures/meta.tres")
 
 # The stack (Very important)
 var stack = []
@@ -77,9 +77,9 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 	if is_meta:
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
 		if pattern_og.pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
-			pattern_og.line.gradient = normal_gradient
+			Hexecutor.set_gradient(pattern_og, normal_gradient)
 		else:
-			pattern_og.line.gradient = meta_gradient
+			Hexecutor.set_gradient(pattern_og, meta_gradient)
 	elif success: # Pattern is valid and executed successfully
 		if pattern_og.pattern.name == "Thoth's Gambit":
 			SoundManager.play_thoth()
@@ -89,12 +89,16 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 			SoundManager.play_spell()
 		else:
 			SoundManager.play_normal()
-		pattern_og.line.gradient = normal_gradient
+		Hexecutor.set_gradient(pattern_og, normal_gradient)
 	else: # Pattern is invalid or failed to execute
 		SoundManager.play_fail()
-		pattern_og.line.gradient = fail_gradient
+		Hexecutor.set_gradient(pattern_og, fail_gradient)
 	# End replay mode if it was active
 	main_scene.end_replay_mode()
+
+# Quick way to set a pattern_og line to a gradient. Static.
+static func set_gradient(pattern_og: Pattern_Ongrid, gradient):
+	pattern_og.line.material.set_shader_parameter("gradient_texture", gradient)
 
 # Executes a given pattern (Of note: NOT a Pattern_Ongrid)
 func execute_pattern(pattern: Pattern, update_on_success = true):

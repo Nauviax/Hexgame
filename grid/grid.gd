@@ -12,9 +12,10 @@ const GRIDOFFSET = Vector2(16, 16) # Offset of the grid from the top left corner
 var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
 var line = null # The line being drawn
-# The gradient used for the line being cast
-static var line_gradient = preload("res://resources/gradients/casting.tres")
-static var line_size = 3 # Line width
+# The shader + gradient used for the line being cast
+static var line_scene = preload("res://resources/shaders/cast_line/cast_line.tscn")
+static var line_gradient = preload("res://resources/shaders/cast_line/gradient_textures/casting.tres")
+@onready var mouse_line_color = line_gradient.gradient.get_color(line_gradient.gradient.get_point_count() - 1)
 var mouse_line = null # The line being drawn between last point and mouse
 var hex_border = null # The border around the patterns drawn
 var patterns = [] # List of patterns (Mainly for deletion afterwards)
@@ -75,9 +76,9 @@ func _process(_delta):
 	if len(cur_points) > 0:
 		if mouse_line == null:
 			mouse_line = Line2D.new()
-			mouse_line.width = line_size
+			mouse_line.width = 3
 			# Set line color last color of line_gradient
-			mouse_line.set_default_color(line_gradient.get_color(line_gradient.get_point_count() - 1))
+			mouse_line.set_default_color(mouse_line_color)
 			add_child(mouse_line)
 			mouse_line.add_point(cur_points[-1].position)
 			mouse_line.add_point(mouse_line.to_local(get_global_mouse_position()))
@@ -118,6 +119,7 @@ func on_point(point):
 			SoundManager.play_segment() # Sound effect
 			cur_points.pop_back() # Remove the latest point from cur_points
 			line.remove_point(line.get_point_count() - 1)
+			line.material.set_shader_parameter("segments", line.get_point_count() - 1.0) # Update shader segments
 			hex_border.undo() # Revert to previous border
 			return
 		
@@ -135,6 +137,7 @@ func on_point(point):
 	SoundManager.play_segment() # Sound effect
 	cur_points.append(point)
 	line.add_point(point.position)
+	line.material.set_shader_parameter("segments", line.get_point_count() - 1.0) # Update shader segments
 
 	# If this is the first point ever, create the hex border
 	if hex_border.line.get_point_count() == 0:
@@ -149,6 +152,7 @@ func send_pattern():
 		return # Do nothing
 	if cur_points.size() == 1:
 		line.clear_points()
+		line.material.set_shader_parameter("segments", 0.0) # Update shader segments
 		hex_border.undo() # Initial click could have changed border
 	else: # Create and send pattern, (And save result to list here) then prepare new line.
 		var pattern = Pattern_Ongrid.new(cur_points, line)
@@ -158,12 +162,11 @@ func send_pattern():
 	cur_points = [] # New list, don't clear the old one
 	hex_border.clear_history() # Clear history
 
-
 # Set line to a new instance of Line2D
 func new_line():
-	line = Line2D.new()
-	line.width = line_size
-	line.gradient = line_gradient
+	line = line_scene.instantiate()
+	line.prep_line() # Creates material duplicate
+	line.material.set_shader_parameter("gradient_texture", line_gradient)
 	add_child(line)
 
 # Reset grid. Optionally either update or clear border score.

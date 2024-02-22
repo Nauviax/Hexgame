@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dkx7ttfmamfy"]
+
+[ext_resource type="Script" path="res://resources/shaders/cast_line/cast_line.gd" id="2_g12nf"]
+[ext_resource type="Texture2D" uid="uid://bymc6k78gsjve" path="res://resources/shaders/cast_line/plain_line.png" id="3_asfsx"]
+[ext_resource type="Material" uid="uid://cfdar60cveplw" path="res://resources/shaders/cast_line/cast_line_material.tres" id="3_pfojs"]
+
+[node name="CastLine" type="Line2D"]
+width = 15.0
+texture = ExtResource("3_asfsx")
+texture_mode = 2
+joint_mode = 2
+script = ExtResource("2_g12nf")
+line_material = ExtResource("3_pfojs")

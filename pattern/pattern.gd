@@ -78,7 +78,8 @@ static func value_to_bookkeeper(value):
 	return str_gambit
 
 # For use in create_line
-static var line_gradient = preload("res://resources/gradients/casting.tres")
+static var line_scene = preload("res://resources/shaders/cast_line/cast_line.tscn")
+static var line_gradient = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
 static var vector_offsets = [ # Unit distance * 50
 	Vector2(25, -43.3), # Top right
 	Vector2(50, 0), # Right
@@ -91,10 +92,10 @@ static var vector_offsets = [ # Unit distance * 50
 # Creates and returns a Line2D object that represents the pattern.
 # Static so pattern object isn't required.
 static func create_line(p_code: String):
-	var line = Line2D.new()
+	var line = line_scene.instantiate()
+	line.prep_line() # Creates material duplicate
 	line.add_point(Vector2(0, 0))
-	line.gradient = line_gradient
-	line.width = 6
+	line.material.set_shader_parameter("gradient_texture", line_gradient)
 	# Line initial point at 0,0. Every char in p_code places a new point 1 unit away from the last.
 	# First char is initial direction, 1 being top right, 2 being right, etc to 6 being top left.
 	# Afterwards, L, l, s, r, R are hard left, left, straight, right, hard right. All on hex coordinates.
@@ -112,6 +113,7 @@ static func create_line(p_code: String):
 			"R": dir = (dir + 2) % 6
 		pos += vector_offsets[dir]
 		line.add_point(pos)
+	line.material.set_shader_parameter("segments", line.points.size() - 1.0) # Scale shader animation
 	# Scale and centre the line
 	var average = Vector2(0, 0)
 	var max_x = 0
