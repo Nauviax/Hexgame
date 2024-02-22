@@ -35,11 +35,12 @@ func _ready():
 			add_child(point)
 			points.append(point)
 
-	# Prepare Line2D
-	new_line()
-
-	# Prepare Hex border
+	# Editor mode can complain about a few things, this prevents that.
 	if not Engine.is_editor_hint():
+		# Prepare Line2D
+		new_line()
+		
+		# Prepare Hex border
 		hex_border = Hex_Border.new(GRIDSPACING, ROWSPACING, main_scene)
 		hex_border.line.position = GRIDOFFSET # Offset hex_border to match the grid
 		add_child(hex_border.line)
