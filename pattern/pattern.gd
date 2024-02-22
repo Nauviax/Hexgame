@@ -131,8 +131,13 @@ static func create_line(p_code: String):
 		elif point.y < min_y:
 			min_y = point.y
 	average /= line.points.size()
-	var largest_dist = max(max_x - min_x, max_y - min_y)
-	var scale = 100 / largest_dist
+	var dist_x = max_x - min_x
+	var dist_y = max_y - min_y
+	var scale
+	if dist_x > dist_y: # Scale based on largest distance. Small patterns treated as distance = 60 (A single line L->R is 50 units long)
+		scale = 135 / max(dist_x, 60) # If pattern is longer than it is tall, scale less harshly. Window is wider than it is tall.
+	else:
+		scale = 100 / max(dist_y, 60)
 	line.scale = Vector2(scale, scale)
 	line.position = -average * scale
 	return line
