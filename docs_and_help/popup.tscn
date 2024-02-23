@@ -1,16 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://cgq1sfas21djs"]
+[gd_scene load_steps=5 format=3 uid="uid://cgq1sfas21djs"]
 
 [ext_resource type="Texture2D" uid="uid://b64fs4i6xedgl" path="res://resources/ui/popup_bg.png" id="1_ho7y6"]
+[ext_resource type="Theme" uid="uid://dymyqo6i3f2r3" path="res://resources/ui/small_theme.tres" id="1_rv7nq"]
 [ext_resource type="Script" path="res://docs_and_help/popup.gd" id="1_v4881"]
 [ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="3_n3cin"]
-[ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="4_5kk7m"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d8c58"]
 
 [node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "graphic_parent", "desc_button", "description_label", "background")]
 custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_d8c58")
+theme = ExtResource("1_rv7nq")
 script = ExtResource("1_v4881")
 title_label = NodePath("MarginContainer/Main/Header/HeaderSplit/Title")
 code_label = NodePath("MarginContainer/Main/Middle/Info/Code")
@@ -59,15 +57,14 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_default_cursor_shape = 13
-theme_override_styles/focus = ExtResource("4_5kk7m")
 text = "III"
 
 [node name="Title" type="Label" parent="MarginContainer/Main/Header/HeaderSplit"]
 custom_minimum_size = Vector2(192, 32)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
 text = "Some Pattern"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -77,7 +74,6 @@ custom_minimum_size = Vector2(25, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
-theme_override_styles/focus = ExtResource("4_5kk7m")
 text = "X"
 
 [node name="Middle" type="HBoxContainer" parent="MarginContainer/Main"]
@@ -125,7 +121,6 @@ vertical_alignment = 1
 
 [node name="NextDesc" type="Button" parent="MarginContainer/Main/Middle/Info"]
 layout_mode = 2
-theme_override_styles/focus = ExtResource("4_5kk7m")
 text = "Desc ->"
 
 [node name="Desc" type="Label" parent="MarginContainer/Main"]

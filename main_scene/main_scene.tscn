@@ -1,41 +1,46 @@
-[gd_scene load_steps=7 format=3 uid="uid://qir8003u2t7e"]
+[gd_scene load_steps=8 format=3 uid="uid://qir8003u2t7e"]
 
 [ext_resource type="Script" path="res://main_scene/main_scene.gd" id="1_7msjx"]
 [ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="2_7aeg7"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="2_qu1ct"]
+[ext_resource type="Theme" uid="uid://bk1llxpthaj7w" path="res://resources/ui/main_theme.tres" id="2_vp3ud"]
 [ext_resource type="PackedScene" uid="uid://cgq1sfas21djs" path="res://docs_and_help/popup.tscn" id="3_f8kac"]
 [ext_resource type="PackedScene" uid="uid://dj45rcuk0lphe" path="res://docs_and_help/hexbook.tscn" id="3_hdery"]
 [ext_resource type="Script" path="res://main_scene/hex_display.gd" id="3_pett3"]
 
 [node name="MainScene" type="Node2D" node_paths=PackedStringArray("grid", "level_container")]
 script = ExtResource("1_7msjx")
-grid = NodePath("HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridControl/Grid")
-level_container = NodePath("HexDisplay/MainSplit/LevelAndGrid/LevelContainer")
+grid = NodePath("HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridControl/Grid")
+level_container = NodePath("HexDisplay/MainSplit/LevelStuff/LevelAndGrid/LevelContainer")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
+editor_draw_screen = false
 
 [node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "level_controls", "validate_button", "validate_label", "popup", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
+offset_right = 1924.0
+offset_bottom = 1080.0
 mouse_filter = 2
+theme = ExtResource("2_vp3ud")
 theme_override_styles/panel = ExtResource("2_7aeg7")
 script = ExtResource("3_pett3")
-toggle_grid_button = NodePath("MainSplit/LevelAndGrid/GridPopout/GridButtons/ToggleGrid")
-grid_control = NodePath("MainSplit/LevelAndGrid/GridPopout/GridControl")
+toggle_grid_button = NodePath("MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons/ToggleGrid")
+grid_control = NodePath("MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridControl")
 stack_label = NodePath("MainSplit/StackAndInfo/StackScroller/Stack")
 raven_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Ravenmind")
 reveal_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Reveal")
 sb_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Spellbook")
-border_label = NodePath("MainSplit/StackAndInfo/LevelInfo/BorderScore")
-level_desc_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelDesc")
-level_controls = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons")
-validate_button = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate")
-validate_label = NodePath("MainSplit/StackAndInfo/LevelInfo/LevelButtons/YouWin")
+border_label = NodePath("MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons/BorderScore")
+level_desc_label = NodePath("MainSplit/LevelStuff/LevelInfo/LevelDesc")
+level_controls = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons")
+validate_button = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons/Validate")
+validate_label = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons/YouWin")
 popup = NodePath("Popup")
 hexbook_holder = NodePath("HexbookHolder")
-replay_controls = NodePath("MainSplit/LevelAndGrid/ReplayBar/ReplayButtons")
-preplay_controls = NodePath("MainSplit/LevelAndGrid/ReplayBar/PreplayButtons")
-preplay_begin_replay_button = NodePath("MainSplit/LevelAndGrid/ReplayBar/PreplayButtons/BeginReplayButton")
-replay_timeline_label = NodePath("MainSplit/LevelAndGrid/ReplayBar/PatternTimeline")
+replay_controls = NodePath("MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons")
+preplay_controls = NodePath("MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons")
+preplay_begin_replay_button = NodePath("MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons/BeginReplayButton")
+replay_timeline_label = NodePath("MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PatternTimeline")
 
 [node name="Popup" parent="HexDisplay" instance=ExtResource("3_f8kac")]
 visible = false
@@ -43,60 +48,24 @@ top_level = true
 layout_mode = 2
 
 [node name="MainSplit" type="HBoxContainer" parent="HexDisplay"]
-custom_minimum_size = Vector2(1600, 900)
+custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 2
 
 [node name="StackAndInfo" type="VBoxContainer" parent="HexDisplay/MainSplit"]
 clip_contents = true
-custom_minimum_size = Vector2(500, 0)
+custom_minimum_size = Vector2(764, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="LevelInfo" type="HBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo"]
+[node name="GameStuff" type="HBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo"]
+custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
-size_flags_vertical = 3
 
-[node name="LevelButtons" type="VBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
+[node name="CloseGame" type="Button" parent="HexDisplay/MainSplit/StackAndInfo/GameStuff"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.5
-
-[node name="Validate" type="Button" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
-layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
-text = "Validate"
-
-[node name="ExValidate" type="Button" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
-layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
-text = "ExValidate"
-
-[node name="YouWin" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-text = "ExValidated!
-Hex size:
-40"
-autowrap_mode = 2
-
-[node name="LevelDesc" type="RichTextLabel" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-bbcode_enabled = true
-text = "Level Name + Description here"
-autowrap_mode = 2
-
-[node name="BorderScore" type="Label" parent="HexDisplay/MainSplit/StackAndInfo/LevelInfo"]
-custom_minimum_size = Vector2(10, 0)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Border score:
-0 + 0 = 0"
-autowrap_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Close game"
 
 [node name="IotaStorageStuff" type="HBoxContainer" parent="HexDisplay/MainSplit/StackAndInfo"]
 layout_mode = 2
@@ -146,102 +115,141 @@ size_flags_vertical = 3
 bbcode_enabled = true
 text = "This is the stack"
 
-[node name="LevelAndGrid" type="PanelContainer" parent="HexDisplay/MainSplit"]
-custom_minimum_size = Vector2(800, 0)
+[node name="LevelStuff" type="VBoxContainer" parent="HexDisplay/MainSplit"]
+custom_minimum_size = Vector2(1088, 1080)
+layout_mode = 2
+
+[node name="LevelInfo" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelStuff"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LevelDesc" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+bbcode_enabled = true
+text = "Level Name + Description here"
+autowrap_mode = 2
+
+[node name="LevelButtons" type="VBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Validate" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons"]
+layout_mode = 2
+theme_override_styles/focus = ExtResource("2_7aeg7")
+text = "Validate"
+
+[node name="ExValidate" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons"]
+layout_mode = 2
+theme_override_styles/focus = ExtResource("2_7aeg7")
+text = "ExValidate"
+
+[node name="YouWin" type="Label" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+text = "ExValidated!
+Hex size:
+40"
+autowrap_mode = 2
+
+[node name="LevelAndGrid" type="PanelContainer" parent="HexDisplay/MainSplit/LevelStuff"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 
-[node name="LevelContainer" type="SubViewportContainer" parent="HexDisplay/MainSplit/LevelAndGrid"]
-custom_minimum_size = Vector2(200, 200)
+[node name="LevelContainer" type="SubViewportContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid"]
+custom_minimum_size = Vector2(1152, 896)
 layout_mode = 2
 size_flags_vertical = 3
 stretch = true
 
-[node name="LevelViewport" type="SubViewport" parent="HexDisplay/MainSplit/LevelAndGrid/LevelContainer"]
+[node name="LevelViewport" type="SubViewport" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/LevelContainer"]
 handle_input_locally = false
-size = Vector2i(1096, 900)
+size = Vector2i(1152, 896)
 render_target_update_mode = 4
 
-[node name="GridPopout" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid"]
+[node name="GridPopout" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid"]
 custom_minimum_size = Vector2(0, 750)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout"]
+[node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout"]
 custom_minimum_size = Vector2(888, 0)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="Grid" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridControl" node_paths=PackedStringArray("main_scene") instance=ExtResource("2_qu1ct")]
+[node name="Grid" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridControl" node_paths=PackedStringArray("main_scene") instance=ExtResource("2_qu1ct")]
 scale = Vector2(1.5, 1.5)
-main_scene = NodePath("../../../../../..")
+main_scene = NodePath("../../../../../../..")
 
-[node name="GridButtons" type="VBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout"]
+[node name="GridButtons" type="VBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout"]
 layout_mode = 2
 
-[node name="ToggleGrid" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridButtons"]
+[node name="ToggleGrid" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons"]
 custom_minimum_size = Vector2(125, 50)
 layout_mode = 2
 size_flags_vertical = 0
-theme_override_font_sizes/font_size = 25
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Hide Grid <"
 
-[node name="Hexbook" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridButtons"]
+[node name="Hexbook" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_font_sizes/font_size = 20
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Open Hexbook"
 
-[node name="ReplayBar" type="VBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid"]
+[node name="BorderScore" type="Label" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Border score:
+0 + 0 = 0"
+autowrap_mode = 2
+
+[node name="ReplayBar" type="VBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="PreplayButtons" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar"]
+[node name="PreplayButtons" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="BeginReplayButton" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PreplayButtons"]
+[node name="BeginReplayButton" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Begin Replay"
 
-[node name="ResetLevel" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PreplayButtons"]
+[node name="ResetLevel" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons"]
 layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Reset Level"
 
-[node name="PatternTimeline" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar"]
+[node name="PatternTimeline" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar"]
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 10
 bbcode_enabled = true
 text = "... MinRe -> MinRe -> MIND'S REFLECTION (Next) -> MinRe -> MinRe ..."
 fit_content = true
 autowrap_mode = 0
 
-[node name="ReplayButtons" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar"]
+[node name="ReplayButtons" type="HBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar"]
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="PlayPause" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons"]
+[node name="PlayPause" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons"]
 layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Play/Pause"
 
-[node name="Step" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons"]
+[node name="Step" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons"]
 layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Step Once"
 
-[node name="ContHere" type="Button" parent="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons"]
+[node name="ContHere" type="Button" parent="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons"]
 layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Continue Here"
 
 [node name="HexbookHolder" type="CenterContainer" parent="HexDisplay"]
@@ -254,11 +262,7 @@ layout_mode = 2
 popup = NodePath("../../Popup")
 metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelButtons/ExValidate" to="HexDisplay" method="_on_extra_validate_pressed"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_started"]
+[connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/GameStuff/CloseGame" to="." method="_on_close_game_pressed"]
 [connection signal="meta_clicked" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_clicked"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/IotaStorageStuff/Spellbook" to="HexDisplay" method="_on_meta_hover_started"]
@@ -271,13 +275,18 @@ metadata/_edit_use_anchors_ = true
 [connection signal="meta_clicked" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_clicked"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_hover_started"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridButtons/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/GridPopout/GridButtons/Hexbook" to="HexDisplay" method="_on_hexbook_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PreplayButtons/BeginReplayButton" to="HexDisplay" method="_on_begin_replay_button_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PreplayButtons/ResetLevel" to="HexDisplay" method="_on_reset_level_pressed"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_hover_started_low"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/PlayPause" to="HexDisplay" method="_on_play_pause_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/Step" to="HexDisplay" method="_on_step_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelAndGrid/ReplayBar/ReplayButtons/ContHere" to="HexDisplay" method="_on_cont_here_pressed"]
+[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_clicked"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_started"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons/ExValidate" to="HexDisplay" method="_on_extra_validate_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons/Hexbook" to="HexDisplay" method="_on_hexbook_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons/BeginReplayButton" to="HexDisplay" method="_on_begin_replay_button_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons/ResetLevel" to="HexDisplay" method="_on_reset_level_pressed"]
+[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_clicked"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PatternTimeline" to="HexDisplay" method="_on_meta_hover_started_low"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons/PlayPause" to="HexDisplay" method="_on_play_pause_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons/Step" to="HexDisplay" method="_on_step_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons/ContHere" to="HexDisplay" method="_on_cont_here_pressed"]

@@ -230,3 +230,7 @@ func _input(event):
 			# Play a sound
 			SoundManager.play_segment()
 			return # Done
+
+# Close game button
+func _on_close_game_pressed():
+	get_tree().quit()

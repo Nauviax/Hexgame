@@ -1,0 +1,18 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bk1llxpthaj7w"]
+
+[ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="1_p1k43"]
+
+[resource]
+default_font_size = 20
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 10
+Button/styles/focus = ExtResource("1_p1k43")
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 10
+PanelContainer/styles/panel = ExtResource("1_p1k43")
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+RichTextLabel/constants/outline_size = 10
+Tree/colors/font_outline_color = Color(0, 0, 0, 1)
+Tree/constants/outline_size = 5
+Tree/styles/focus = ExtResource("1_p1k43")
+Tree/styles/panel = ExtResource("1_p1k43")
