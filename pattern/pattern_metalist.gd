@@ -21,7 +21,11 @@ func add_pattern(hexecutor: Hexecutor, pattern: Pattern): # Defined type
 
 	elif pattern.name == "Evanition": # Remove last pattern added
 		if patterns.size() > 0:
-			patterns.pop_back()
+			var removed = patterns.pop_back()
+			if removed.name == "Introspection": # If removed pattern was introspection, decrement depth
+				hexecutor.introspection_depth -= 1
+			elif removed.name == "Retrospection": # If removed pattern was retrospection, increment depth
+				hexecutor.introspection_depth += 1
 		else:
 			hexecutor.introspection_depth = 0 # Stop introspection
 			hexecutor.stack.pop_back() # Remove this metalist from the stack
