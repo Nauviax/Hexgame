@@ -205,9 +205,14 @@ func _input(event):
 			# Duplicate the spellbook iota 
 			hexecutor.execute_pattern(Pattern.new("1Llllll")) # Scribe's Reflection
 			# Execute the iota
-			hexecutor.execute_pattern(Pattern.new("1RrLll")) # Hermes' Gambit
-			# Play a sound
-			SoundManager.play_hermes()
+			var success = hexecutor.execute_pattern(Pattern.new("1RrLll")) # Hermes' Gambit
+			# Play appropriate sound and particle effect
+			if success:
+				SoundManager.play_hermes()
+				hexecutor.caster.node.particle_cast(0)
+			else:
+				SoundManager.play_fail()
+				hexecutor.caster.node.particle_cast(1)
 			return # Done
 		# If scroll wheel, cycle through spellbook patterns (Down for increment, up for decrement)
 		if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed:

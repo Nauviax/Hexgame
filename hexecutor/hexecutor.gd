@@ -105,6 +105,7 @@ static func set_gradient(pattern_og: Pattern_Ongrid, gradient):
 	pattern_og.line.material.set_shader_parameter("gradient_texture", gradient)
 
 # Executes a given pattern (Of note: NOT a Pattern_Ongrid)
+# Returns success of execution. (True if successful)
 func execute_pattern(pattern: Pattern, update_on_success = true):
 	# If scram mode, end hex.
 	if scram_mode:

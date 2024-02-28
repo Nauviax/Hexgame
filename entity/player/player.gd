@@ -226,7 +226,7 @@ func particle_cast(cast_type: int):
 	cast_cast_pgen.process_material.color = cast_color # !!! Not working?
 	cast_cast_pgen.restart() # Restart so that new particles are shown
 
-# Vector2 inputs are in fake coordinates, and relative to level NOT player.
+# Vector2 inputs are in REAL coordinates, and relative to level NOT player.
 func particle_target(target_pos: Vector2):
 	cast_target_pgen.position = target_pos - position
 	cast_target_pgen.restart()
@@ -238,8 +238,8 @@ func particle_trail(trail_pos: Vector2, trail_vect: Vector2):
 	var pro_mat = cast_trail_pgen.process_material
 	var v_length = trail_vect.length() / 2 # Half length as emission shape expands in both directions (Annoying)
 	pro_mat.emission_shape_scale.x = v_length
-	pro_mat.emission_shape_offset.x = v_length - (Entity.FAKE_SCALE) # Offset by a tile, as particles move forwards anyway.
-	cast_trail_pgen.amount = int(v_length / 2)
+	pro_mat.emission_shape_offset.x = v_length - (Entity.FAKE_SCALE / 2) # Offset by a half tile, as particles move forwards anyway.
+	cast_trail_pgen.amount = int(v_length / 4)
 	var v_angle = trail_vect.angle()
 	cast_trail_pgen.rotation = v_angle
 	pro_mat.angle_min = v_angle * -57.296 # Convert to degrees

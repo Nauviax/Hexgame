@@ -213,25 +213,26 @@ amount = 32
 process_material = SubResource("ParticleProcessMaterial_nocfk")
 texture = ExtResource("7_l3q2f")
 one_shot = true
-explosiveness = 0.8
+explosiveness = 1.0
 
 [node name="CastOnTarget" type="GPUParticles2D" parent="."]
-z_index = -1
+z_index = -3
 material = ExtResource("4_4enp4")
 emitting = false
 amount = 32
 process_material = SubResource("ParticleProcessMaterial_xn7h4")
 texture = ExtResource("7_l3q2f")
 one_shot = true
-explosiveness = 0.8
+explosiveness = 1.0
 
 [node name="CastOnTrail" type="GPUParticles2D" parent="."]
-z_index = -1
+z_index = -3
 material = ExtResource("4_4enp4")
 emitting = false
 process_material = SubResource("ParticleProcessMaterial_fjvua")
 texture = ExtResource("9_eydf6")
 one_shot = true
+explosiveness = 1.0
 
 [connection signal="body_entered" from="SpikeChecker" to="." method="_on_spike_checker_body_entered"]
 [connection signal="body_exited" from="SpikeChecker" to="." method="_on_spike_checker_body_exited"]
