@@ -11,7 +11,11 @@ var entity: Entity = Entity.new("Player", self)
 
 # Various parts of the player, for reference
 @onready var poofer_pgen: GPUParticles2D = $Poofer
+@onready var pre_poofer_pgen: GPUParticles2D = $PrePoofer
 @onready var trailer_pgen: GPUParticles2D = $Trailer
+@onready var cast_cast_pgen: GPUParticles2D = $CastOnCast
+@onready var cast_target_pgen: GPUParticles2D = $CastOnTarget
+@onready var cast_trail_pgen: GPUParticles2D = $CastOnTrail
 @onready var camera: Camera2D = $Camera2D
 @onready var body: Node2D = $PlayerBody # Node that holds sprites
 @onready var look_line: Line2D = $LookDir # Looking direction line
@@ -108,11 +112,14 @@ func _physics_process(delta):
 			fly_chargeup += 1
 			camera.zoom -= Vector2(0.01, 0.01) # Zoom out while charging (Until 0.5, 0.5)
 			body.scale += Vector2(0.01, 0.01) # Scale up visibly while charging (Until 1.5, 1.5)
+			pre_poofer_pgen.emitting = true # Start pre-poofer particles
 		elif not flying and fly_chargeup == 50:
 			flying = true
 			poofer_pgen.restart() # Fix poof particles sometimes not poofing on next takeoff
 			trailer_pgen.emitting = true # Start trail particles
+			pre_poofer_pgen.emitting = false # Stop pre-poofer particles
 	elif not stuck_flying: # Handle decharging (Assuming not stuck flying)
+		pre_poofer_pgen.emitting = false # Stop pre-poofer particles
 		if fly_chargeup > 1:
 			fly_chargeup -= 1
 			camera.zoom += Vector2(0.01, 0.01) # Revert back to normal zoom
@@ -204,6 +211,41 @@ func _input(event):
 			freeze_look_dir = !freeze_look_dir
 
 # Player cast controls (right click) are located in main_scene, as it requires access to hexecutor.
+
+# Player cast particle controls (Called from hexecutor or a pattern exe normally)
+# Cast type takes an int, 0 for normal, 1 for fail, 2 for meta
+func particle_cast(cast_type: int):
+	var cast_color
+	match cast_type:
+		0:
+			cast_color = Color(0.9, 0.8, 1.0) # Light purple ish
+		1:
+			cast_color = Color(1.0, 0.6, 0.6) # Red ish
+		2:
+			cast_color = Color(1.0, 1.0, 0.4) # Yellow ish
+	cast_cast_pgen.process_material.color = cast_color # !!! Not working?
+	cast_cast_pgen.restart() # Restart so that new particles are shown
+
+# Vector2 inputs are in fake coordinates, and relative to level NOT player.
+func particle_target(target_pos: Vector2):
+	cast_target_pgen.position = target_pos - position
+	cast_target_pgen.restart()
+		
+func particle_trail(trail_pos: Vector2, trail_vect: Vector2): 
+	# Set pos
+	cast_trail_pgen.position = trail_pos - position
+	# Set rotation and scale to line up with trail_vect
+	var pro_mat = cast_trail_pgen.process_material
+	var v_length = trail_vect.length() / 2 # Half length as emission shape expands in both directions (Annoying)
+	pro_mat.emission_shape_scale.x = v_length
+	pro_mat.emission_shape_offset.x = v_length - (Entity.FAKE_SCALE) # Offset by a tile, as particles move forwards anyway.
+	cast_trail_pgen.amount = int(v_length / 2)
+	var v_angle = trail_vect.angle()
+	cast_trail_pgen.rotation = v_angle
+	pro_mat.angle_min = v_angle * -57.296 # Convert to degrees
+	pro_mat.angle_max = pro_mat.angle_min
+	# Restart
+	cast_trail_pgen.restart()
 
 # Set background theme
 # Options: "Inside", "Outside"

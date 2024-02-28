@@ -1,33 +1,31 @@
-[gd_scene load_steps=15 format=3 uid="uid://crqwgh2ejsj6j"]
+[gd_scene load_steps=23 format=3 uid="uid://crqwgh2ejsj6j"]
 
 [ext_resource type="Script" path="res://entity/player/player.gd" id="1_vgx7j"]
 [ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/look_line.png" id="3_bh7jj"]
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="3_xybjd"]
+[ext_resource type="Material" uid="uid://bign75jf214vt" path="res://resources/particles/particlegen_material.tres" id="4_4enp4"]
 [ext_resource type="Texture2D" uid="uid://dut64si8c4ne4" path="res://resources/particles/poof.png" id="4_6ucrj"]
 [ext_resource type="Texture2D" uid="uid://cvu063wg0qb3k" path="res://resources/parallax/inside_far.png" id="5_e7e8m"]
 [ext_resource type="Texture2D" uid="uid://b38nwebauukxu" path="res://resources/parallax/inside_near.png" id="6_2e5eb"]
+[ext_resource type="Texture2D" uid="uid://q7je3utmqehr" path="res://resources/particles/twinkle.png" id="7_l3q2f"]
+[ext_resource type="Texture2D" uid="uid://bmh30jw4rb5c0" path="res://resources/particles/point.png" id="9_eydf6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r3tw1"]
 size = Vector2(40, 40)
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_xquuw"]
-particles_animation = true
-particles_anim_h_frames = 5
-particles_anim_v_frames = 1
-particles_anim_loop = false
 
 [sub_resource type="Gradient" id="Gradient_3wilb"]
 colors = PackedColorArray(0.784314, 0.784314, 0.784314, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_46x23"]
 gradient = SubResource("Gradient_3wilb")
+width = 2
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_57jpk"]
 lifetime_randomness = 0.75
 particle_flag_disable_z = true
 spread = 180.0
-initial_velocity_min = 80.0
-initial_velocity_max = 180.0
+initial_velocity_min = 120.0
+initial_velocity_max = 240.0
 angular_velocity_min = 20.0
 angular_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
@@ -37,11 +35,34 @@ color_ramp = SubResource("GradientTexture1D_46x23")
 anim_speed_min = 1.0
 anim_speed_max = 1.5
 
+[sub_resource type="Gradient" id="Gradient_i01ie"]
+colors = PackedColorArray(0.784314, 0.784314, 0.784314, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_udj2l"]
+gradient = SubResource("Gradient_i01ie")
+width = 2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kwktj"]
+lifetime_randomness = 0.75
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 120.0
+initial_velocity_max = 240.0
+angular_velocity_min = 20.0
+angular_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+damping_max = 100.0
+scale_max = 1.5
+color_ramp = SubResource("GradientTexture1D_udj2l")
+anim_speed_min = 1.0
+anim_speed_max = 1.5
+
 [sub_resource type="Gradient" id="Gradient_68tvs"]
 colors = PackedColorArray(0.784314, 0.784314, 0.784314, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_l8feb"]
 gradient = SubResource("Gradient_68tvs")
+width = 2
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vp5b2"]
 lifetime_randomness = 0.75
@@ -52,6 +73,50 @@ angular_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
 scale_max = 1.5
 color_ramp = SubResource("GradientTexture1D_l8feb")
+anim_speed_min = 1.0
+anim_speed_max = 1.5
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nocfk"]
+lifetime_randomness = 0.75
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 120.0
+initial_velocity_max = 180.0
+angular_velocity_min = 20.0
+angular_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+damping_max = 100.0
+scale_max = 1.5
+anim_speed_min = 1.0
+anim_speed_max = 1.5
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xn7h4"]
+lifetime_randomness = 0.75
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 120.0
+initial_velocity_max = 180.0
+angular_velocity_min = 20.0
+angular_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+damping_max = 100.0
+scale_max = 1.5
+color = Color(0, 1, 1, 1)
+anim_speed_min = 1.0
+anim_speed_max = 1.5
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_fjvua"]
+lifetime_randomness = 0.75
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1, 16, 0)
+spread = 10.0
+initial_velocity_min = 40.0
+initial_velocity_max = 90.0
+gravity = Vector3(0, 0, 0)
+damping_max = 100.0
+scale_max = 1.5
+color = Color(0, 1, 1, 1)
 anim_speed_min = 1.0
 anim_speed_max = 1.5
 
@@ -87,20 +152,29 @@ texture_mode = 1
 
 [node name="Poofer" type="GPUParticles2D" parent="."]
 z_index = -1
-material = SubResource("CanvasItemMaterial_xquuw")
+material = ExtResource("4_4enp4")
 emitting = false
-amount = 128
+amount = 192
 process_material = SubResource("ParticleProcessMaterial_57jpk")
 texture = ExtResource("4_6ucrj")
 lifetime = 2.0
 one_shot = true
 explosiveness = 1.0
 
+[node name="PrePoofer" type="GPUParticles2D" parent="."]
+z_index = -1
+material = ExtResource("4_4enp4")
+emitting = false
+amount = 96
+process_material = SubResource("ParticleProcessMaterial_kwktj")
+texture = ExtResource("4_6ucrj")
+lifetime = 2.0
+
 [node name="Trailer" type="GPUParticles2D" parent="."]
 z_index = -1
-material = SubResource("CanvasItemMaterial_xquuw")
+material = ExtResource("4_4enp4")
 emitting = false
-amount = 16
+amount = 32
 process_material = SubResource("ParticleProcessMaterial_vp5b2")
 texture = ExtResource("4_6ucrj")
 lifetime = 2.0
@@ -130,6 +204,34 @@ texture = ExtResource("6_2e5eb")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 704, 704)
+
+[node name="CastOnCast" type="GPUParticles2D" parent="."]
+z_index = -1
+material = ExtResource("4_4enp4")
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_nocfk")
+texture = ExtResource("7_l3q2f")
+one_shot = true
+explosiveness = 0.8
+
+[node name="CastOnTarget" type="GPUParticles2D" parent="."]
+z_index = -1
+material = ExtResource("4_4enp4")
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_xn7h4")
+texture = ExtResource("7_l3q2f")
+one_shot = true
+explosiveness = 0.8
+
+[node name="CastOnTrail" type="GPUParticles2D" parent="."]
+z_index = -1
+material = ExtResource("4_4enp4")
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_fjvua")
+texture = ExtResource("9_eydf6")
+one_shot = true
 
 [connection signal="body_entered" from="SpikeChecker" to="." method="_on_spike_checker_body_entered"]
 [connection signal="body_exited" from="SpikeChecker" to="." method="_on_spike_checker_body_exited"]

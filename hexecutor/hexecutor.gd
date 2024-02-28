@@ -78,8 +78,10 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
 		if pattern_og.pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
 			Hexecutor.set_gradient(pattern_og, normal_gradient)
+			caster.node.particle_cast(0)
 		else:
 			Hexecutor.set_gradient(pattern_og, meta_gradient)
+			caster.node.particle_cast(2)
 	elif success: # Pattern is valid and executed successfully
 		if pattern_og.pattern.name == "Thoth's Gambit":
 			SoundManager.play_thoth()
@@ -90,9 +92,11 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 		else:
 			SoundManager.play_normal()
 		Hexecutor.set_gradient(pattern_og, normal_gradient)
+		caster.node.particle_cast(0)
 	else: # Pattern is invalid or failed to execute
 		SoundManager.play_fail()
 		Hexecutor.set_gradient(pattern_og, fail_gradient)
+		caster.node.particle_cast(1)
 	# End replay mode if it was active
 	main_scene.end_replay_mode()
 
