@@ -60,7 +60,10 @@ func get_meta_string(short = false):
 			text = name_short if short else name
 	else:
 		text = "(" + p_code + ")" if short else "Invalid Pattern (" + p_code + ")"
-	return "[url=P" + p_code + "]" + text + "[/url]" # Text will contain p_code as metadata
+	var return_val = "[url=P" + p_code + "]" + text + "[/url]" # Text will contain p_code as metadata
+	if not short:
+		return_val += " " # Fix for hover hitbox covering entire width of text label.
+	return return_val
 	
 # Static function to convert a value (number) to a bookkeeper's gambit string
 static func value_to_bookkeeper(value):
