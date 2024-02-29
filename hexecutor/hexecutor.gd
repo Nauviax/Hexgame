@@ -69,36 +69,46 @@ func _init(level_base, caster, main_scene, is_main_hexecutor = true):
 	self.main_scene = main_scene
 	self.is_main_hexecutor = is_main_hexecutor
 		
-# Tries to validate the pattern, colors it, then executes it (With sounds)
+# Tries to validate the pattern, colors it, and executes it (With sounds)
 func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mistakes
-	var is_meta = consideration_mode or introspection_depth > 0 # For coloring patterns
-	var success = execute_pattern(pattern_og.pattern)
 	# Splash of color and sound
+	execute_with_effects(pattern_og.pattern, pattern_og)
+	# End replay mode if it was active
+	main_scene.end_replay_mode()
+
+# Execute pattern, then play sounds and particles based on pattern name and success.
+# Can be called from external scripts (Like hex_display replay mode)
+# Pattern_og can be left null to not set a gradient color.
+func execute_with_effects(pattern:Pattern, pattern_og = null):
+	var is_meta = consideration_mode or introspection_depth > 0 # If currently 'meta', for coloring patterns
+	var success = execute_pattern(pattern) # Execute the pattern
 	if is_meta:
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
-		if pattern_og.pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
-			Hexecutor.set_gradient(pattern_og, normal_gradient)
+		if pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
+			if pattern_og:
+				Hexecutor.set_gradient(pattern_og, normal_gradient)
 			caster.node.particle_cast(0)
 		else:
-			Hexecutor.set_gradient(pattern_og, meta_gradient)
+			if pattern_og:
+				Hexecutor.set_gradient(pattern_og, meta_gradient)
 			caster.node.particle_cast(2)
 	elif success: # Pattern is valid and executed successfully
-		if pattern_og.pattern.name == "Thoth's Gambit":
+		if pattern.name == "Thoth's Gambit":
 			SoundManager.play_thoth()
-		elif pattern_og.pattern.name == "Hermes' Gambit":
+		elif pattern.name == "Hermes' Gambit":
 			SoundManager.play_hermes()
-		elif pattern_og.pattern.is_spell: # Spells are patterns that interact with the level in some way, including getting or reading from entities.
+		elif pattern.is_spell: # Spells are patterns that interact with the level in some way, including getting or reading from entities.
 			SoundManager.play_spell()
 		else:
 			SoundManager.play_normal()
-		Hexecutor.set_gradient(pattern_og, normal_gradient)
+		if pattern_og:
+			Hexecutor.set_gradient(pattern_og, normal_gradient)
 		caster.node.particle_cast(0)
 	else: # Pattern is invalid or failed to execute
 		SoundManager.play_fail()
-		Hexecutor.set_gradient(pattern_og, fail_gradient)
+		if pattern_og:
+			Hexecutor.set_gradient(pattern_og, fail_gradient)
 		caster.node.particle_cast(1)
-	# End replay mode if it was active
-	main_scene.end_replay_mode()
 
 # Quick way to set a pattern_og line to a gradient. Static.
 static func set_gradient(pattern_og: Pattern_Ongrid, gradient):

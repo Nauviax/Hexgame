@@ -145,7 +145,6 @@ func update_level_specific_labels(desc: String, solveable: bool, reset_valid = t
 	# Hide/show controls based on if level is intended to be solved
 	level_controls.visible = solveable
 	preplay_begin_replay_button.visible = solveable
-	
 
 # Handle UI buttons
 func _on_level_validate_pressed():
@@ -159,7 +158,6 @@ func set_validate_result(validated: bool):
 	else:
 		validate_button.modulate = Color(1, 0, 0)
 		validate_label.text = "Level not valid yet."
-	
 
 func _on_extra_validate_pressed(): # The repeating one
 	var validated = main_scene.validate_level()
@@ -264,6 +262,6 @@ func step_replay():
 		main_scene.hexecutor.reset() # Clear grid on null
 		update_clear_hexy() # Update stack display
 	else:
-		main_scene.hexecutor.execute_pattern(next) # Execute next pattern
+		main_scene.hexecutor.execute_with_effects(next) # Execute pattern
 	replay_index += 1
 	update_replay_timeline_label()
