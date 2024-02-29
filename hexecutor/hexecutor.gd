@@ -86,7 +86,11 @@ func execute_with_effects(pattern:Pattern, pattern_og = null):
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
 		if pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
 			if pattern_og:
-				Hexecutor.set_gradient(pattern_og, normal_gradient)
+				Hexecutor.set_gradient(pattern_og, normal_gradient) # Use normal instead
+			caster.node.particle_cast(0)
+		elif pattern.name == "Consideration" and consideration_mode: # Special case for consideration, except in a pair. (The first of the pair is normal)
+			if pattern_og:
+				Hexecutor.set_gradient(pattern_og, normal_gradient) # Use normal instead
 			caster.node.particle_cast(0)
 		else:
 			if pattern_og:
