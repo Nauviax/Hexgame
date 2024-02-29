@@ -15,6 +15,7 @@ static func execute(hexecutor, pattern):
 	for entity in entities:
 		if entity.get_pos().x == pos.x and entity.get_pos().y == pos.y:
 			stack.push_back(entity)
+			hexecutor.caster.node.particle_target(entity.get_pos()) # Particles
 			return true
 	stack.push_back(null) # If no entity found
 	return true

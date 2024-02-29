@@ -13,6 +13,7 @@ static func execute(hexecutor, pattern):
 	if not entity.node is LevelHaver:
 		stack.push_back(Bad_Iota.new(ErrorMM.NOT_LEVEL_HAVER, pattern.name))
 		return false
+	hexecutor.caster.node.particle_target(entity.get_pos()) # Particles (Won't be seen until they return but ehhhh)
 	hexecutor.main_scene.save_then_load_level(entity.node) # Level_haver is sent so it can be saved and updated later.
 	hexecutor.scram_mode = true # Stop executing patterns
 	return true

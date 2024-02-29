@@ -11,4 +11,5 @@ static func execute(hexecutor, pattern):
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "entity", entity))
 		return false
 	stack.push_back(entity.writeable)
+	hexecutor.caster.node.particle_target(entity.get_pos()) # Particles
 	return true

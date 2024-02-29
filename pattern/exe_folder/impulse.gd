@@ -43,8 +43,11 @@ static func execute(hexecutor, pattern):
 			if level_base.remove_entity(entity): # Attempt to push poor entity out of map
 				return true # Woo
 			# Else, if not dead, still set pos. See what happens. (Likely the player, and will respawn)
+		var old_pos = entity.get_pos() # REAL coords, used for particles
 		entity.set_fake_pos(tile)
 		entity.is_floating = false # Clear floating status (Irrelevant if entity is not floating)
+		hexecutor.caster.node.particle_target(entity.get_pos()) # Particles
+		hexecutor.caster.node.particle_trail(old_pos, Entity.fake_to_real(vector)) # Old pos to desired location, NOT current location.
 		return true
 	entity.is_floating = false # Still clear floating status
 	return true # Just don't impulse

@@ -168,13 +168,13 @@ func block_raycast(pos, dir, normalized = true): # Ignores glass
 	var adj_pos = hit_pos - (raycast_b.get_collision_normal() * Entity.FAKE_SCALE / 2) # Nudge half a tile's width (Correct tile selection)
 	return Vector2(tilemap.local_to_map(adj_pos))
 
-func block_side_raycast(pos, dir): # Ignores glass
+func block_side_raycast(pos, dir): # Ignores glass, returns both normal and collision point (point for particles only)
 	raycast_b.target_position = dir * raycast_dist
 	raycast_b.position = pos
 	raycast_b.force_raycast_update() # Works while disabled
 	if not raycast_b.is_colliding():
 		return null
-	return raycast_b.get_collision_normal()
+	return [raycast_b.get_collision_normal(), raycast_b.get_collision_point()]
 
 func entity_raycast(pos, dir):
 	raycast_e.target_position = dir * raycast_dist

@@ -33,4 +33,5 @@ static func execute(hexecutor, pattern):
 		return false
 	for entity in close_entities:
 		level_base.remove_entity(entity) # Will not remove unkillable entities
+	hexecutor.caster.node.particle_target(Entity.fake_to_real(pos)) # Particles
 	return true

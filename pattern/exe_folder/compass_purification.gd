@@ -10,7 +10,8 @@ static func execute(hexecutor, pattern):
 	# Check that the popped value is an entity
 	if entity is Entity:
 		stack.push_back(entity.get_fake_pos())
+		hexecutor.caster.node.particle_target(entity.get_pos()) # Particles
+		return true
 	else:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "entity", entity))
 		return false
-	return true

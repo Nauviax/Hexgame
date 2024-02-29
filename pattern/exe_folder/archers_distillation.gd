@@ -19,5 +19,13 @@ static func execute(hexecutor, pattern):
 		return false
 	pos = Entity.fake_to_real(pos) # Convert to real position
 	var level_base = hexecutor.level_base # Used to do raycasting
-	stack.push_back(level_base.block_raycast(pos, dir)) # Return fake coords of tile hit
+	var fake_pos = level_base.block_raycast(pos, dir)
+	stack.push_back(fake_pos) # Return fake coords of tile hit
+	# Particles
+	if fake_pos:
+		var real_pos = Entity.fake_to_real(fake_pos)
+		hexecutor.caster.node.particle_target(real_pos)
+		hexecutor.caster.node.particle_trail(pos, real_pos - pos)
+	else:
+		hexecutor.caster.node.particle_trail(pos, dir * Entity.FAKE_SCALE) # Raycast distance 1 tile
 	return true

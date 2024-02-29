@@ -14,5 +14,8 @@ static func execute(hexecutor, pattern):
 	if not pos is Vector2:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "vector", pos))
 		return false
-	stack.push_back(sentinel_pos - pos)
+	var result = sentinel_pos - pos
+	stack.push_back(result)
+	hexecutor.caster.node.particle_target(Entity.fake_to_real(sentinel_pos)) # Particles
+	hexecutor.caster.node.particle_trail(Entity.fake_to_real(pos), Entity.fake_to_real(result)) # Trail
 	return true

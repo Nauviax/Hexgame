@@ -16,10 +16,10 @@ static func execute(hexecutor, pattern):
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 1, "entity", entity))
 		return false
-	if not entity.moveable: # If can't move entity, just return silently
-		return true
 	var pos = entity.get_fake_pos()
 	var dest = round(pos + vector)
+	if not entity.moveable: # If can't move entity, just return silently
+		return finish(true, hexecutor, pos, vector, dest)
 	var level_base = hexecutor.level_base # For functions
 	if hexecutor.level_base.get_tile_id(dest, 1) == 22: # If gate
 		if not level_base.entity_at(dest): # If no entity
@@ -31,6 +31,12 @@ static func execute(hexecutor, pattern):
 		# No error if gate is blocked or not in sight, should be visually obvious anyway.
 	else:
 		stack.push_back(Bad_Iota.new(ErrorMM.NO_GATE, pattern.name, vector, dest)) # DO error here, since it's less obvious. If your thoth is missing the gate, you'll want to know.
-		return false
-	return true
+		return finish(false, hexecutor, pos, vector, dest)
+	return finish(true, hexecutor, pos, vector, dest)
+
+# Teleport can end early at multiple points, but I want particles to always show. Thus this function cuts back on repeated particle code.
+static func finish(success, hexecutor, old_pos, vector, dest):
+	hexecutor.caster.node.particle_trail(Entity.fake_to_real(old_pos), Entity.fake_to_real(vector)) # Show attempted teleport regardless of tp success
+	hexecutor.caster.node.particle_target(Entity.fake_to_real(dest)) # Poof at destination, again regardless of gate.
+	return success
 

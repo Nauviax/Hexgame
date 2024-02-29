@@ -29,6 +29,7 @@ static func execute(hexecutor, pattern):
 		if dist <= dst:
 			result_unsorted.append([entity, dist])
 	stack.push_back(dist_sort(result_unsorted))
+	hexecutor.caster.node.particle_target(pos) # Particles
 	return true
 
 # Takes a result_unsorted list and returns a list of just sorted entities

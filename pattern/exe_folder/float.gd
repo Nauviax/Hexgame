@@ -16,4 +16,5 @@ static func execute(hexecutor, pattern):
 		entity.is_floating = false # Remove floating if they already have it.
 	else:
 		entity.is_floating = entity.moveable # If the entity is moveable, then float them.
+	hexecutor.caster.node.particle_target(entity.get_pos()) # Particles
 	return true

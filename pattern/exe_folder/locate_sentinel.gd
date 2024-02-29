@@ -11,4 +11,5 @@ static func execute(hexecutor, pattern):
 		stack.push_back(Bad_Iota.new(ErrorMM.NO_SENTINEL, pattern.name))
 		return false
 	stack.push_back(sentinel_pos)
+	hexecutor.caster.node.particle_target(Entity.fake_to_real(sentinel_pos)) # Particles
 	return true

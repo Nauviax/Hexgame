@@ -14,4 +14,5 @@ static func execute(hexecutor, pattern):
 		return false
 	hexecutor.main_scene.exit_level()
 	hexecutor.scram_mode = true # Stop executing patterns
+	# No particles because they won't be seen anyway
 	return true
