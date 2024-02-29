@@ -57,6 +57,8 @@ static func interpolated_line(p0, p1):
 	var points = []
 	var dp = p1 - p0
 	var l_dist = roundi(max(abs(dp.x), abs(dp.y)))
+	if l_dist == 0:
+		return [] # Prevent returning (nan, nan) points and sending entity to shadow realm
 	for ii in l_dist + 1: 
 		var tt = float(ii) / l_dist
 		points.append(lerp(p1, p0, tt).round())
