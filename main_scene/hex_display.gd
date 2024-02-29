@@ -39,6 +39,8 @@ extends Control
 
 @export var replay_timeline_label: RichTextLabel
 
+# As a general note: Spaces are added before \n to avoid weird issue with hover hitbox for meta-text extending the full width of the control.
+
 # Replay mode. Shows replay controls and disables player control.
 # Manual casting will disable this mode.
 var replay_mode: bool = false
@@ -96,9 +98,9 @@ func update_stack(stack):
 	for ii in range(stack_size):
 		var iota = stack[stack_size - ii - 1]
 		if iota is Pattern:
-			text += iota.get_meta_string() + "\n"
+			text += iota.get_meta_string() + " \n"
 		else:
-			text += str(iota) + "\n"
+			text += str(iota) + " \n"
 	stack_label.append_text(text)
 
 # Ravenmind label
@@ -106,18 +108,18 @@ func update_ravenmind_label(ravenmind):
 	if ravenmind == null:
 		raven_label.text = ""
 	elif ravenmind is Pattern:
-		raven_label.text = "Ravenmind:\n" + ravenmind.get_meta_string()
+		raven_label.text = "Ravenmind:\n" + ravenmind.get_meta_string() + " \n" # Avoid issue with hover hitbox
 	else:
-		raven_label.text = "Ravenmind:\n" + str(ravenmind)
+		raven_label.text = "Ravenmind:\n" + str(ravenmind) + " \n"
 
 # Reveal label
 func update_reveal_label(reveal):
 	if reveal == null:
 		reveal_label.text = ""
 	elif reveal is Pattern:
-		reveal_label.text = "Revealed:\n" + reveal.get_meta_string()
+		reveal_label.text = "Revealed:\n" + reveal.get_meta_string() + " \n"
 	else:
-		reveal_label.text = "Revealed:\n" + str(reveal)
+		reveal_label.text = "Revealed:\n" + str(reveal) + " \n"
 
 # Spellbook label
 func update_sb_label(player):
@@ -131,9 +133,9 @@ func update_sb_label(player):
 		if iota == null:
 			text += "\n"
 		elif iota is Pattern:
-			text += iota.get_meta_string() + "\n"
+			text += iota.get_meta_string() + " \n" # Again, space to avoid issue with hover hitbox
 		else:
-			text += str(iota) + "\n"
+			text += str(iota) + " \n"
 	sb_label.text = text
 
 # Level description label (Called directly by main_scene)
