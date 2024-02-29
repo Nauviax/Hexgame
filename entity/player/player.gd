@@ -247,6 +247,11 @@ func particle_trail(trail_pos: Vector2, trail_vect: Vector2):
 	# Restart
 	cast_trail_pgen.restart()
 
+# Clear targeting casting particles. Normally called when entering a level, to prevent weird particle positions on return.
+func particle_clear_targets():
+	cast_target_pgen.emitting = false
+	cast_trail_pgen.emitting = false
+
 # Set background theme
 # Options: "Inside", "Outside"
 func set_background_theme(theme: String):
