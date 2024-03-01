@@ -60,17 +60,19 @@ var freeze_look_dir = false # Whether player look direction is following mouse, 
 
 # Prepare player object
 func _ready():
-	# Player character normally has 4 iota slots, and their spellbook can be read from but not written to externally.
+	# Player character normally has 4 iota slots, and their spellbook can be read from and written to externally.
 	sb = player_sb.duplicate(true)
 	entity.readable = true
+	entity.writeable = true
 	entity.killable = false
 
 # Get the selected spellbook iota
 func get_iota():
 	return sb[sb_sel]
 
-# No set_iota() function, as the player's spellbook is not writable externally.
-# Patterns writing to spellbook should use the variable directly.
+# Set selected page of spellbook to iota
+func set_iota(new_iota):
+	sb[sb_sel] = new_iota
 
 # Increment spellbook.
 func inc_sb():

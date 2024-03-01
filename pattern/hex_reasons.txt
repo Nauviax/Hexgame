@@ -83,13 +83,15 @@ Escaping Patterns
 
 Reading and Writing
 
-	Of note, as player offhand is fixed, Auditor's patterns will be less useful. (Outside of some edgecases anyway)
-	Both the read and write patterns now report it's readability/writeability from an exterior caster.
-		- That is to say, the caster can always read/write to itself, though other casters may not have access to this caster.
-
 	Truenames aren't really a thing here. You can save any entity reference anywhere.
 		- As this feature normally existed to prevent players abusing truenames, it isn't needed in this singleplayer game.
 		- Entity references become invalid when said entity is dead. It persists on the stack, but spells don't affect them and reads return null.
+	
+	Changes to available patterns and shapes:
+		- Auditor's and Accessor's REFLECTION removed, (The self one) as this is constant anyway.
+		- Chronicler's Gambit + Purification are now one size smaller, and just have an 's' added to the code.
+		- Auditor's and Accessor's PURIFICATION also smaller. They match respective Chronicler's, but append 'r' and 'l' respectively.
+	These are to reduce time/size drawing these patterns, as they are used often in this game.
 
 Advanced Mathematics
 
@@ -170,6 +172,7 @@ Spells
 		- Requires line of sight to destination. Destination MUST be unobstructed teleport tile.
 			- Can tp through glass and entities etc, just no walls.
 		- vect is from entity. If not unobstructed tp tile, then spell fails.
+		- Simpler pattern, no border. Just too relatively large otherwise.
 
 	Blue Sun's Nadir (ent ->)
 		- Currently only Nadir/Zenith

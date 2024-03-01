@@ -122,7 +122,7 @@ func _ready():
 		"2LLsLLsLL", # Explosion
 		"4LslllsLls", # Impulse
 		"5lllllLssLsLsR", # Float
-		"2sssLllsrrrrrsllsllsssllrllsssll", # Teleport
+		"2sssLllsrrrrrsll", # Teleport
 	])
 	add_category("Sentinels", [
 		"2sLrLsLr", # Summon Sentinel
@@ -157,12 +157,10 @@ func _ready():
 	add_category("Reading and Writing", [
 		"2Llllll", # Scribe's Reflection
 		"2Rrrrrr", # Scribe's Gambit
-		"2sLslslslslsls", # Chronicler's Purification
-		"2sRsrsrsrsrsrs", # Chronicler's Gambit
-		"2Llllllr", # Auditor's Reflection
-		"2sLslslslslslsrs", # Auditor's Purification
-		"2Rrrrrrl", # Assessor's Reflection
-		"2sRsrsrsrsrsrsls", # Assessor's Purification
+		"2Lllllls", # Chronicler's Purification
+		"2Rrrrrrs", # Chronicler's Gambit
+		"2Llllllsr", # Auditor's Purification
+		"2Rrrrrrsl", # Assessor's Purification
 		"6rllsLslLLs", # Huginn's Gambit
 		"1lrrsRsrRRs", # Muninn's Reflection
 		"3RRl", # Verso's Gambit

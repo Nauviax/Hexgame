@@ -5,8 +5,7 @@ static var descs = [
 static var iota_count = 0
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):
-	var player = hexecutor.caster.node
-	var iota = player.sb[player.sb_sel]
+	var iota = hexecutor.caster.node.get_iota()
 	if iota is Array:
 		hexecutor.stack.push_back(iota.duplicate(true)) # Deep copy
 	else:

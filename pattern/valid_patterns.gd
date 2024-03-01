@@ -128,15 +128,13 @@ static var static_patterns = { # !!! I would like to remove short names somehow,
 
 	# Reading and Writing
 	"Llllll": ["Scribe's Reflection", "ScrRe"],
-	"sLslslslslsls": ["Chronicler's Purification", "ChrPu"],
-	"lrrsRsrRRs": ["Muninn's Reflection", "MunRe"],
-	"Llllllr": ["Auditor's Reflection", "AudRe"],
-	"sLslslslslslsrs": ["Auditor's Purification", "AudPu"],
-	"Rrrrrrl": ["Assessor's Reflection", "AssRe"],
-	"sRsrsrsrsrsrsls": ["Assessor's Purification", "AssPu"],
 	"Rrrrrr": ["Scribe's Gambit", "ScrGa"],
-	"sRsrsrsrsrsrs": ["Chronicler's Gambit", "ChrGa"],
+	"Lllllls": ["Chronicler's Purification", "ChrPu"],
+	"Rrrrrrs": ["Chronicler's Gambit", "ChrGa"],
+	"Llllllsr": ["Auditor's Purification", "AudPu"],
+	"Rrrrrrsl": ["Assessor's Purification", "AssPu"],
 	"rllsLslLLs": ["Huginn's Gambit", "HugGa"],
+	"lrrsRsrRRs": ["Muninn's Reflection", "MunRe"],
 
 	# Advanced Mathematics
 	"lllllLR": ["Cosine Purification", "CosPu"],
@@ -187,7 +185,7 @@ static var static_patterns = { # !!! I would like to remove short names somehow,
     "LLsLLsLL": ["Explosion", "Exp"],
     "LslllsLls": ["Impulse", "Imp"],
     "lllllLssLsLsR": ["Float", "Flo"],
-    "sssLllsrrrrrsllsllsssllrllsssll": ["Teleport", "Tel"],
+    "sssLllsrrrrrsll": ["Teleport", "Tel"],
 }
 
 # ---------------------- #

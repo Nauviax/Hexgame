@@ -5,6 +5,5 @@ static var descs = [
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):
-	var player = hexecutor.caster.node
-	player.sb[player.sb_sel] = hexecutor.stack.pop_back()
+	hexecutor.caster.node.set_iota(hexecutor.stack.pop_back())
 	return true
