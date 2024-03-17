@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://t077eoly46ro"]
+[gd_scene load_steps=10 format=3 uid="uid://t077eoly46ro"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_bsy5j"]
 [ext_resource type="Script" path="res://levels/island_1/external_hub_1/validator.gd" id="2_csvlg"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ct0c4xg0rkvmu" path="res://levels/island_1/tutorial/level.tscn" id="8_j7ra6"]
 [ext_resource type="PackedScene" uid="uid://wkuc0osgt70a" path="res://levels/island_1/bool_sort/level.tscn" id="8_madyq"]
 [ext_resource type="PackedScene" uid="uid://bveri3b1r80lg" path="res://levels/island_1/test_level/level.tscn" id="9_5durt"]
+[ext_resource type="PackedScene" uid="uid://c1cg53xmco1n3" path="res://entity/objects/sign.tscn" id="9_vcb6y"]
 
 [node name="LevelBase" instance=ExtResource("1_bsy5j")]
 validator = ExtResource("2_csvlg")
@@ -45,3 +46,6 @@ position = Vector2(192, 320)
 entity_name = "Tutorial"
 level_scene = ExtResource("8_j7ra6")
 level_iota = ["Key_Tutorial"]
+
+[node name="Sign" parent="." index="11" instance=ExtResource("9_vcb6y")]
+position = Vector2(0, 192)
