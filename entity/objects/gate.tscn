@@ -11,11 +11,11 @@ collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_34ixo")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_lirxu")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.784314, 0, 0, 1)
 texture = ExtResource("2_nd8vq")
 region_enabled = true
 region_rect = Rect2(64, 64, 64, 192)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_lirxu")
