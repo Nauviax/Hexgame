@@ -17,11 +17,15 @@ var iota
 
 # Level_haver's iota is always private. It becomes readable once level is beaten.
 
+# Label to display name on hover
+@onready var text_label = $TextPos/Text
+
 # Init object
 func _ready():
 	iota = level_iota.duplicate(true)[0] # Deep copy, take first
 	entity.killable = false
 	entity.moveable = false
+	text_label.text = entity_name
 
 # Level getter
 func get_level():
@@ -32,3 +36,10 @@ func get_iota():
 	return iota
 
 # No setter (Shouldn't ever change)
+
+# Control text visibility with mouse
+func _on_mouse_entered():
+	text_label.visible = true
+
+func _on_mouse_exited():
+	text_label.visible = false

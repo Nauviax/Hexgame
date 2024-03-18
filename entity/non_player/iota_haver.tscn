@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbo0lm0clhhmu"]
+[gd_scene load_steps=6 format=3 uid="uid://cbo0lm0clhhmu"]
 
 [ext_resource type="Script" path="res://entity/non_player/iota_haver.gd" id="1_fbb2e"]
 [ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/shitty_entity_sprite.png" id="2_m0j2c"]
+[ext_resource type="Theme" uid="uid://bk1llxpthaj7w" path="res://resources/ui/main_theme.tres" id="3_088dk"]
+[ext_resource type="StyleBox" uid="uid://cgibn2xtk7bja" path="res://resources/ui/label_background_style_override.tres" id="4_letx3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b3m4m"]
 size = Vector2(56, 56)
 
 [node name="IotaHaver" type="StaticBody2D"]
 collision_mask = 3
+input_pickable = true
 script = ExtResource("1_fbb2e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -15,3 +18,28 @@ shape = SubResource("RectangleShape2D_b3m4m")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_m0j2c")
+
+[node name="TextPos" type="Node2D" parent="."]
+z_index = 100
+position = Vector2(0, -48)
+
+[node name="Text" type="Label" parent="TextPos"]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -83.0
+offset_top = -32.0
+offset_right = 83.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_088dk")
+theme_override_styles/normal = ExtResource("4_letx3")
+text = "Placeholder text"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

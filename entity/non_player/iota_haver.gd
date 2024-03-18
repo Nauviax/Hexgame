@@ -15,11 +15,15 @@ extends StaticBody2D
 # Iota that this haver haves. (Duplicated here to prevent reference issues, deep copy etc)
 var iota
 
+# Label to display name on hover
+@onready var text_label = $TextPos/Text
+
 # Init object
 func _ready():
 	entity.readable = true # Always readable
 	entity.writeable = writeable
 	iota = haver_iota.duplicate(true)[0] # Deep copy of haver_iota, then save first item
+	text_label.text = entity_name
 
 # Iota getter
 func get_iota():
@@ -29,3 +33,9 @@ func get_iota():
 func set_iota(new_iota):
 	iota = new_iota
 	
+# Control text visibility with mouse
+func _on_mouse_entered():
+	text_label.visible = true
+
+func _on_mouse_exited():
+	text_label.visible = false
