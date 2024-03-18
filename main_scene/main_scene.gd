@@ -193,8 +193,11 @@ func end_replay_mode():
 	if hex_display.replay_mode:
 		hex_display.end_replay()
 
-# Player casting functions
+# Player casting functions, grid toggle/control
 func _input(event):
+	if Input.is_action_just_pressed("toggle_grid"):
+		hex_display.toggle_grid()
+		return # Done
 	if not Globals.player_control:
 		return # Player control required
 	if event is InputEventMouseButton:

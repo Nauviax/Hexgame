@@ -50,8 +50,11 @@ func _ready():
 	validate_label.text = "" # Clear validation label
 
 # Handle Toggle Grid button
-# Show/hide grid, rename button text, and set player control
 func _on_toggle_grid_pressed():
+	toggle_grid()
+
+# Show/hide grid, rename button text, and set player control
+func toggle_grid():
 	if grid_control.visible: # Hide grid, enable player control
 		Globals.player_control = not replay_mode # True ONLY if not in replay mode
 		toggle_grid_button.text = "Show Grid >"
