@@ -9,8 +9,8 @@ var main_scene
 # Used to reload level quickly
 var scene
 
-# Validator and initiator for this level
-@export var validator: Script
+# Level_logic and initiator for this level
+@export var level_logic: Script
 @export var initiator: Script
 
 # Level seed (Random on _ready() if -1)
@@ -26,7 +26,7 @@ var rnd: RandomNumberGenerator # Set in _ready()
 # If true, show validate and replay buttons, and keep track of patterns executed for replay.
 @export var is_solvable_level: bool = true # False for level hubs mainly
 
-# True if level has been validated (And validator returned true)
+# True if level has been validated (And level_logic.validate() returned true)
 var validated = false
 
 # List of entities in the level (Entity object, not Node2D)
@@ -54,10 +54,6 @@ var transition_multiplier = 3.5 # Distance player is placed on transition, and h
 @onready var raycast_e = $HexEntityRaycast
 @onready var raycast_i = $HexImpulseRaycast
 
-# Description info for the level
-var level_desc = "No description set" # Displayed description. Can be updated by validator.
-var level_progress = 0 # Progress through level. Used by validator to determine what to validate and which description to show.
-
 # Generate rest of base level info
 func _ready():
 	# Get entities and objecets
@@ -67,8 +63,6 @@ func _ready():
 		level_seed = randi()
 	rnd = RandomNumberGenerator.new()
 	rnd.seed = level_seed
-	# Get initial description
-	level_desc = validator.descs[0]
 	# Apply initiator to level
 	initiator.initiate(self)
 	# Set background theme
@@ -139,8 +133,10 @@ func check_player_roof():
 
 # Test if the level is complete (And save result)
 func validate():
-	validated = validator.validate(self)
-	return validated
+	if level_logic == null:
+		return false
+	else:
+		return level_logic.validate(self)
 
 # Remove an entity from the level, effectively killing it. Returns false on failure.
 func remove_entity(entity):

@@ -19,8 +19,6 @@ extends Control
 
 @export var border_label: Label
 
-@export var level_desc_label: RichTextLabel
-
 @export var level_controls: Control # For hiding/showing level controls, normally when a level isn't solvable.
 
 @export var validate_button: Button # For changing color
@@ -138,9 +136,8 @@ func update_sb_label(player):
 			text += str(iota) + " \n"
 	sb_label.text = text
 
-# Level description label (Called directly by main_scene)
-func update_level_specific_labels(desc: String, solveable: bool, reset_valid = true):
-	level_desc_label.text = desc
+# Level description label (Called directly by main_scene) #!!! IS THIS STILL NEEDED WITH DESC ETC GONE? !!!
+func update_level_specific_labels(solveable: bool, reset_valid = true):
 	if reset_valid: # If level desc changes due to level change, we want to reset the validation labels
 		validate_label.text = ""
 		validate_button.modulate = Color(1, 1, 1)

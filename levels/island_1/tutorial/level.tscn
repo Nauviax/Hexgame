@@ -1,13 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://ct0c4xg0rkvmu"]
+[gd_scene load_steps=7 format=3 uid="uid://ct0c4xg0rkvmu"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_d3y2i"]
-[ext_resource type="Script" path="res://levels/island_1/tutorial/validator.gd" id="2_pe6wp"]
+[ext_resource type="Script" path="res://levels/island_1/tutorial/level_logic.gd" id="2_bbml7"]
 [ext_resource type="Script" path="res://levels/island_1/tutorial/initiator.gd" id="3_7kjmn"]
 [ext_resource type="PackedScene" uid="uid://cbo0lm0clhhmu" path="res://entity/non_player/iota_haver.tscn" id="4_oexsx"]
 [ext_resource type="PackedScene" uid="uid://bjgwscbdyxshm" path="res://entity/objects/gate.tscn" id="5_b62nd"]
+[ext_resource type="PackedScene" uid="uid://c1cg53xmco1n3" path="res://entity/objects/sign.tscn" id="6_7gn0r"]
 
 [node name="LevelBase" instance=ExtResource("1_d3y2i")]
-validator = ExtResource("2_pe6wp")
+level_logic = ExtResource("2_bbml7")
 initiator = ExtResource("3_7kjmn")
 belongs_to_world = 1
 
@@ -34,3 +35,26 @@ obj_name = "Gate2"
 [node name="Gate3" parent="." index="10" instance=ExtResource("5_b62nd")]
 position = Vector2(1152, 192)
 obj_name = "Gate3"
+
+[node name="Sign1" parent="." index="11" instance=ExtResource("6_7gn0r")]
+position = Vector2(64, 64)
+obj_name = "Sign1"
+text = "Tutorial step 1/4: Reveal yourself by casting Mind's Reflection then Reveal."
+
+[node name="Sign2" parent="." index="12" instance=ExtResource("6_7gn0r")]
+position = Vector2(448, 64)
+obj_name = "Sign2"
+text = "Tutorial step 2/4: Reveal the iota contained in the entity in the next room.
+Scout's can be used to get the entity, and Chronicler's to read it's iota.
+Remember to see Hexbook for other needed patterns."
+
+[node name="Sign3" parent="." index="13" instance=ExtResource("6_7gn0r")]
+position = Vector2(832, 64)
+obj_name = "Sign3"
+text = "Tutorial step 3/4: Move the entity onto the red area past the spikes. Float and Impulse should be used.
+Number/Vector related patterns can be found in the Hexbook."
+
+[node name="Sign4" parent="." index="14" instance=ExtResource("6_7gn0r")]
+position = Vector2(1216, 64)
+obj_name = "Sign4"
+text = "Tutorial step 4/4: Finish on the green area by teleporting through the glass using Teleport."

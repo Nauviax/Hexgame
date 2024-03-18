@@ -1,12 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dwqaokidtig5y"]
+[gd_scene load_steps=6 format=3 uid="uid://dwqaokidtig5y"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_d3y2i"]
-[ext_resource type="Script" path="res://levels/island_1/reveal_iota/validator.gd" id="2_srtv0"]
+[ext_resource type="Script" path="res://levels/island_1/reveal_iota/level_logic.gd" id="2_j674r"]
 [ext_resource type="Script" path="res://levels/island_1/reveal_iota/initiator.gd" id="3_fs0v6"]
 [ext_resource type="PackedScene" uid="uid://cbo0lm0clhhmu" path="res://entity/non_player/iota_haver.tscn" id="4_oexsx"]
+[ext_resource type="PackedScene" uid="uid://c1cg53xmco1n3" path="res://entity/objects/sign.tscn" id="4_t1qpj"]
 
 [node name="LevelBase" instance=ExtResource("1_d3y2i")]
-validator = ExtResource("2_srtv0")
+level_logic = ExtResource("2_j674r")
 initiator = ExtResource("3_fs0v6")
 belongs_to_world = 1
 
@@ -21,3 +22,7 @@ writeable = false
 
 [node name="Player" parent="." index="5"]
 position = Vector2(128, 128)
+
+[node name="Sign" parent="." index="8" instance=ExtResource("4_t1qpj")]
+position = Vector2(64, 64)
+text = "Reveal Iota: Simply obtain and reveal the iota stored in the haver."

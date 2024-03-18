@@ -47,7 +47,7 @@ func load_level_from_scene(scene: PackedScene):
 
 	# Update hex_display, level desc
 	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.level_desc, loaded_level.is_solvable_level)
+	hex_display.update_level_specific_labels(loaded_level.is_solvable_level)
 
 # Reset level, optionally keep seed or border score
 func reload_current_level(reset_border_score: bool, same_seed: bool = true):
@@ -71,7 +71,7 @@ func reload_current_level(reset_border_score: bool, same_seed: bool = true):
 
 	# Update hex_display
 	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.level_desc, loaded_level.is_solvable_level) # Level desc CAN change, if it has multiple.
+	hex_display.update_level_specific_labels(loaded_level.is_solvable_level) # Level desc CAN change, if it has multiple.
 
 # Unloads the current level and loads the last level in level_list
 # Returns false if there are no levels to load
@@ -95,7 +95,7 @@ func exit_level() -> bool:
 
 	# Update hex_display, level desc
 	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.level_desc, loaded_level.is_solvable_level)
+	hex_display.update_level_specific_labels(loaded_level.is_solvable_level)
 
 	# Update level_haver iota readability
 	prev_level_stuff[2].entity.readable = level_validated
@@ -119,7 +119,7 @@ func transition_to_world(world_id: int):
 	level_viewport.add_child(world_view) # New scene being shown.
 	loaded_level = world_view # Done!
 	update_hex_display() # Refresh display (Now-Dead entities, level desc)
-	hex_display.update_level_specific_labels(world_view.world_script.desc, false) # World view isn't solveable, so no replay etc just false.
+	hex_display.update_level_specific_labels(false) # World view isn't solveable, so no replay etc just false.
 
 # Transition from world view to selected level.
 func transition_from_world(selected_level: PackedScene):
@@ -136,14 +136,14 @@ func transition_from_world(selected_level: PackedScene):
 	hexecutor.level_base = new_level
 	loaded_level = new_level # Done!
 	update_hex_display() # Refresh display (New level desc etc)
-	hex_display.update_level_specific_labels(new_level.level_desc, new_level.is_solvable_level)
+	hex_display.update_level_specific_labels(new_level.is_solvable_level)
 
 # Validates the current level, and calls appropriate functions to update UI
 func validate_level():
 	if loaded_level.has_method("validate"):
 		var validated = loaded_level.validate() # Saves result to level also.
 		hex_display.set_validate_result(validated) # Update UI to reflect validation result
-		hex_display.update_level_specific_labels(loaded_level.level_desc, loaded_level.is_solvable_level, false) # Refresh level desc, as validator can sometimes change this.
+		# !!! Removed, probably fine. hex_display.update_level_specific_labels(loaded_level.is_solvable_level, false) # Refresh level desc, as validator can sometimes change this.
 	else:
 		hex_display.set_validate_result(false) # No validator, assume false (Likely world view)
 

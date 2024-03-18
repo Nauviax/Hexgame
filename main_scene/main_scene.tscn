@@ -17,7 +17,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelStuff/LevelAndGrid/LevelCo
 anchor_mode = 0
 editor_draw_screen = false
 
-[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_desc_label", "level_controls", "validate_button", "validate_label", "popup", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
+[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_controls", "validate_button", "validate_label", "popup", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
 offset_right = 1924.0
 offset_bottom = 1080.0
 mouse_filter = 2
@@ -31,7 +31,6 @@ raven_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Ravenmind
 reveal_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Extras/Reveal")
 sb_label = NodePath("MainSplit/StackAndInfo/IotaStorageStuff/Spellbook")
 border_label = NodePath("MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons/BorderScore")
-level_desc_label = NodePath("MainSplit/LevelStuff/LevelInfo/LevelDesc")
 level_controls = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons")
 validate_button = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons/Validate")
 validate_label = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons/YouWin")
@@ -128,14 +127,6 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 180)
 layout_mode = 2
 size_flags_vertical = 3
-
-[node name="LevelDesc" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-bbcode_enabled = true
-text = "Level Name + Description here"
-autowrap_mode = 2
 
 [node name="LevelButtons" type="VBoxContainer" parent="HexDisplay/MainSplit/LevelStuff/LevelInfo"]
 layout_mode = 2
@@ -281,9 +272,6 @@ metadata/_edit_use_anchors_ = true
 [connection signal="meta_clicked" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_clicked"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/StackAndInfo/StackScroller/Stack" to="HexDisplay" method="_on_meta_hover_started"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelDesc" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelInfo/LevelButtons/ExValidate" to="HexDisplay" method="_on_extra_validate_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButtons/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]

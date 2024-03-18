@@ -1,6 +1,6 @@
 # Tutorial Initiator
 static var iota # Goal value to reveal for this level
-static var gate1 # Gates stored here for easy reference in validator
+static var gate1 # Gates stored here for easy reference in level_logic
 static var gate2
 static var gate3
 static func initiate(level_base):

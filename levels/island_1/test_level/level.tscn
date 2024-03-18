@@ -1,12 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bveri3b1r80lg"]
+[gd_scene load_steps=6 format=3 uid="uid://bveri3b1r80lg"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_vdye0"]
-[ext_resource type="Script" path="res://levels/island_1/test_level/validator.gd" id="2_t2xbk"]
+[ext_resource type="Script" path="res://levels/island_1/test_level/level_logic.gd" id="2_2cw31"]
 [ext_resource type="Script" path="res://levels/island_1/test_level/initiator.gd" id="3_anpa7"]
 [ext_resource type="PackedScene" uid="uid://cbo0lm0clhhmu" path="res://entity/non_player/iota_haver.tscn" id="4_3qppv"]
+[ext_resource type="PackedScene" uid="uid://c1cg53xmco1n3" path="res://entity/objects/sign.tscn" id="4_ci4l8"]
 
 [node name="LevelBase" instance=ExtResource("1_vdye0")]
-validator = ExtResource("2_t2xbk")
+level_logic = ExtResource("2_2cw31")
 initiator = ExtResource("3_anpa7")
 belongs_to_world = 1
 
@@ -28,3 +29,8 @@ writeable = false
 [node name="IotaHaverRand" parent="." index="6" instance=ExtResource("4_3qppv")]
 position = Vector2(320, 512)
 entity_name = "IotaHaver_Rand"
+
+[node name="Sign" parent="." index="9" instance=ExtResource("4_ci4l8")]
+position = Vector2(64, 192)
+text = "Test Level: All entities on green tiles must contain true.
+At least one on-green entity must exist."
