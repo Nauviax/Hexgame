@@ -28,8 +28,8 @@ var entity: Entity = Entity.new("Player", self)
 @onready var respawn_point: Vector2 = position
 
 # Player starting spellbook for this level. Format: [iota, iota, iota, ...]
-@export var player_sb: Array = [null, null, null, null]
-# Current default spellbook has 4 slots, and starts with the above 0-4 array.
+@export var player_sb: Array = [null, null, null, null, null, null, null, null, null]
+# Current default spellbook has 9 slots, all initially null. Size can change per-level, but isn't recommended.
 # This can be changed per level, using the inspector (@export)
 
 # Player hex-casting variables
@@ -60,7 +60,7 @@ var freeze_look_dir = false # Whether player look direction is following mouse, 
 
 # Prepare player object
 func _ready():
-	# Player character normally has 4 iota slots, and their spellbook can be read from and written to externally.
+	# Player character normally has 9 iota slots, and their spellbook can be read from and written to externally.
 	sb = player_sb.duplicate(true)
 	entity.readable = true
 	entity.writeable = true

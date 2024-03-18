@@ -165,8 +165,7 @@ func _ready():
 		"1lrrsRsrRRs", # Muninn's Reflection
 		"3RRl", # Verso's Gambit
 		"3RRs", # Recto's Gambit
-		"4LLs", # Tome's Reflection
-		"4LLr", # Tome's Gambit
+		"3RRr", # Tome's Gambit
 	])
 	add_category("Advanced Mathematics", [
 		"3lllllLL", # Sine Purification

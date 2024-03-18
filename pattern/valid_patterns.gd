@@ -170,8 +170,7 @@ static var static_patterns = { # !!! I would like to remove short names somehow,
     # Spellbook
     "RRl": ["Verso's Gambit", "VerGa"],
     "RRs": ["Recto's Gambit", "RecGa"],
-    "LLs": ["Tome's Reflection", "TomRe"],
-    "LLr": ["Tome's Gambit", "TomGa"],
+    "RRr": ["Tome's Gambit", "TomGa"],
 
     ## SPELLS ##
 
