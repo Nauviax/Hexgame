@@ -6,7 +6,7 @@
 [ext_resource type="StyleBox" uid="uid://cgibn2xtk7bja" path="res://resources/ui/label_background_style_override.tres" id="4_rcyrl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lirxu"]
-size = Vector2(32, 128)
+size = Vector2(32, 96)
 
 [node name="Sign" type="Area2D"]
 collision_layer = 256
@@ -14,7 +14,7 @@ script = ExtResource("1_8y55v")
 text = "This sign has not yet been given text in the editor."
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 32)
+position = Vector2(0, 16)
 shape = SubResource("RectangleShape2D_lirxu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
