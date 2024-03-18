@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://wkuc0osgt70a"]
+[gd_scene load_steps=6 format=3 uid="uid://wkuc0osgt70a"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_q6nao"]
 [ext_resource type="Script" path="res://levels/island_1/bool_sort/validator.gd" id="2_elwuk"]
 [ext_resource type="Script" path="res://levels/island_1/bool_sort/initiator.gd" id="3_ma73j"]
 [ext_resource type="PackedScene" uid="uid://cbo0lm0clhhmu" path="res://entity/non_player/iota_haver.tscn" id="4_ub756"]
+[ext_resource type="PackedScene" uid="uid://c1cg53xmco1n3" path="res://entity/objects/sign.tscn" id="5_rdm0s"]
 
 [node name="LevelBase" instance=ExtResource("1_q6nao")]
 validator = ExtResource("2_elwuk")
@@ -41,3 +42,8 @@ writeable = false
 
 [node name="Player" parent="." index="10"]
 position = Vector2(128, 128)
+
+[node name="Sign" parent="." index="13" instance=ExtResource("5_rdm0s")]
+position = Vector2(64, 64)
+text = "Bool Sort: Move any haver containing true to the green area.
+Kill any haver containing false.  You cannot write to the havers."
