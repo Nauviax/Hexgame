@@ -20,11 +20,9 @@ var rnd: RandomNumberGenerator # Set in _ready()
 # Level background theme
 @export var bg_theme: String = "Inside"
 
-# World to load on player transition
-@export var belongs_to_world: int
-
 # If true, show validate and replay buttons, and keep track of patterns executed for replay.
-@export var is_solvable_level: bool = true # False for level hubs mainly
+# Additionally, disable player flight. (Levitation works as normal)
+@export var is_level_puzzle: bool = true # False for level hubs mainly
 
 # True if level has been validated (And level_logic.validate() returned true)
 var validated = false
@@ -67,8 +65,8 @@ func _ready():
 	initiator.initiate(self)
 	# Set background theme
 	player.set_background_theme(bg_theme)
-	# Check player roofiness: hide/show roof layer + set can_fly
-	check_player_roof()
+	# Set player's can_fly based on is_level_puzzle
+	player.can_fly = not is_level_puzzle
 
 # Reload entities and objects list
 #  Get all children, add to entities array if they are an entity
@@ -107,7 +105,6 @@ func use_player(player_new: Player, dir: Vector2):
 # Update function for the level.
 # Will respawn player if they end up illegally outside the level.
 # Will transition player to world map if they are more than 2.5 level_sizes away from the level centre.
-# Will prevent player flight if they are below a roof tile, and hide/show said layer (Layer 2, Roofers)
 var process_count = 0
 func _physics_process(_delta):
 	if not Globals.player_control:
@@ -117,19 +114,8 @@ func _physics_process(_delta):
 		process_count = 0
 		if (not player.flying) and get_tile_id(player.entity.get_fake_pos(), 0) == 0: # If player is not on a tile
 			player.position = player.respawn_point # Move player to respawn point
-		check_player_roof() # Check player roofiness: hide/show roof layer + set can_fly
 		if player.flying and player.position.distance_to(level_centre) > level_size * (transition_multiplier + 0.1): # If player is flying and is far away from the level centre
-			main_scene.transition_to_world(belongs_to_world) # Transition player to given world map
-
-# Check player roofiness (Seperate function from _physics_process so it can be called on level ready)
-# If player is below any roof tile, set can_fly to false and hide roof layer
-func check_player_roof():
-	if not player.flying and get_tile_id(player.entity.get_fake_pos(), 2) != 0: # If player is below any roof tile, set can_fly to false and hide roof layer
-		player.can_fly = false
-		tilemap.set_layer_enabled(2, false) # !!! Fade out?
-	else: # Otherwise, set can_fly to true and show roof layer
-		player.can_fly = true
-		tilemap.set_layer_enabled(2, true)
+			main_scene.transition_to_world() # Transition player to world map
 
 # Test if the level is complete (And save result)
 func validate():

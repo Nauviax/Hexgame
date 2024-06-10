@@ -47,7 +47,7 @@ func load_level_from_scene(scene: PackedScene):
 
 	# Update hex_display, level desc
 	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.is_solvable_level)
+	hex_display.update_level_specific_labels(loaded_level.is_level_puzzle)
 
 # Reset level, optionally keep seed or border score
 func reload_current_level(reset_border_score: bool, same_seed: bool = true):
@@ -71,7 +71,7 @@ func reload_current_level(reset_border_score: bool, same_seed: bool = true):
 
 	# Update hex_display
 	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.is_solvable_level) # Level desc CAN change, if it has multiple.
+	hex_display.update_level_specific_labels(loaded_level.is_level_puzzle) # Level desc CAN change, if it has multiple.
 
 # Unloads the current level and loads the last level in level_list
 # Returns false if there are no levels to load
@@ -95,7 +95,7 @@ func exit_level() -> bool:
 
 	# Update hex_display, level desc
 	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.is_solvable_level)
+	hex_display.update_level_specific_labels(loaded_level.is_level_puzzle)
 
 	# Update level_haver iota readability
 	prev_level_stuff[2].entity.readable = level_validated
@@ -104,14 +104,13 @@ func exit_level() -> bool:
 	return true
 
 # Transition from current level to the world view.
-# 0 for main world, 1 for island 1 internal world, etc.
-func transition_to_world(world_id: int):
+func transition_to_world():
 	hexecutor.level_base = null # Remove reference to level_base, disables hexecutor.
 	var world_view = world_view_scene.instantiate()
 	world_view.main_scene = self # So it can request to transition FROM world
 	var player = loaded_level.player
 	loaded_level.remove_child(player) # So it can be added to world_view
-	world_view.prepare(player, world_id, loaded_level.scene_file_path) # Load player into new world
+	world_view.prepare(player, loaded_level.scene_file_path) # Load player into new world
 	hexecutor.caster = player.entity # Set caster to new player's entity
 	loaded_level.kill_all_entities() # Prevent living references. (Player will still be alive and have these references)
 	level_viewport.remove_child(loaded_level)
@@ -136,14 +135,14 @@ func transition_from_world(selected_level: PackedScene):
 	hexecutor.level_base = new_level
 	loaded_level = new_level # Done!
 	update_hex_display() # Refresh display (New level desc etc)
-	hex_display.update_level_specific_labels(new_level.is_solvable_level)
+	hex_display.update_level_specific_labels(new_level.is_level_puzzle)
 
 # Validates the current level, and calls appropriate functions to update UI
 func validate_level():
 	if loaded_level.has_method("validate"):
 		var validated = loaded_level.validate() # Saves result to level also.
 		hex_display.set_validate_result(validated) # Update UI to reflect validation result
-		# !!! Removed, probably fine. hex_display.update_level_specific_labels(loaded_level.is_solvable_level, false) # Refresh level desc, as validator can sometimes change this.
+		# !!! Removed, probably fine. hex_display.update_level_specific_labels(loaded_level.is_level_puzzle, false) # Refresh level desc, as validator can sometimes change this.
 	else:
 		hex_display.set_validate_result(false) # No validator, assume false (Likely world view)
 

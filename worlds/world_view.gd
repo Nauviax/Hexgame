@@ -9,11 +9,15 @@ var main_scene
 # Player object for the world 
 var player: Player
 
-# World script used to load the world, and holds world data
-var world_script
-
-# List of level_in_world nodes added as children # !!! Possibly unnecessary
+# List of level_in_world nodes added as children
 var levels: Array
+
+# Levels that this world contains
+# Format: [position, level path, display name]
+static var levels_data: Array = [
+	[Vector2(-1000, -1000), "res://levels/island_1/external_hub_1/level.tscn", "Island 1"],
+	[Vector2(1000, -1000), "res://levels/island_2/external_hub_2/level.tscn", "Island 2"],
+]
 
 # Reference to level_in_world scene, to load level hitboxes into world.
 @export var liw_scene: PackedScene
@@ -35,8 +39,8 @@ func _physics_process(_delta):
 		level.pointer.modulate.a = clamp(level.pointer.modulate.a + 0.025, 0, 1)
 
 # Function for loading the player into the world
-# Takes a player to use, the world id to load, and the filepath of the world the player is coming from
-func prepare(player_new: Player, world_id: int, from_filepath: String):
+# Takes a player to use, and the filepath of the world the player is coming from
+func prepare(player_new: Player, from_filepath: String):
 	# Add player to the world
 	player = player_new
 	add_child(player_new)
@@ -47,8 +51,7 @@ func prepare(player_new: Player, world_id: int, from_filepath: String):
 	player.sentinel_pos = null
 
 	# Load world around player
-	world_script = load("res://worlds/world_scripts/world_" + str(world_id) + ".gd")
-	for level in world_script.levels:
+	for level in levels_data:
 		# Create new level_in_world scene
 		var level_in_world = liw_scene.instantiate()
 		add_child(level_in_world)
@@ -61,10 +64,7 @@ func prepare(player_new: Player, world_id: int, from_filepath: String):
 			# Set player position to level position 
 			player.position = level[0]
 
-	# Set background theme
-	player.set_background_theme(world_script.theme)
-
-	# Connect player's spike checker Area2D to the relevant function here
+	# Connect player's spike checker Area2D to the relevant function here # !!! Does this ever get disconnected?
 	player.get_node("SpikeChecker").area_entered.connect(_on_player_area_entered)
 
 # Function for loading a level from the world

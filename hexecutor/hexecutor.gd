@@ -134,7 +134,7 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 		stack.push_back(Bad_Iota.new(ErrorMM.CASTING_DISABLED, "<-Hexecutor->"))
 		success = false
 	else: # Execute normally
-		if execution_depth == 0 and level_base.is_solvable_level: # If top level and replay 'enabled', add to replay list
+		if execution_depth == 0 and level_base.is_level_puzzle: # If top level and replay 'enabled', add to replay list
 			replay_list.push_back(pattern)
 		if consideration_mode: # Single meta-pattern mode, see var declaration.
 			if stack.size() > 0 and stack[-1] is Pattern_Metalist:
@@ -193,7 +193,7 @@ func reset(keep_raven = false):
 	stack = []
 	if not keep_raven: # Thoths keeps ravenmind intact.
 		caster.node.ravenmind = null
-		if level_base and level_base.is_solvable_level:
+		if level_base and level_base.is_level_puzzle:
 			replay_list.push_back(null) # Null in list represents a grid clear. Keep_raven required as otherwise not "true" grid clear.
 	consideration_mode = false
 	introspection_depth = 0
