@@ -3,15 +3,16 @@
 [ext_resource type="Script" path="res://grid/grid.gd" id="1_3evjo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7nsmu"]
-size = Vector2(592, 503)
+size = Vector2(1392, 1080)
 
 [node name="Grid" type="Node2D"]
 script = ExtResource("1_3evjo")
 
-[node name="Backdrop" type="Polygon2D" parent="."]
-scale = Vector2(5.92, 5.03)
-color = Color(0, 0, 0, 0.490196)
-polygon = PackedVector2Array(0, 0, 100, 0, 100, 100, 0, 100)
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1392.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.392157)
 
 [node name="GridArea2D" type="Area2D" parent="."]
 collision_layer = 256
@@ -20,7 +21,7 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GridArea2D"]
-position = Vector2(296, 251.5)
+position = Vector2(696, 540)
 shape = SubResource("RectangleShape2D_7nsmu")
 
 [connection signal="input_event" from="GridArea2D" to="." method="_on_grid_area_2d_input_event"]

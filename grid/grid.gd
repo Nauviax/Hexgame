@@ -4,10 +4,15 @@ extends Node2D
 var PointScene = preload("res://grid/point.tscn")
 @export var main_scene: Node2D # Set in Inspector
 
-const GRIDSIZE = 18 # Amount of points in given direction
-const GRIDSPACING = 32.0 # Distance between points
+@onready var grid_area_shape: CollisionShape2D = $GridArea2D/CollisionShape2D # The mouse scan area
+@onready var backdrop: ColorRect = $ColorRect
+
+const GRIDSIZE_X: int = 22 # Amount of points along X axis
+const GRIDSIZE_Y: int = 20 # Amount of points along Y axis
+const GRIDSPACING = 64.0 # Distance between points
 const ROWSPACING = GRIDSPACING * 0.866  # Distance between each row, based on X (0.866 ~= sqrt(3)/2)
-const GRIDOFFSET = Vector2(16, 16) # Offset of the grid from the top left corner of the screen
+const GRIDOFFSET = Vector2(8, 12) # Offset of the grid from the top left corner of the screen
+const NODEAREA = Vector2(1392, 1080) # Area that grid is expected to take up
 
 var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
@@ -23,8 +28,8 @@ var patterns = [] # List of patterns (Mainly for deletion afterwards)
 # Prepare *stuff*
 func _ready():
 	# Draw points
-	for ii in range(GRIDSIZE):
-		for jj in range(GRIDSIZE):
+	for ii in range(GRIDSIZE_X):
+		for jj in range(GRIDSIZE_Y):
 			var point = PointScene.instantiate()
 			var x_offset = 0
 			if jj % 2 == 1: # If the row number is odd
@@ -34,6 +39,11 @@ func _ready():
 				point.set_id(ii - (jj/2), jj) # Set the id of the point
 			add_child(point)
 			points.append(point)
+	
+	# Prepare node size
+	grid_area_shape.shape.size = NODEAREA
+	grid_area_shape.position = NODEAREA / 2
+	backdrop.size = NODEAREA
 
 	# Editor mode can complain about a few things, this prevents that.
 	if not Engine.is_editor_hint():

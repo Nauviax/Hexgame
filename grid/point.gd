@@ -43,5 +43,5 @@ func _process(_delta):
 		return
 	var mouse_pos = get_global_mouse_position()
 	var dist = global_position.distance_to(mouse_pos)
-	var scale_factor = init_scale * exp(-dist / 60) # Adjust the div value as needed
+	var scale_factor = init_scale * exp(-dist / 100) # Adjust the div value as needed
 	polygon.scale = Vector2(scale_factor, scale_factor)
