@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://8h58bixedaho"]
+[gd_scene load_steps=9 format=3 uid="uid://8h58bixedaho"]
 
 [ext_resource type="Script" path="res://main_scene/main_scene.gd" id="1_fmyq8"]
 [ext_resource type="Theme" uid="uid://bk1llxpthaj7w" path="res://resources/ui/main_theme.tres" id="2_eoluk"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://main_scene/hex_display.gd" id="4_x686s"]
 [ext_resource type="PackedScene" uid="uid://cgq1sfas21djs" path="res://docs_and_help/popup.tscn" id="5_e8r1i"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="6_3bcne"]
+[ext_resource type="PackedScene" uid="uid://bwev5ipwpsij" path="res://main_scene/spellbook/spellbook.tscn" id="6_e3ixr"]
 [ext_resource type="PackedScene" uid="uid://dj45rcuk0lphe" path="res://docs_and_help/hexbook.tscn" id="7_b5110"]
 
 [node name="MainScene" type="Node2D" node_paths=PackedStringArray("grid", "level_container")]
@@ -52,8 +53,9 @@ layout_mode = 2
 
 [node name="InfoColumn" type="VBoxContainer" parent="HexDisplay/MainSplit"]
 clip_contents = true
+custom_minimum_size = Vector2(550, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_stretch_ratio = 0.38
 
 [node name="MenuBar" type="HBoxContainer" parent="HexDisplay/MainSplit/InfoColumn"]
@@ -73,6 +75,9 @@ text = "Open Hexbook"
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
+
+[node name="Spellbook2" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage" instance=ExtResource("6_e3ixr")]
+layout_mode = 2
 
 [node name="Spellbook" type="RichTextLabel" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage"]
 layout_mode = 2
@@ -169,8 +174,9 @@ text = "Continue Here"
 
 [node name="LevelArea" type="PanelContainer" parent="HexDisplay/MainSplit"]
 clip_contents = true
+custom_minimum_size = Vector2(1370, 0)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 mouse_filter = 2
 
 [node name="LevelContainer" type="SubViewportContainer" parent="HexDisplay/MainSplit/LevelArea"]
@@ -183,7 +189,7 @@ handle_input_locally = false
 canvas_item_default_texture_filter = 0
 canvas_item_default_texture_repeat = 1
 physics_object_picking = true
-size = Vector2i(1392, 1080)
+size = Vector2i(1370, 1080)
 render_target_update_mode = 4
 
 [node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelArea"]

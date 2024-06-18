@@ -1,0 +1,164 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwev5ipwpsij"]
+
+[ext_resource type="Theme" uid="uid://dymyqo6i3f2r3" path="res://resources/ui/small_theme.tres" id="1_4uhpw"]
+[ext_resource type="StyleBox" uid="uid://d1lsblv7vr1cg" path="res://resources/ui/rich_text_left_padding_override.tres" id="2_we7rw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toulv"]
+bg_color = Color(5.77569e-07, 0.370497, 0.43314, 1)
+
+[node name="Spellbook" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1370.0
+offset_bottom = -923.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_4uhpw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_toulv")
+
+[node name="Rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TopRow" type="MarginContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="Row" type="HBoxContainer" parent="Rows/TopRow"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Rows/TopRow/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "Spellbook"
+vertical_alignment = 1
+
+[node name="TabBar" type="TabBar" parent="Rows/TopRow/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+tab_count = 4
+tab_alignment = 2
+scrolling_enabled = false
+tab_0/title = "  1  "
+tab_1/title = "  2  "
+tab_2/title = "  3  "
+tab_3/title = "  *  "
+
+[node name="DataRow1" type="MarginContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="Row" type="HBoxContainer" parent="Rows/DataRow1"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Rows/DataRow1/Row"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "Iota 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RowText" type="RichTextLabel" parent="Rows/DataRow1/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("2_we7rw")
+bbcode_enabled = true
+text = "sample_iota"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Selected" type="Label" parent="Rows/DataRow1/Row"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "O"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DataRow2" type="MarginContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+
+[node name="Row" type="HBoxContainer" parent="Rows/DataRow2"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Rows/DataRow2/Row"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "Iota 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RowText" type="RichTextLabel" parent="Rows/DataRow2/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("2_we7rw")
+bbcode_enabled = true
+text = "sample_iota"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Selected" type="Label" parent="Rows/DataRow2/Row"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "I"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DataRow3" type="MarginContainer" parent="Rows"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Row" type="HBoxContainer" parent="Rows/DataRow3"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Rows/DataRow3/Row"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "Iota 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RowText" type="RichTextLabel" parent="Rows/DataRow3/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("2_we7rw")
+bbcode_enabled = true
+text = "sample_iota"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Selected" type="Label" parent="Rows/DataRow3/Row"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 22
+text = "I"
+horizontal_alignment = 1
+vertical_alignment = 1
