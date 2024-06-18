@@ -3,9 +3,6 @@ extends Control
 # Parent controls visibility, so get reference
 @onready var parent_container = get_parent()
 
-# Reference to popup to show patterns on demand
-@export var popup: Control
-
 @export var tree: Tree
 @export var graphic_parent: Control
 @export var title_label: Label
@@ -14,6 +11,8 @@ extends Control
 @export var is_spell_label: Label
 @export var iota_count_label: Label
 @export var description_label: Label
+
+@export var popup_holder: Control # All popups should be children of this (Set in main_scene not in hexbook scene)
 
 @onready var static_pattern_dict = Valid_Patterns.static_patterns
 
@@ -271,7 +270,9 @@ func _on_drag_button_up():
 func _on_close_pressed():
 	parent_container.hide()
 
-# Popup button, to set/show and auto-lock a pattern popup
+# Popup button, to show and auto-lock a pattern popup
 func _on_popup_prompt_pressed():
-	popup.display("P" + current_pattern.p_code, false, true) # Show pattern. Force display, so works even if already shown
+	var popup = Hex_Popup.make_new(popup_holder)
+	popup.display("P" + current_pattern.p_code, false) # Show pattern
+	popup.lock() # Lock popup in place immediately
 	

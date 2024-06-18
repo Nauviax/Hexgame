@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://8h58bixedaho"]
+[gd_scene load_steps=8 format=3 uid="uid://8h58bixedaho"]
 
 [ext_resource type="Script" path="res://main_scene/main_scene.gd" id="1_fmyq8"]
 [ext_resource type="Theme" uid="uid://bk1llxpthaj7w" path="res://resources/ui/main_theme.tres" id="2_eoluk"]
 [ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="3_osk3n"]
 [ext_resource type="Script" path="res://main_scene/hex_display.gd" id="4_x686s"]
-[ext_resource type="PackedScene" uid="uid://cgq1sfas21djs" path="res://docs_and_help/popup.tscn" id="5_e8r1i"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="6_3bcne"]
 [ext_resource type="PackedScene" uid="uid://bwev5ipwpsij" path="res://main_scene/spellbook/spellbook.tscn" id="6_e3ixr"]
 [ext_resource type="PackedScene" uid="uid://dj45rcuk0lphe" path="res://docs_and_help/hexbook.tscn" id="7_b5110"]
@@ -18,7 +17,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelArea/LevelContainer")
 anchor_mode = 0
 editor_draw_screen = false
 
-[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_controls", "validate_button", "validate_label", "popup", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
+[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_controls", "validate_button", "validate_label", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label", "popup_holder")]
 offset_right = 1924.0
 offset_bottom = 1080.0
 mouse_filter = 2
@@ -35,17 +34,12 @@ border_label = NodePath("MainSplit/LevelArea/OLDSTUFF/BorderScore")
 level_controls = NodePath("MainSplit/InfoColumn/LevelButtons/Validation")
 validate_button = NodePath("MainSplit/LevelArea/OLDSTUFF/Validate")
 validate_label = NodePath("MainSplit/InfoColumn/LevelButtons/Validation/YouWin")
-popup = NodePath("Popup")
 hexbook_holder = NodePath("HexbookHolder")
 replay_controls = NodePath("MainSplit/InfoColumn/LevelButtons/ReplayControls/ReplayButtons")
 preplay_controls = NodePath("MainSplit/InfoColumn/LevelButtons/ReplayControls/PreplayButtons")
 preplay_begin_replay_button = NodePath("MainSplit/InfoColumn/LevelButtons/ReplayControls/PreplayButtons/BeginReplayButton")
 replay_timeline_label = NodePath("MainSplit/LevelArea/LowerBar/PatternTimeline")
-
-[node name="Popup" parent="HexDisplay" instance=ExtResource("5_e8r1i")]
-visible = false
-top_level = true
-layout_mode = 2
+popup_holder = NodePath("PopupHolder")
 
 [node name="MainSplit" type="HBoxContainer" parent="HexDisplay"]
 custom_minimum_size = Vector2(1920, 1080)
@@ -250,10 +244,14 @@ visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Hexbook" parent="HexDisplay/HexbookHolder" node_paths=PackedStringArray("popup") instance=ExtResource("7_b5110")]
+[node name="Hexbook" parent="HexDisplay/HexbookHolder" node_paths=PackedStringArray("popup_holder") instance=ExtResource("7_b5110")]
 layout_mode = 2
-popup = NodePath("../../Popup")
+popup_holder = NodePath("../../PopupHolder")
 metadata/_edit_use_anchors_ = true
+
+[node name="PopupHolder" type="Control" parent="HexDisplay"]
+layout_mode = 2
+mouse_filter = 2
 
 [connection signal="pressed" from="HexDisplay/MainSplit/InfoColumn/MenuBar/CloseGame" to="." method="_on_close_game_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/InfoColumn/MenuBar/Hexbook" to="HexDisplay" method="_on_hexbook_pressed"]

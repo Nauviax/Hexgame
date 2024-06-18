@@ -17,7 +17,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelStuff/LevelAndGrid/LevelCo
 anchor_mode = 0
 editor_draw_screen = false
 
-[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_controls", "validate_button", "validate_label", "popup", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
+[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_controls", "validate_button", "validate_label", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label")]
 offset_right = 1924.0
 offset_bottom = 1080.0
 mouse_filter = 2
@@ -34,7 +34,6 @@ border_label = NodePath("MainSplit/LevelStuff/LevelAndGrid/GridPopout/GridButton
 level_controls = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons")
 validate_button = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons/Validate")
 validate_label = NodePath("MainSplit/LevelStuff/LevelInfo/LevelButtons/YouWin")
-popup = NodePath("Popup")
 hexbook_holder = NodePath("HexbookHolder")
 replay_controls = NodePath("MainSplit/LevelStuff/LevelAndGrid/ReplayBar/ReplayButtons")
 preplay_controls = NodePath("MainSplit/LevelStuff/LevelAndGrid/ReplayBar/PreplayButtons")
@@ -254,9 +253,8 @@ visible = false
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Hexbook" parent="HexDisplay/HexbookHolder" node_paths=PackedStringArray("popup") instance=ExtResource("3_hdery")]
+[node name="Hexbook" parent="HexDisplay/HexbookHolder" instance=ExtResource("3_hdery")]
 layout_mode = 2
-popup = NodePath("../../Popup")
 metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="HexDisplay/MainSplit/StackAndInfo/GameStuff/CloseGame" to="." method="_on_close_game_pressed"]

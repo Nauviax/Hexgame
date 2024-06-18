@@ -25,8 +25,6 @@ extends Control
 
 @export var validate_label: Label # For announcing validation results
 
-@export var popup: PanelContainer
-
 @export var hexbook_holder: Control
 
 @export var replay_controls: Control # Should be shown while in replay mode
@@ -37,11 +35,16 @@ extends Control
 
 @export var replay_timeline_label: RichTextLabel
 
+@export var popup_holder: Control # All popups should be children of this
+
 # As a general note: Spaces are added before \n to avoid weird issue with hover hitbox for meta-text extending the full width of the control.
 
 # Replay mode. Shows replay controls and disables player control.
 # Manual casting will disable this mode.
 var replay_mode: bool = false
+
+# Reference to the current popup. Should be reset after locking in place.
+@onready var popup: Hex_Popup = Hex_Popup.make_new(popup_holder)
 
 # On ready, hide replay controls
 func _ready():
@@ -183,8 +186,11 @@ func _on_meta_hover_started_low(meta:Variant):
 	popup.display(meta, true) # Display above mouse rather than below
 
 func _on_meta_clicked(_meta:Variant):
+	if not popup.visible:
+		return # Popup hasn't been used yet.
 	popup.lock() # Stop info from following mouse or disappearing
-	
+	popup = Hex_Popup.make_new(popup_holder) # Get new popup
+
 func _on_meta_hover_ended(_meta):
 	popup.stop_display()
 

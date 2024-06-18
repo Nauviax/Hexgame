@@ -1,4 +1,5 @@
 extends Control
+class_name Hex_Popup
 
 @export var title_label: Label
 @export var code_label: Label
@@ -10,6 +11,9 @@ extends Control
 @export var desc_button: Button # Grey out when < 2 descs
 @export var description_label: Label
 @export var background: NinePatchRect
+
+# Reference to the popup scene to create new instances
+static var popup_scene = preload("res://docs_and_help/popup.tscn")
 
 # Reference to the currently displayed pattern, if displaying one.
 var current_pattern: Pattern = null
@@ -24,8 +28,14 @@ var first_process = false
 var show_above = false
 
 # If true, the popup is locked in place and won't close unless manually done so
-var locked_display = false # Prevent hiding and changing display contents
+var locked_display = false # Prevent hiding and changing display contents (Should never be reset to false once true)
 var locked_movement = false # Prevent following mouse
+
+# Creates a new popup, has parent adopt it, and returns it.
+static func make_new(parent: Control) -> Hex_Popup:
+	var popup = popup_scene.instantiate()
+	parent.add_child(popup)
+	return popup
 
 # Onready, hide
 func _ready():
@@ -35,23 +45,25 @@ func _ready():
 func _process(_delta):
 	if visible:
 		if not locked_movement:
-			# Offset away from mouse to avoid overlap, offset upwards by size if showing above, and offset towards top left if locked (Dragging)
-			position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
+			update_position()
 		if first_process: # Refit container on first process
 			first_process = false
 			size.x = 0
 			size.y = 0
 
+# Updates popup position
+func update_position():
+	# Offset away from mouse to avoid overlap, offset upwards by size if showing above, and offset towards top left if locked (Dragging)
+	position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
+
 # Displays pattern info for a given p_code (Starts with "P" for pattern/p_code)
 # Displays entity info for a given entity (Starts with "E" for entity) # Not implemented at all right now
 # Displays error message for given error (Starts with "B" for bad_iota)
 # Displays plain text (Starts with "M" for message) (!!! Possibly allow meta to specify custom title?)
-func display(meta: String, show_above: bool = false, force_display: bool = false):
-	if locked_display and not force_display: # If locked, don't change display unless forced
+func display(meta: String, show_above: bool = false):
+	if locked_display: # If locked, don't change display and throw an error (Should never happen, but just in case)
+		printerr("WARNING: Attempted to update display of a locked popup.")
 		return
-	if force_display: # If forced, lock display and move to mouse position
-		lock()
-		position = get_global_mouse_position() - Vector2(30, 30) # Offset to place drag button under mouse, like in _process()
 	self.show_above = show_above
 	# Split meta into parts: First part is type, the first character. Second part is the rest of the string
 	var type = meta[0]
@@ -96,10 +108,11 @@ func display(meta: String, show_above: bool = false, force_display: bool = false
 			title_label.text = "Unknown"
 			description_label.text = meta
 	# Show self
+	update_position()
 	visible = true
 	first_process = true
 
-# Lock self, to prevent it following mouse or closing
+# Lock self, preventing it from following mouse or changing content.
 func lock():
 	visible = true # Ensure popup will never be locked while hidden somehow.
 	locked_display = true
@@ -124,8 +137,7 @@ func _on_drag_button_down():
 func _on_drag_button_up():
 	locked_movement = true # Lock movement again
 
-# Close button, for closing the window once it's been locked
+# Close button, for deleting the window once it's been locked. Does nothing if not locked.
 func _on_close_pressed():
-	locked_display = false
-	locked_movement = false
-	stop_display() # Just sets visible to false, but future proofing is cool.
+	if locked_display:
+		queue_free() # Delete self
