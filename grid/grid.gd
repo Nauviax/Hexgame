@@ -12,7 +12,7 @@ const GRIDSIZE_Y: int = 20 # Amount of points along Y axis
 const GRIDSPACING = 64.0 # Distance between points
 const ROWSPACING = GRIDSPACING * 0.866  # Distance between each row, based on X (0.866 ~= sqrt(3)/2)
 const GRIDOFFSET = Vector2(8, 12) # Offset of the grid from the top left corner of the screen
-const NODEAREA = Vector2(1392, 1080) # Area that grid is expected to take up
+const NODEAREA = Vector2(1370, 1080) # Area that grid is expected to take up
 
 var points = [] # List to store the points
 var cur_points = [] # List to store points in the current pattern (Ordered first to latest)
