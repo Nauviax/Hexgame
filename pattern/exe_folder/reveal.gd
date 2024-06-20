@@ -6,5 +6,6 @@ static var descs = [
 static var iota_count = 1
 static var is_spell = true # If this pattern changes the level in any way.
 static func execute(hexecutor, _pattern):
+	hexecutor.log_spellbook_change(11) # Revealed iota is changed
 	hexecutor.level_base.revealed_iota = hexecutor.stack[-1]
 	return true

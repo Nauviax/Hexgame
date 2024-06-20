@@ -11,11 +11,7 @@ extends Control
 
 @export var stack_label: RichTextLabel # Set in Inspector
 
-@export var raven_label: RichTextLabel
-
-@export var reveal_label: RichTextLabel
-
-@export var sb_label: RichTextLabel
+@export var spellbook_ui: PanelContainer # UI element that handles spellbook display, along with ravenmind, sentinel, and revealed iota data.
 
 @export var border_label: Label
 
@@ -78,24 +74,20 @@ func update_border_label(prev, current, cast):
 	var cast_str = (" + " + str(cast)) if cast != 0 else ""
 	border_label.text = "Border score:\n" + str(prev) + " + " + str(current) + cast_str + " = " + str(prev + current + cast)
 
-# Update all labels related to hexecutor
-func update_all_hexy():
-	var hexecutor = main_scene.hexecutor
+# Update stack, spellbook and misc spellbook items to both show dead entity references and clear sentinel/revealed iota.
+func handle_update_all_iotas(hexecutor: Hexecutor):
 	update_stack(hexecutor.stack)
-	update_ravenmind_label(hexecutor.caster.node.ravenmind)
-	if hexecutor.level_base: # Can be null if not in a level
-		update_reveal_label(hexecutor.level_base.revealed_iota)
-	else:
-		update_reveal_label(null) # Clear
-	update_sb_label(hexecutor.caster.node)
+	var player = hexecutor.caster.node
+	var revealed_iota = hexecutor.level_base.revealed_iota if hexecutor.level_base else null # level_base can be null if not in a level # !!! CHECK IF THIS IS NEEDED
+	update_sb_all(player.sb, player.sb_sel, player.ravenmind, player.sentinel_pos, revealed_iota)
 
-# Update all labels related to clearing the grid, and clear error history
-func update_clear_hexy():
+# Update all items related to clearing the grid, and clear error history
+func handle_clear_grid():
 	update_stack([])
-	update_ravenmind_label(null)
+	update_sb_item(9, "", true) # Silent update so ravenmind doesn't pull focus.
 
 # Stack label
-func update_stack(stack):
+func update_stack(stack: Array):
 	stack_label.clear()
 	var text = ""
 	var stack_size = stack.size()
@@ -108,48 +100,67 @@ func update_stack(stack):
 	stack_label.append_text(text)
 
 # Ravenmind label
-func update_ravenmind_label(ravenmind):
-	if ravenmind == null:
-		raven_label.text = ""
-	elif ravenmind is Pattern:
-		raven_label.text = "Ravenmind:\n" + ravenmind.get_meta_string() + " \n" # Avoid issue with hover hitbox
-	else:
-		raven_label.text = "Ravenmind:\n" + str(ravenmind) + " \n"
+# func update_ravenmind_label(ravenmind):
+# 	if ravenmind == null:
+# 		raven_label.text = ""
+# 	elif ravenmind is Pattern:
+# 		raven_label.text = "Ravenmind:\n" + ravenmind.get_meta_string() + " \n" # Avoid issue with hover hitbox
+# 	else:
+# 		raven_label.text = "Ravenmind:\n" + str(ravenmind) + " \n"
 
 # Reveal label
-func update_reveal_label(reveal):
-	if reveal == null:
-		reveal_label.text = ""
-	elif reveal is Pattern:
-		reveal_label.text = "Revealed:\n" + reveal.get_meta_string() + " \n"
-	else:
-		reveal_label.text = "Revealed:\n" + str(reveal) + " \n"
+# func update_reveal_label(reveal):
+# 	if reveal == null:
+# 		reveal_label.text = ""
+# 	elif reveal is Pattern:
+# 		reveal_label.text = "Revealed:\n" + reveal.get_meta_string() + " \n"
+# 	else:
+# 		reveal_label.text = "Revealed:\n" + str(reveal) + " \n"
 
 # Spellbook label
-func update_sb_label(player):
-	var text = "- Spellbook -\n"
-	for ii in range(player.sb.size()):
-		if ii == player.sb_sel:
-			text += "-> " + str(ii) + ": "
-		else:
-			text += "   " + str(ii) + ": "
-		var iota = player.sb[ii]
-		if iota == null:
-			text += "\n"
-		elif iota is Pattern:
-			text += iota.get_meta_string() + " \n" # Again, space to avoid issue with hover hitbox
-		else:
-			text += str(iota) + " \n"
-	sb_label.text = text
+# func update_sb_label(player):
+# 	var text = "- Spellbook -\n"
+# 	for ii in range(player.sb.size()):
+# 		if ii == player.sb_sel:
+# 			text += "-> " + str(ii) + ": "
+# 		else:
+# 			text += "   " + str(ii) + ": "
+# 		var iota = player.sb[ii]
+# 		if iota == null:
+# 			text += "\n"
+# 		elif iota is Pattern:
+# 			text += iota.get_meta_string() + " \n" # Again, space to avoid issue with hover hitbox
+# 		else:
+# 			text += str(iota) + " \n"
+# 	sb_label.text = text
 
-# Level description label (Called directly by main_scene) #!!! IS THIS STILL NEEDED WITH DESC ETC GONE? !!!
-func update_level_specific_labels(solveable: bool, reset_valid = true):
-	if reset_valid: # If level desc changes due to level change, we want to reset the validation labels
-		validate_label.text = ""
-		validate_button.modulate = Color(1, 1, 1)
+# Refresh whole spellbook ui. Used when all items may have changed, like when loading into a new level.
+# !!! DON'T USE str() USE SOME NEW FUNC TO BE DEFINED SOON (null == "")
+func update_sb_all(sb:Array, sb_sel:int, raven, sentinel, revealed):
+	for ii in sb.size(): # sb should always be 9 long
+		spellbook_ui.update_spellbook_item(ii, str(sb[ii]), false, false)
+	spellbook_ui.update_spellbook_item(9, str(raven), false, false)
+	spellbook_ui.update_spellbook_item(10, str(sentinel), false, false)
+	spellbook_ui.update_spellbook_item(11, str(revealed), false, false) # Update spellbook on last item.
+	spellbook_ui.update_selected_iota(sb_sel) # Also causes spellbook to update display, and move to selected page.
+
+# Update the selected iota index, and move to the relevant tab.
+func update_sb_selection(index:int):
+	spellbook_ui.update_selected_iota(index)
+
+# Update items related to spellbook_ui.
+# General iotas use index values 0-8, and misc iotas are 9-11 for ravenmind, sentinel, and revealed iota.
+func update_sb_item(index:int, iota, silent:bool = false):
+	spellbook_ui.update_spellbook_item(index, str(iota), true, silent)
+
+# Level description label (Called directly by main_scene)
+func set_puzzle_tool_visibility(is_puzzle: bool):
+	# Reset validate button and label state (!!! This probably will be changed soon)
+	validate_label.text = ""
+	validate_button.modulate = Color(1, 1, 1)
 	# Hide/show controls based on if level is intended to be solved
-	level_controls.visible = solveable
-	preplay_begin_replay_button.visible = solveable
+	level_controls.visible = is_puzzle
+	preplay_begin_replay_button.visible = is_puzzle
 
 # Handle UI buttons
 func _on_level_validate_pressed():
@@ -268,7 +279,7 @@ func step_replay():
 	var next = replay_patterns[replay_index]
 	if next == null:
 		main_scene.hexecutor.reset() # Clear grid on null
-		update_clear_hexy() # Update stack display
+		handle_clear_grid() # Update stack display
 	else:
 		main_scene.hexecutor.execute_with_effects(next) # Execute pattern
 	replay_index += 1

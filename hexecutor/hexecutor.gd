@@ -54,6 +54,11 @@ var charon_mode = false
 # Not reset by hexecutor, main_scene should reset this when it needs to use the hexecutor again.
 var scram_mode = false
 
+# Variables to store what spellbook data has changed duing an execution.
+# These values are outside of the execute function so pattern_exes can set them during execution. They are reset once execution is complete.
+var tracker_sb_item_changed = -1 # -1 means no change. 99 means unknown amounts have changed. 0-11 are specific spellbook items.
+var tracker_sb_selected_changed = false # True if the selected spellbook item has changed in any way.
+
 # Replay List
 # Executed patterns append themselves to the replay list. These patterns can later be executed in order to replicate the original hex.
 # Only saves top level patterns, when execution_depth == 0. (So Hermes would be saved, but not the patterns it executes.)
@@ -167,9 +172,19 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 	# -- To be clear, update_on_success = false will mean the below 'if' will only run if success is false. (And is_main_hexecutor is true)
 	# Additionally, if not is_main_hexecutor, will not run updates. (Useful for oneoff hexecutor instances)
 	if (update_on_success or not success) and is_main_hexecutor:
-		main_scene.update_hex_display() # Update stack display
+		main_scene.update_hex_display_on_execution(tracker_sb_item_changed, tracker_sb_selected_changed) # Update hexy display stuff
+		tracker_sb_item_changed = -1 # Reset change trackers
+		tracker_sb_selected_changed = false
 		scan_stack() # Debugging, comment out when not needed anymore (!!!)
 	return success
+
+# Pattern_exe helper function to track changes to spellbook items
+# If a pattern_exe changes a spellbook item, it should call this function with the relevant index number.
+func log_spellbook_change(index:int):
+	if tracker_sb_item_changed == -1: # If no change has been logged yet, set.
+		tracker_sb_item_changed = index
+	elif tracker_sb_item_changed != index: # If a different change has already been logged,
+		tracker_sb_item_changed = 99 # Set to 99 to indicate multiple changes
 
 # Debugging function, should not run in final product.
 # Ensures no ints enter the stack. Will warn in console and throw if it does.

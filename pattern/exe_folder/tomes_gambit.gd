@@ -5,6 +5,7 @@ static var descs = [
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
+	hexecutor.tracker_sb_selected_changed = true # sb selection is changed
 	var stack = hexecutor.stack
 	var num = stack.pop_back()
 	if not num is float:

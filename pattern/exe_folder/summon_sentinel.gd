@@ -5,6 +5,7 @@ static var descs = [
 static var iota_count = 1
 static var is_spell = false # If this pattern changes the level in any way.
 static func execute(hexecutor, pattern):
+	hexecutor.log_spellbook_change(10) # Sentinel is changed
 	var stack = hexecutor.stack
 	var pos = stack.pop_back()
 	if not pos is Vector2:

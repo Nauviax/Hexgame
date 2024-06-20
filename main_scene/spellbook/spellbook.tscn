@@ -1,12 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwev5ipwpsij"]
+[gd_scene load_steps=5 format=3 uid="uid://bwev5ipwpsij"]
 
 [ext_resource type="Theme" uid="uid://dymyqo6i3f2r3" path="res://resources/ui/small_theme.tres" id="1_4uhpw"]
+[ext_resource type="Script" path="res://main_scene/spellbook/spellbook.gd" id="2_omdxi"]
 [ext_resource type="StyleBox" uid="uid://d1lsblv7vr1cg" path="res://resources/ui/rich_text_left_padding_override.tres" id="2_we7rw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toulv"]
 bg_color = Color(5.77569e-07, 0.370497, 0.43314, 1)
 
-[node name="Spellbook" type="PanelContainer"]
+[node name="Spellbook" type="PanelContainer" node_paths=PackedStringArray("tab_bar", "sb_top_name", "sb_top_item", "sb_top_selected", "sb_middle_name", "sb_middle_item", "sb_middle_selected", "sb_bottom_name", "sb_bottom_item", "sb_bottom_selected")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,6 +17,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_4uhpw")
 theme_override_styles/panel = SubResource("StyleBoxFlat_toulv")
+script = ExtResource("2_omdxi")
+tab_bar = NodePath("Rows/TopRow/Row/TabBar")
+sb_top_name = NodePath("Rows/DataRow1/Row/Name")
+sb_top_item = NodePath("Rows/DataRow1/Row/RowText")
+sb_top_selected = NodePath("Rows/DataRow1/Row/Selected")
+sb_middle_name = NodePath("Rows/DataRow2/Row/Name")
+sb_middle_item = NodePath("Rows/DataRow2/Row/RowText")
+sb_middle_selected = NodePath("Rows/DataRow2/Row/Selected")
+sb_bottom_name = NodePath("Rows/DataRow3/Row/Name")
+sb_bottom_item = NodePath("Rows/DataRow3/Row/RowText")
+sb_bottom_selected = NodePath("Rows/DataRow3/Row/Selected")
 
 [node name="Rows" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -40,6 +52,7 @@ vertical_alignment = 1
 [node name="TabBar" type="TabBar" parent="Rows/TopRow/Row"]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 tab_count = 4
 tab_alignment = 2
 scrolling_enabled = false
@@ -65,15 +78,16 @@ theme_override_font_sizes/font_size = 22
 text = "Iota 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+clip_text = true
 
 [node name="RowText" type="RichTextLabel" parent="Rows/DataRow1/Row"]
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/normal = ExtResource("2_we7rw")
 bbcode_enabled = true
 text = "sample_iota"
-fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
@@ -103,15 +117,16 @@ theme_override_font_sizes/font_size = 22
 text = "Iota 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+clip_text = true
 
 [node name="RowText" type="RichTextLabel" parent="Rows/DataRow2/Row"]
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/normal = ExtResource("2_we7rw")
 bbcode_enabled = true
 text = "sample_iota"
-fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
@@ -142,15 +157,16 @@ theme_override_font_sizes/font_size = 22
 text = "Iota 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+clip_text = true
 
 [node name="RowText" type="RichTextLabel" parent="Rows/DataRow3/Row"]
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_styles/normal = ExtResource("2_we7rw")
 bbcode_enabled = true
 text = "sample_iota"
-fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
@@ -162,3 +178,11 @@ theme_override_font_sizes/font_size = 22
 text = "I"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Rows"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[connection signal="tab_changed" from="Rows/TopRow/Row/TabBar" to="." method="_on_tab_bar_tab_changed"]
+[connection signal="tab_clicked" from="Rows/TopRow/Row/TabBar" to="." method="_on_tab_bar_tab_clicked"]
+[connection signal="pressed" from="Rows/Button" to="." method="_on_button_pressed"]

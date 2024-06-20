@@ -1,7 +1,7 @@
 @tool
 extends Node2D
 
-@onready var hexecutor = null
+@onready var hexecutor: Hexecutor = null
 
 @export var grid: Node2D
 @onready var hex_display = $HexDisplay
@@ -45,9 +45,8 @@ func load_level_from_scene(scene: PackedScene):
 	# Prepare hexecutor with level info
 	hexecutor = Hexecutor.new(loaded_level, loaded_level.player.entity, self)
 
-	# Update hex_display, level desc
-	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.is_level_puzzle)
+	# Update hex_display, level tools
+	update_hex_display_on_level_change(true, loaded_level.is_level_puzzle)
 
 # Reset level, optionally keep seed or border score
 func reload_current_level(reset_border_score: bool, same_seed: bool = true):
@@ -70,8 +69,7 @@ func reload_current_level(reset_border_score: bool, same_seed: bool = true):
 	hexecutor = Hexecutor.new(loaded_level, loaded_level.player.entity, self)
 
 	# Update hex_display
-	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.is_level_puzzle) # Level desc CAN change, if it has multiple.
+	update_hex_display_on_level_change(true, loaded_level.is_level_puzzle)
 
 # Unloads the current level and loads the last level in level_list
 # Returns false if there are no levels to load
@@ -93,9 +91,8 @@ func exit_level() -> bool:
 	hexecutor = prev_level_stuff[1]
 	hexecutor.scram_mode = false # Disable scram mode so patterns can run again.
 
-	# Update hex_display, level desc
-	update_hex_display()
-	hex_display.update_level_specific_labels(loaded_level.is_level_puzzle)
+	# Update hex_display, level tools
+	update_hex_display_on_level_change(true, loaded_level.is_level_puzzle)
 
 	# Update level_haver iota readability
 	prev_level_stuff[2].entity.readable = level_validated
@@ -117,8 +114,7 @@ func transition_to_world():
 	loaded_level.queue_free()
 	level_viewport.add_child(world_view) # New scene being shown.
 	loaded_level = world_view # Done!
-	update_hex_display() # Refresh display (Now-Dead entities, level desc)
-	hex_display.update_level_specific_labels(false) # World view isn't solveable, so no replay etc just false.
+	update_hex_display_on_level_change(true, false) # Update hexy to clear entity references etc. World view isn't solveable, so no puzzle tools.
 
 # Transition from world view to selected level.
 func transition_from_world(selected_level: PackedScene):
@@ -134,15 +130,13 @@ func transition_from_world(selected_level: PackedScene):
 	level_viewport.add_child(new_level) # New scene being shown.
 	hexecutor.level_base = new_level
 	loaded_level = new_level # Done!
-	update_hex_display() # Refresh display (New level desc etc)
-	hex_display.update_level_specific_labels(new_level.is_level_puzzle)
+	update_hex_display_on_level_change(false, new_level.is_level_puzzle) # No need to update hexy, it won't have changed.
 
 # Validates the current level, and calls appropriate functions to update UI
 func validate_level():
 	if loaded_level.has_method("validate"):
 		var validated = loaded_level.validate() # Saves result to level also.
 		hex_display.set_validate_result(validated) # Update UI to reflect validation result
-		# !!! Removed, probably fine. hex_display.update_level_specific_labels(loaded_level.is_level_puzzle, false) # Refresh level desc, as validator can sometimes change this.
 	else:
 		hex_display.set_validate_result(false) # No validator, assume false (Likely world view)
 
@@ -172,10 +166,31 @@ func extra_validate_level() -> Array:
 func new_pattern_drawn(pattern):
 	hexecutor.new_pattern(pattern)
 
-# Update hex_display (Normally after a pattern is executed)
-# Takes hexecutor to get stack/caster info etc
-func update_hex_display():
-	hex_display.update_all_hexy() # Update stack display
+# Update hex_display iotas after a pattern is executed. Causes whole stack to update, but only specified spellbook items are updated.
+# 9-11 for raven, sentinel, and revealed iota. Any large number to update all, for when an unknown number of items may have changed. (Like after a meta pattern)
+func update_hex_display_on_execution(updated_sb_index: int = -1, updated_selection: bool = false): ### !!! SELECTION IMPLEMENMT
+	hex_display.update_stack(hexecutor.stack)
+	if updated_sb_index > -1:
+		if updated_sb_index < 9:
+			hex_display.update_sb_item(updated_sb_index, hexecutor.caster.node.sb[updated_sb_index])
+		elif updated_sb_index == 9:
+			hex_display.update_sb_item(updated_sb_index, hexecutor.caster.node.ravenmind)
+		elif updated_sb_index == 10:
+			hex_display.update_sb_item(updated_sb_index, hexecutor.caster.node.sentinel_pos)
+		elif updated_sb_index == 11:
+			var revealed_iota = hexecutor.level_base.revealed_iota if hexecutor.level_base else null # level_base can be null if not in a level # !!! CHECK IF THIS IS NEEDED
+			hex_display.update_sb_item(updated_sb_index, revealed_iota)
+		else: # Some large number. Nuclear option for when we don't know what changed.
+			hex_display.handle_update_all_iotas(hexecutor) 
+	if updated_selection:
+		hex_display.update_sb_selection(hexecutor.caster.node.sb_sel)
+
+
+# Update hex_display iotas after the level has changed. Causes all relevant strings to be updated.
+func update_hex_display_on_level_change(update_hexy:bool, is_level_puzzle: bool):
+	if update_hexy:
+		hex_display.handle_update_all_iotas(hexecutor)
+	hex_display.set_puzzle_tool_visibility(is_level_puzzle)
 
 # Update border size display, also located in hex_display.
 func update_border_display():
@@ -185,7 +200,7 @@ func update_border_display():
 func clear():
 	grid.reset(false) # Soft reset, keeps previous border score
 	hexecutor.reset()
-	hex_display.update_clear_hexy() # Update/Clear stack display
+	hex_display.handle_clear_grid() # Update/Clear stack display
 
 # End replay mode, normally after player casts a pattern manually
 func end_replay_mode():
@@ -215,8 +230,8 @@ func _input(event):
 			grid.hex_border.inc_cast_score(1)
 			# Increment spellbook
 			hexecutor.caster.node.inc_sb()
-			# Update displays
-			hex_display.update_sb_label(hexecutor.caster.node)
+			# Update sb selection in ui
+			hex_display.update_sb_selection(hexecutor.caster.node.sb_sel)
 			# Play a sound
 			SoundManager.play_segment()
 			return # Done
@@ -225,8 +240,8 @@ func _input(event):
 			grid.hex_border.inc_cast_score(1)
 			# Decrement spellbook
 			hexecutor.caster.node.dec_sb()
-			# Update displays
-			hex_display.update_sb_label(hexecutor.caster.node)
+			# Update sb selection in ui
+			hex_display.update_sb_selection(hexecutor.caster.node.sb_sel)
 			# Play a sound
 			SoundManager.play_segment()
 			return # Done

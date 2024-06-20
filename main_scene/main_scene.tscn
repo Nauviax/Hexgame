@@ -17,7 +17,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelArea/LevelContainer")
 anchor_mode = 0
 editor_draw_screen = false
 
-[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "raven_label", "reveal_label", "sb_label", "border_label", "level_controls", "validate_button", "validate_label", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label", "popup_holder")]
+[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "spellbook_ui", "border_label", "level_controls", "validate_button", "validate_label", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label", "popup_holder")]
 offset_right = 1924.0
 offset_bottom = 1080.0
 mouse_filter = 2
@@ -27,9 +27,7 @@ script = ExtResource("3_pett3")
 toggle_grid_button = NodePath("MainSplit/LevelArea/OLDSTUFF/ToggleGrid")
 grid_control = NodePath("MainSplit/LevelArea/GridControl")
 stack_label = NodePath("MainSplit/InfoColumn/IotaStack/Stack")
-raven_label = NodePath("MainSplit/InfoColumn/IotaStorage/Ravenmind")
-reveal_label = NodePath("MainSplit/LevelArea/OLDSTUFF/Reveal")
-sb_label = NodePath("MainSplit/InfoColumn/IotaStorage/Spellbook")
+spellbook_ui = NodePath("MainSplit/InfoColumn/IotaStorage/Spellbook")
 border_label = NodePath("MainSplit/LevelArea/OLDSTUFF/BorderScore")
 level_controls = NodePath("MainSplit/InfoColumn/LevelButtons/Validation")
 validate_button = NodePath("MainSplit/LevelArea/OLDSTUFF/Validate")
@@ -70,10 +68,11 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="Spellbook2" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage" instance=ExtResource("5_uu0m3")]
+[node name="Spellbook" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage" instance=ExtResource("5_uu0m3")]
 layout_mode = 2
 
-[node name="Spellbook" type="RichTextLabel" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage"]
+[node name="SpellbookOLD" type="RichTextLabel" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -255,9 +254,9 @@ mouse_filter = 2
 
 [connection signal="pressed" from="HexDisplay/MainSplit/InfoColumn/MenuBar/CloseGame" to="." method="_on_close_game_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/InfoColumn/MenuBar/Hexbook" to="HexDisplay" method="_on_hexbook_pressed"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Spellbook" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Spellbook" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Spellbook" to="HexDisplay" method="_on_meta_hover_started"]
+[connection signal="meta_clicked" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/SpellbookOLD" to="HexDisplay" method="_on_meta_clicked"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="meta_clicked" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Ravenmind" to="HexDisplay" method="_on_meta_clicked"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Ravenmind" to="HexDisplay" method="_on_meta_hover_started"]
