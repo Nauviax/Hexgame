@@ -27,7 +27,7 @@ script = ExtResource("3_pett3")
 toggle_grid_button = NodePath("MainSplit/LevelArea/OLDSTUFF/ToggleGrid")
 grid_control = NodePath("MainSplit/LevelArea/GridControl")
 stack_label = NodePath("MainSplit/InfoColumn/IotaStack/Stack")
-spellbook_ui = NodePath("MainSplit/InfoColumn/IotaStorage/Spellbook")
+spellbook_ui = NodePath("MainSplit/InfoColumn/Spellbook")
 border_label = NodePath("MainSplit/LevelArea/OLDSTUFF/BorderScore")
 level_controls = NodePath("MainSplit/InfoColumn/LevelButtons/Validation")
 validate_button = NodePath("MainSplit/LevelArea/OLDSTUFF/Validate")
@@ -63,38 +63,8 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Open Hexbook"
 
-[node name="IotaStorage" type="VBoxContainer" parent="HexDisplay/MainSplit/InfoColumn"]
+[node name="Spellbook" parent="HexDisplay/MainSplit/InfoColumn" instance=ExtResource("5_uu0m3")]
 layout_mode = 2
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="Spellbook" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage" instance=ExtResource("5_uu0m3")]
-layout_mode = 2
-
-[node name="SpellbookOLD" type="RichTextLabel" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-bbcode_enabled = true
-text = "- Spellbook -
--> 0: iota
-   1: 
-   2: 
-   3: 
-   4: 
-   5: 
-   6: 
-   7: 
-   8: "
-autowrap_mode = 0
-
-[node name="Ravenmind" type="RichTextLabel" parent="HexDisplay/MainSplit/InfoColumn/IotaStorage"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_vertical = 8
-bbcode_enabled = true
-text = "Ravenmind"
 
 [node name="IotaStack" type="ScrollContainer" parent="HexDisplay/MainSplit/InfoColumn"]
 layout_mode = 2
@@ -238,6 +208,30 @@ layout_mode = 2
 theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Validate"
 
+[node name="SpellbookOLD" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelArea/OLDSTUFF"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "- Spellbook -
+-> 0: iota
+   1: 
+   2: 
+   3: 
+   4: 
+   5: 
+   6: 
+   7: 
+   8: "
+autowrap_mode = 0
+
+[node name="Ravenmind" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelArea/OLDSTUFF"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 8
+bbcode_enabled = true
+text = "Ravenmind"
+
 [node name="HexbookHolder" type="CenterContainer" parent="HexDisplay"]
 visible = false
 layout_mode = 2
@@ -254,12 +248,6 @@ mouse_filter = 2
 
 [connection signal="pressed" from="HexDisplay/MainSplit/InfoColumn/MenuBar/CloseGame" to="." method="_on_close_game_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/InfoColumn/MenuBar/Hexbook" to="HexDisplay" method="_on_hexbook_pressed"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/SpellbookOLD" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_started"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Ravenmind" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/InfoColumn/IotaStorage/Ravenmind" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="meta_clicked" from="HexDisplay/MainSplit/InfoColumn/IotaStack/Stack" to="HexDisplay" method="_on_meta_clicked"]
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/InfoColumn/IotaStack/Stack" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/InfoColumn/IotaStack/Stack" to="HexDisplay" method="_on_meta_hover_started"]
@@ -277,3 +265,9 @@ mouse_filter = 2
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Reveal" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
+[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/SpellbookOLD" to="HexDisplay" method="_on_meta_clicked"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_started"]
+[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Ravenmind" to="HexDisplay" method="_on_meta_clicked"]
+[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
+[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Ravenmind" to="HexDisplay" method="_on_meta_hover_started"]
