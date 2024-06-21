@@ -34,6 +34,7 @@ extends Control
 @export var popup_holder: Control # All popups should be children of this
 
 # As a general note: Spaces are added before \n to avoid weird issue with hover hitbox for meta-text extending the full width of the control.
+# !!! This may be solved with the new fancy UI stuff. Look around to see if it's still an issue later !!!
 
 # Replay mode. Shows replay controls and disables player control.
 # Manual casting will disable this mode.
@@ -93,55 +94,60 @@ func update_stack(stack: Array):
 	var stack_size = stack.size()
 	for ii in range(stack_size):
 		var iota = stack[stack_size - ii - 1]
-		if iota is Pattern:
-			text += iota.get_meta_string() + " \n"
-		else:
-			text += str(iota) + " \n"
+		text += iota_to_string(iota) + " \n"
 	stack_label.append_text(text)
 
-# Ravenmind label
-# func update_ravenmind_label(ravenmind):
-# 	if ravenmind == null:
-# 		raven_label.text = ""
-# 	elif ravenmind is Pattern:
-# 		raven_label.text = "Ravenmind:\n" + ravenmind.get_meta_string() + " \n" # Avoid issue with hover hitbox
-# 	else:
-# 		raven_label.text = "Ravenmind:\n" + str(ravenmind) + " \n"
-
-# Reveal label
-# func update_reveal_label(reveal):
-# 	if reveal == null:
-# 		reveal_label.text = ""
-# 	elif reveal is Pattern:
-# 		reveal_label.text = "Revealed:\n" + reveal.get_meta_string() + " \n"
-# 	else:
-# 		reveal_label.text = "Revealed:\n" + str(reveal) + " \n"
-
-# Spellbook label
-# func update_sb_label(player):
-# 	var text = "- Spellbook -\n"
-# 	for ii in range(player.sb.size()):
-# 		if ii == player.sb_sel:
-# 			text += "-> " + str(ii) + ": "
-# 		else:
-# 			text += "   " + str(ii) + ": "
-# 		var iota = player.sb[ii]
-# 		if iota == null:
-# 			text += "\n"
-# 		elif iota is Pattern:
-# 			text += iota.get_meta_string() + " \n" # Again, space to avoid issue with hover hitbox
-# 		else:
-# 			text += str(iota) + " \n"
-# 	sb_label.text = text
+# Turns an iota into a display string with metatext for popups. For use in spellbook_ui and stack mainly.
+# Will call itself recursively if the iota is an array. Arrays are shortened, but nested lists are not.
+# !!! Investigate weird hover hitbox issue. Solution is to put a space as last character, but don't use yet unless necessary.
+func iota_to_string(iota, inside_list:bool = false):
+	if iota == null:
+		return "null" if inside_list else "" # Don't show nulls in spellbook, but do show in lists.
+	elif iota is Pattern:
+		return iota.get_meta_string(inside_list) # Shorten if inside list, Full length if not.
+	elif iota is Array:
+		var text = "["
+		var max_length = 0 # How many items to display before shortening
+		if inside_list:
+			max_length = iota.size() # Show all items if inside a list.
+		else: # Calculate a custom max_length to shorten list if needed.
+			var length_score = 0 # An estimate of how long the list will be, to determine if it should be shortened.
+			for ii in iota:
+				if ii is Pattern:
+					length_score += 7 # Length of most pattern's shorthand name, plus ", "
+				elif ii is Array:
+					length_score += 8 # Length of "(list), "
+				elif ii is Bad_Iota:
+					length_score += 12 # 10 long, plus ", "
+				else:
+					length_score += str(ii).length() + 2 # Float, Vector2, Entity even. +2 For ", " between items
+				if length_score > 40: # If the list is too long, shorten it.
+					break
+				max_length += 1 # Increment max_length
+		# Generate text for each item in the list, shortening if needed.
+		for ii in range(max_length):
+			if (not inside_list) and (iota[ii] is Array): # Do NOT show a whole ass list while trying to keep everything short.
+				var meta = iota_to_string(iota[ii], true).replace("[", "BBCODELEFT").replace("]", "BBCODERIGHT")
+				text += "[url=L" + meta + "](list)[/url]" # Append a shortened list instead.
+			else:
+				text += iota_to_string(iota[ii], true) # Don't shorten nested lists (!!! But look into what happens if we do, once all this works!)
+			if ii < iota.size() - 1:
+				text += ", "
+		if (not inside_list) and (iota.size() > max_length): # Add ellipsis with link to full list if list is too long.
+			var meta = iota_to_string(iota, true).replace("[", "BBCODELEFT").replace("]", "BBCODERIGHT") # Replace brackets to avoid issues with meta-text
+			text += "[url=L" + meta + "]. . . [/url]" # Spaced out to make hitbox larger mainly.
+		text += "]"
+		return text
+	else: # Floats, Vector2, Entity, anything else I don't have special rules for.
+		return str(iota)
 
 # Refresh whole spellbook ui. Used when all items may have changed, like when loading into a new level.
-# !!! DON'T USE str() USE SOME NEW FUNC TO BE DEFINED SOON (null == "")
 func update_sb_all(sb:Array, sb_sel:int, raven, sentinel, revealed):
 	for ii in sb.size(): # sb should always be 9 long
-		spellbook_ui.update_spellbook_item(ii, str(sb[ii]), false, false)
-	spellbook_ui.update_spellbook_item(9, str(raven), false, false)
-	spellbook_ui.update_spellbook_item(10, str(sentinel), false, false)
-	spellbook_ui.update_spellbook_item(11, str(revealed), false, false) # Update spellbook on last item.
+		spellbook_ui.update_spellbook_item(ii, iota_to_string(sb[ii]), false, false)
+	spellbook_ui.update_spellbook_item(9, iota_to_string(raven), false, false)
+	spellbook_ui.update_spellbook_item(10, iota_to_string(sentinel), false, false)
+	spellbook_ui.update_spellbook_item(11, iota_to_string(revealed), false, false) # Update spellbook on last item.
 	spellbook_ui.update_selected_iota(sb_sel) # Also causes spellbook to update display, and move to selected page.
 
 # Update the selected iota index, and move to the relevant tab.
@@ -151,7 +157,7 @@ func update_sb_selection(index:int):
 # Update items related to spellbook_ui.
 # General iotas use index values 0-8, and misc iotas are 9-11 for ravenmind, sentinel, and revealed iota.
 func update_sb_item(index:int, iota, silent:bool = false):
-	spellbook_ui.update_spellbook_item(index, str(iota), true, silent)
+	spellbook_ui.update_spellbook_item(index, iota_to_string(iota), true, silent)
 
 # Level description label (Called directly by main_scene)
 func set_puzzle_tool_visibility(is_puzzle: bool):

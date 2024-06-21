@@ -1,8 +1,10 @@
 extends PanelContainer
 
 # UI element for selecting tabs. Use tab_bar.current_tab to get and set the current tab.
-# !!! Does changing this value in code trigger the tab_changed signal?
 @export var tab_bar: TabBar
+
+# Hex Display UI element for sending meta_hover signals to.
+@export var hex_display: Control
 
 # Labels for displaying spellbook strings and other info.
 @export var sb_top_name: Label
@@ -39,9 +41,17 @@ var spellbook_strings = [
 # Currently selected iota index.
 var selected_iota = 0
 
-# Called when the node enters the scene tree for the first time.
+# Onready, connect popup related signals from spellbook items to relevant hex_display functions.
 func _ready():
-	update_spellbook_display() # !!! May be redundant soon
+	sb_top_item.meta_hover_started.connect(hex_display._on_meta_hover_started)
+	sb_top_item.meta_hover_ended.connect(hex_display._on_meta_hover_ended)
+	sb_top_item.meta_clicked.connect(hex_display._on_meta_clicked)
+	sb_middle_item.meta_hover_started.connect(hex_display._on_meta_hover_started)
+	sb_middle_item.meta_hover_ended.connect(hex_display._on_meta_hover_ended)
+	sb_middle_item.meta_clicked.connect(hex_display._on_meta_clicked)
+	sb_bottom_item.meta_hover_started.connect(hex_display._on_meta_hover_started)
+	sb_bottom_item.meta_hover_ended.connect(hex_display._on_meta_hover_ended)
+	sb_bottom_item.meta_clicked.connect(hex_display._on_meta_clicked)
 
 # Used to update the selected iota index, and moves to the relevant tab.
 func update_selected_iota(index:int):

@@ -9,7 +9,7 @@ class_name Hex_Popup
 @export var middle_container: Control
 @export var graphic_parent: Control
 @export var desc_button: Button # Grey out when < 2 descs
-@export var description_label: Label
+@export var description_label: RichTextLabel
 @export var background: NinePatchRect
 
 # Reference to the popup scene to create new instances
@@ -39,7 +39,11 @@ static func make_new(parent: Control) -> Hex_Popup:
 
 # Onready, hide
 func _ready():
-	visible = false	
+	visible = false
+	var hex_display = get_parent().get_parent() # This is an assumption that probably isn't very safe long-term, but should work for now. (!!!)
+	description_label.meta_hover_started.connect(hex_display._on_meta_hover_started)
+	description_label.meta_hover_ended.connect(hex_display._on_meta_hover_ended)
+	description_label.meta_clicked.connect(hex_display._on_meta_clicked)
 
 # On process, if visible and not locked, move to the mouse position
 func _process(_delta):
@@ -85,7 +89,7 @@ func display(meta: String, show_above: bool = false):
 			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe.iota_count)
 			desc_page = 0 # Reset page if new pattern
 
-			description_label.text = current_pattern.p_exe.descs[0]
+			set_description(current_pattern.p_exe.descs[0])
 			if current_pattern.p_exe.descs.size() > 1: # Disable button if only one description
 				desc_button.disabled = false
 			else:
@@ -100,17 +104,26 @@ func display(meta: String, show_above: bool = false):
 		middle_container.visible = false
 		if type == "B": # Error (E reserved for entities, possibly change later, and make this a match not elif (!!!))
 			title_label.text = "Error"
-			description_label.text = rest
+			set_description(rest)
+		elif type == "L": # List, decode square brackets and display fairly normally.
+			title_label.text = "List"
+			set_description(rest.replace("BBCODELEFT", "[").replace("BBCODERIGHT", "]"))
 		elif type == "M": # Message, basically plain text
-			title_label.text = "Message" # !!! Possibly hide title? Or allow 'rest' to specify it?
-			description_label.text = rest
+			title_label.text = "Message"
+			set_description(rest)
 		else:
 			title_label.text = "Unknown"
-			description_label.text = meta
+			set_description(meta)
 	# Show self
 	update_position()
 	visible = true
 	first_process = true
+
+# Special function for setting description text, as it uses a richtextlabel.
+# For now it just adds [centre] tags. Later, (!!!) I want to set min_size_y to the height of desc_label, capped at 200px or similar. I'm yet to get this to work however.
+func set_description(text: String):
+	description_label.text = "[center]" + text
+	# description_label.custom_minimum_size.y = min(100, description_label.get_content_height()) # There is no max size option in Godot, so we simulate it basically.
 
 # Lock self, preventing it from following mouse or changing content.
 func lock():
@@ -127,7 +140,7 @@ func stop_display():
 # Toggle displayed description for patten (Not shown for non-patterns)
 func _on_next_desc_pressed():
 	desc_page = (desc_page + 1) % current_pattern.p_exe.descs.size()
-	description_label.text = current_pattern.p_exe.descs[desc_page]
+	description_label.text = set_description(current_pattern.p_exe.descs[desc_page])
 
 # Drag functionality allows the window to be moved around while locked
 func _on_drag_button_down():

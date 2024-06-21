@@ -17,7 +17,7 @@ iota_count_label = NodePath("MarginContainer/Main/Middle/Info/IotaCount")
 middle_container = NodePath("MarginContainer/Main/Middle")
 graphic_parent = NodePath("MarginContainer/Main/Middle/CenterContainer/GraphicParent")
 desc_button = NodePath("MarginContainer/Main/Middle/Info/NextDesc")
-description_label = NodePath("MarginContainer/Main/Desc")
+description_label = NodePath("MarginContainer/Main/DescMargin/Desc")
 background = NodePath("NinePatchRect")
 
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
@@ -123,12 +123,20 @@ vertical_alignment = 1
 layout_mode = 2
 text = "Desc ->"
 
-[node name="Desc" type="Label" parent="MarginContainer/Main"]
-custom_minimum_size = Vector2(256, 0)
+[node name="DescMargin" type="MarginContainer" parent="MarginContainer/Main"]
 layout_mode = 2
-text = "Some long and lengthy description here, which can force the popup to expand vertically. This along with the \"Middle\" section can be hidden based on displayed contents."
-horizontal_alignment = 1
-autowrap_mode = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Desc" type="RichTextLabel" parent="MarginContainer/Main/DescMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+text = "[center]Some long and lengthy description here, which can force the popup to expand vertically. This along with the \"Middle\" section can be hidden based on displayed contents."
+fit_content = true
+scroll_active = false
 
 [connection signal="button_down" from="MarginContainer/Main/Header/HeaderSplit/Drag" to="." method="_on_drag_button_down"]
 [connection signal="button_up" from="MarginContainer/Main/Header/HeaderSplit/Drag" to="." method="_on_drag_button_up"]

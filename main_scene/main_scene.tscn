@@ -63,8 +63,9 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Open Hexbook"
 
-[node name="Spellbook" parent="HexDisplay/MainSplit/InfoColumn" instance=ExtResource("5_uu0m3")]
+[node name="Spellbook" parent="HexDisplay/MainSplit/InfoColumn" node_paths=PackedStringArray("hex_display") instance=ExtResource("5_uu0m3")]
 layout_mode = 2
+hex_display = NodePath("../../..")
 
 [node name="IotaStack" type="ScrollContainer" parent="HexDisplay/MainSplit/InfoColumn"]
 layout_mode = 2
