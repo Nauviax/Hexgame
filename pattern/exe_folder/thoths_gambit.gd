@@ -53,11 +53,8 @@ static func execute(hexecutor, pattern):
 	hexecutor.execution_depth -= 1
 
 	# Copy over change trackers from hexecutor2
-	hexecutor.sb_selected_changed |= hexecutor2.sb_selected_changed # Just set true if either has changed it.
-	if hexecutor.sb_item_changed == -1: # If nothing had changed before hexecutor2 ran, copy over the change
-		hexecutor.sb_item_changed = hexecutor2.sb_item_changed
-	elif hexecutor.sb_item_changed != hexecutor2.sb_item_changed: # If both changed different things,
-		hexecutor.sb_item_changed = 99 # Nuclear option if more than two things have changed. (If both are 99, then result is still 99 anyway.)
-	
+	hexecutor.tracker_sb_selected_changed = hexecutor2.tracker_sb_selected_changed or hexecutor.tracker_sb_selected_changed # Just set true if either has changed it.
+	hexecutor.log_spellbook_change(hexecutor2.tracker_sb_item_changed) # Copy over spellbook changes
+
 	stack.push_back(results) # Push results
 	return true
