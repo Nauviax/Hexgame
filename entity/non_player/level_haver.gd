@@ -1,7 +1,7 @@
 extends StaticBody2D
-class_name LevelHaver
+class_name Level_Haver
 
-@export var entity_name: String = "LevelHaver"
+@export var entity_name: String = "Level Haver"
 @onready var entity: Entity = Entity.new(entity_name, self)
 
 # The level scene this haver loads

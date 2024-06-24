@@ -19,7 +19,7 @@ func _ready():
 	load_level_from_scene(preload("res://levels/island_1/external_hub_1/level.tscn"))
 
 # Unloads and saves the current level to level_list, then loads a new level given by the level_haver
-func save_then_load_level(level_haver: LevelHaver):
+func save_then_load_level(level_haver: Level_Haver):
 	# Save current level to level_list, along with hexecutor and the level_haver
 	level_list.push_back([loaded_level, hexecutor, level_haver])
 	# Remove the level as a child

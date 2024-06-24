@@ -24,7 +24,7 @@ var desc_page = 0
 # On first process after being shown, set size to 0 to force refit container
 var first_process = false
 
-# If true, show the pattern info above mous instead of below
+# If true, show the popup above mouse instead of below
 var show_above = false
 
 # If true, the popup is locked in place and won't close unless manually done so

@@ -10,7 +10,7 @@ static func execute(hexecutor, pattern):
 	if not entity is Entity:
 		stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_TYPE, pattern.name, 0, "entity", entity))
 		return false
-	if not entity.node is LevelHaver:
+	if not entity.node is Level_Haver:
 		stack.push_back(Bad_Iota.new(ErrorMM.NOT_LEVEL_HAVER, pattern.name))
 		return false
 	hexecutor.caster.node.particle_cast(0) # Play success particles before entering. Hexecutor will play more when inside level, but not on current level.

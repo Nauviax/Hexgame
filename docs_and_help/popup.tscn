@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://docs_and_help/popup.gd" id="1_v4881"]
 [ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="3_n3cin"]
 
-[node name="PatternInfo" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "graphic_parent", "desc_button", "description_label", "background")]
+[node name="Popup" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "graphic_parent", "desc_button", "description_label", "background")]
 custom_minimum_size = Vector2(256, 0)
 offset_right = 256.0
 theme = ExtResource("1_rv7nq")

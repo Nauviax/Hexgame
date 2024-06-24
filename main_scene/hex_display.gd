@@ -249,7 +249,7 @@ func update_replay_timeline_label():
 		var text = ""
 		text += "[b]" + str(pattern) + "[/b]" if ii == replay_index else str(pattern) # Bold if pattern is next step (3rd drawn)
 		if ii + 1 < replay_patterns.size():
-			text += " ->" # Draw if next pattern exists
+			text += " -> " # Draw if next pattern exists
 		replay_timeline_label.append_text(text) # Append
 	if replay_index >= replay_patterns.size():
 		replay_timeline_label.append_text("   <finished>") # Show if no more patterns to execute

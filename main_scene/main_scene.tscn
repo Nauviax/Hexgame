@@ -209,30 +209,6 @@ layout_mode = 2
 theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "Validate"
 
-[node name="SpellbookOLD" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelArea/OLDSTUFF"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-bbcode_enabled = true
-text = "- Spellbook -
--> 0: iota
-   1: 
-   2: 
-   3: 
-   4: 
-   5: 
-   6: 
-   7: 
-   8: "
-autowrap_mode = 0
-
-[node name="Ravenmind" type="RichTextLabel" parent="HexDisplay/MainSplit/LevelArea/OLDSTUFF"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_vertical = 8
-bbcode_enabled = true
-text = "Ravenmind"
-
 [node name="HexbookHolder" type="CenterContainer" parent="HexDisplay"]
 visible = false
 layout_mode = 2
@@ -266,9 +242,3 @@ mouse_filter = 2
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Reveal" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Validate" to="HexDisplay" method="_on_level_validate_pressed"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/SpellbookOLD" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/SpellbookOLD" to="HexDisplay" method="_on_meta_hover_started"]
-[connection signal="meta_clicked" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Ravenmind" to="HexDisplay" method="_on_meta_clicked"]
-[connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Ravenmind" to="HexDisplay" method="_on_meta_hover_ended"]
-[connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Ravenmind" to="HexDisplay" method="_on_meta_hover_started"]
