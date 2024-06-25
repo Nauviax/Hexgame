@@ -80,7 +80,7 @@ func exit_level() -> bool:
 
 	var prev_level_stuff = level_list.pop_back()
 	# Unload and delete current level
-	var level_validated = loaded_level.validated # For use in updating level_haver \/
+	var level_validated = loaded_level.is_level_valid # For use in updating level_haver \/
 	level_viewport.remove_child(loaded_level)
 	loaded_level.queue_free()
 	grid.reset(true) # Hard reset, clears border score
@@ -132,13 +132,16 @@ func transition_from_world(selected_level: PackedScene):
 	loaded_level = new_level # Done!
 	update_hex_display_on_level_change(false, new_level.is_level_puzzle) # No need to update hexy, it won't have changed.
 
-# Validates the current level, and calls appropriate functions to update UI
-func validate_level():
+# Checks if the level is solved yet, also setting is_level_valid, and calls appropriate functions to update UI
+# Returns true if level is solved, false if not.
+func validate_level() -> bool:
 	if loaded_level.has_method("validate"):
-		var validated = loaded_level.validate() # Saves result to level also.
-		hex_display.set_validate_result(validated) # Update UI to reflect validation result
+		loaded_level.validate() # Saves result to level also.
+		hex_display.set_validate_result(loaded_level.is_level_valid) # Update UI to reflect validation result
+		return loaded_level.is_level_valid
 	else:
 		hex_display.set_validate_result(false) # No validator, assume false (Likely world view)
+		return false
 
 # Validate the current hex on multiple versions of the level, to ensure the hex works on all versions.
 # Returns [] on fail, and [hex size, border score] on success

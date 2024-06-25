@@ -25,7 +25,7 @@ var rnd: RandomNumberGenerator # Set in _ready()
 @export var is_level_puzzle: bool = true # False for level hubs mainly
 
 # True if level has been validated (And level_logic.validate() returned true)
-var validated = false
+var is_level_valid = false
 
 # List of entities in the level (Entity object, not Node2D)
 var entities: Array
@@ -120,9 +120,9 @@ func _physics_process(_delta):
 # Test if the level is complete (And save result)
 func validate():
 	if level_logic == null:
-		return false
+		is_level_valid = false
 	else:
-		return level_logic.validate(self)
+		is_level_valid = level_logic.validate(self)
 
 # Remove an entity from the level, effectively killing it. Returns false on failure.
 func remove_entity(entity):

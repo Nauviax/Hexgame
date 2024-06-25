@@ -17,7 +17,7 @@ level_container = NodePath("HexDisplay/MainSplit/LevelArea/LevelContainer")
 anchor_mode = 0
 editor_draw_screen = false
 
-[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "spellbook_ui", "border_label", "level_controls", "validate_button", "validate_label", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label", "popup_holder")]
+[node name="HexDisplay" type="PanelContainer" parent="." node_paths=PackedStringArray("toggle_grid_button", "grid_control", "stack_label", "spellbook_ui", "border_label", "level_controls", "validation_result", "hexbook_holder", "replay_controls", "preplay_controls", "preplay_begin_replay_button", "replay_timeline_label", "popup_holder")]
 offset_right = 1924.0
 offset_bottom = 1080.0
 mouse_filter = 2
@@ -30,8 +30,7 @@ stack_label = NodePath("MainSplit/InfoColumn/IotaStack/Stack")
 spellbook_ui = NodePath("MainSplit/InfoColumn/Spellbook")
 border_label = NodePath("MainSplit/LevelArea/OLDSTUFF/BorderScore")
 level_controls = NodePath("MainSplit/InfoColumn/LevelButtons/Validation")
-validate_button = NodePath("MainSplit/LevelArea/OLDSTUFF/Validate")
-validate_label = NodePath("MainSplit/InfoColumn/LevelButtons/Validation/YouWin")
+validation_result = NodePath("MainSplit/InfoColumn/LevelButtons/Validation/ValidationResult")
 hexbook_holder = NodePath("HexbookHolder")
 replay_controls = NodePath("MainSplit/InfoColumn/LevelButtons/ReplayControls/ReplayButtons")
 preplay_controls = NodePath("MainSplit/InfoColumn/LevelButtons/ReplayControls/PreplayButtons")
@@ -94,7 +93,7 @@ layout_mode = 2
 theme_override_styles/focus = ExtResource("2_7aeg7")
 text = "ExValidate"
 
-[node name="YouWin" type="Label" parent="HexDisplay/MainSplit/InfoColumn/LevelButtons/Validation"]
+[node name="ValidationResult" type="Label" parent="HexDisplay/MainSplit/InfoColumn/LevelButtons/Validation"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 text = "ExValidated!
@@ -204,11 +203,6 @@ text = "Border score:
 0 + 0 = 0"
 autowrap_mode = 2
 
-[node name="Validate" type="Button" parent="HexDisplay/MainSplit/LevelArea/OLDSTUFF"]
-layout_mode = 2
-theme_override_styles/focus = ExtResource("2_7aeg7")
-text = "Validate"
-
 [node name="HexbookHolder" type="CenterContainer" parent="HexDisplay"]
 visible = false
 layout_mode = 2
@@ -241,4 +235,3 @@ mouse_filter = 2
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Reveal" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Reveal" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]
-[connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Validate" to="HexDisplay" method="_on_level_validate_pressed"]

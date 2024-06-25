@@ -17,9 +17,7 @@ extends Control
 
 @export var level_controls: Control # For hiding/showing level controls, normally when a level isn't solvable.
 
-@export var validate_button: Button # For changing color
-
-@export var validate_label: Label # For announcing validation results
+@export var validation_result: Label # For announcing validation results
 
 @export var hexbook_holder: Control
 
@@ -47,7 +45,7 @@ var replay_mode: bool = false
 func _ready():
 	replay_timeline_label.clear() # Still shown technically, but empty
 	replay_controls.hide()
-	validate_label.text = "" # Clear validation label
+	validation_result.text = "" # Clear validation label
 
 # Handle Toggle Grid button
 func _on_toggle_grid_pressed():
@@ -161,39 +159,26 @@ func update_sb_item(index:int, iota, silent:bool = false):
 
 # Level description label (Called directly by main_scene)
 func set_puzzle_tool_visibility(is_puzzle: bool):
-	# Reset validate button and label state (!!! This probably will be changed soon)
-	validate_label.text = ""
-	validate_button.modulate = Color(1, 1, 1)
+	# Reset validatation label (!!! This probably will be changed soon)
+	validation_result.text = "Level not valid yet." if is_puzzle else ""
 	# Hide/show controls based on if level is intended to be solved
 	level_controls.visible = is_puzzle
 	preplay_begin_replay_button.visible = is_puzzle
 
-# Handle UI buttons
-func _on_level_validate_pressed():
-	main_scene.validate_level() # Will call set_validate_result in this script
-
 # Seperate call so hexecutor can call this code via main_scene
 func set_validate_result(validated: bool):
-	if validated:
-		validate_button.modulate = Color(0, 1, 0) 
-		validate_label.text = "Validated!\nNow try ExValidate!"
-	else:
-		validate_button.modulate = Color(1, 0, 0)
-		validate_label.text = "Level not valid yet."
+	validation_result.text = "Validated!\nNow try ExValidate!" if validated else "Level not valid yet."
 
 func _on_extra_validate_pressed(): # The repeating one
-	var validated = main_scene.validate_level()
+	var validated = main_scene.validate_level() # Ensure level is solved before attempting to ExValidate
 	if validated:
 		var ex_result = main_scene.extra_validate_level()
 		if ex_result.size() == 2:
-			validate_button.modulate = Color(0, 1, 0)
-			validate_label.text = "You Win!\nHex size: " + str(ex_result[0]) + "\nBorder size: " + str(ex_result[1])
+			validation_result.text = "You Win!\nHex size: " + str(ex_result[0]) + "\nBorder size: " + str(ex_result[1])
 		else:
-			validate_button.modulate = Color(1, 0, 0)
-			validate_label.text = "Failed, replay for bad seed shown."
+			validation_result.text = "Failed, replay for bad seed shown."
 	else:
-		validate_button.modulate = Color(1, 0, 0)
-		validate_label.text = "Level isn't even valid yet."
+		validation_result.text = "Can't ExValidate yet, level not valid."
 
 # Handle meta-text and other pattern hovers
 func _on_meta_hover_started(meta:Variant):
