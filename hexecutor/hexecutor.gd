@@ -6,21 +6,21 @@ var main_scene: Node2D
 
 # True if this hexecutor should interact with the main scene directly.
 # This includes updating the display, but patterns can still interact using this reference!
-var is_main_hexecutor
+var is_main_hexecutor: bool
 
 # Various gradients for pattern lines, to be set depending on state.
 # Static as they can be shared between all instances of this class.
-static var normal_gradient = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
-static var fail_gradient = preload("res://resources/shaders/cast_line/gradient_textures/fail.tres")
-static var meta_gradient = preload("res://resources/shaders/cast_line/gradient_textures/meta.tres")
+static var normal_gradient: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
+static var fail_gradient: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/fail.tres")
+static var meta_gradient: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/meta.tres")
 
 # The stack (Very important)
-var stack = []
+var stack: Array = []
 
 # A reference to the level_base the caster is a part of.
 # Used to get entities and other level data for certian patterns.
 # If left null, pattern execution will fail. Can be intentionally left null to prevent execution.
-var level_base = null
+var level_base: Level_Base = null
 
 # The entity representing the player casting this hex. (Will cause issues if caster.node is not type player!)
 var caster: Entity = null
@@ -29,53 +29,53 @@ var caster: Entity = null
 # If true, the next executed pattern will be saved to the stack as a pattern. (Metalist or just on it's own)
 # This takes priority over introspection mode, though still appends to Metalist. It can be used to add intro/retrospection to a list.
 # Adding consideration to the list requires two considerations in a row.
-var consideration_mode = false
+var consideration_mode: bool = false
 
 # Introspection Mode
 # If > 0, executed patterns are instead saved to the Pattern_Metalist at the top of the stack.
 # If the top of the stack is not a Pattern_Metalist, throw a Godot error (Not bad_iota)
 # Incremented/Decremented via Introspection and Retrospection respectively.
-var introspection_depth = 0
+var introspection_depth: int = 0
 
 # Execution depth
 # Used to halt a meta-pattern if it is too deep.
 # Incremented/Decremented by the meta-patterns themselves. Just read by Hexecutor to halt early.
 # Current max depth is 128.
-var execution_depth = 0
+var execution_depth: int = 0
 
 # Charon Mode
 # If true, exit the current meta-pattern. Meta-pattern should set this to false on exit.
 # If not in a meta-pattern, simply end this hex (Clear grid and stack etc)
-var charon_mode = false
+var charon_mode: bool = false
 
 # Scram Mode
 # If true, the the hex will attempt to end. Similar to Charon Mode, but does NOT respect meta-patterns.
 # Used for patterns that should not be followed by other patterns. (Enter and Exit for instance)
 # Not reset by hexecutor, main_scene should reset this when it needs to use the hexecutor again.
-var scram_mode = false
+var scram_mode: bool = false
 
 # Variables to store what spellbook data has changed duing an execution.
 # These values are outside of the execute function so pattern_exes can set them during execution. They are reset once execution is complete.
-var tracker_sb_item_changed = -1 # -1 means no change. 99 means unknown amounts have changed. 0-11 are specific spellbook items.
-var tracker_sb_selected_changed = false # True if the selected spellbook item has changed in any way.
+var tracker_sb_item_changed: int = -1 # -1 means no change. 99 means unknown amounts have changed. 0-11 are specific spellbook items.
+var tracker_sb_selected_changed: bool = false # True if the selected spellbook item has changed in any way.
 
 # Replay List
 # Executed patterns append themselves to the replay list. These patterns can later be executed in order to replicate the original hex.
 # Only saves top level patterns, when execution_depth == 0. (So Hermes would be saved, but not the patterns it executes.)
 # Null in list represents a grid clear. Movements preformed by the player are NOT recorded, though currently the manual cast action IS saved. (It runs patterns directly)
 # Should be (Inherently?) reset only on level reset, or when entering replay mode. List will effectively rebuild itself during any replay so manual casting can safely resume anytime.
-var replay_list = []
+var replay_list: Array = []
 
 # Constructor
 # If not is_main_hexecutor, will not update the stack display.
-func _init(level_base, caster, main_scene, is_main_hexecutor = true):
+func _init(level_base: Level_Base, caster: Entity, main_scene: Main_Scene, is_main_hexecutor: bool = true) -> void:
 	self.level_base = level_base
 	self.caster = caster
 	self.main_scene = main_scene
 	self.is_main_hexecutor = is_main_hexecutor
 		
 # Tries to validate the pattern, colors it, and executes it (With sounds)
-func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mistakes
+func new_pattern(pattern_og: Pattern_Ongrid) -> void: # Defined type to avoid future mistakes
 	# Splash of color and sound
 	execute_with_effects(pattern_og.pattern, pattern_og)
 	# End replay mode if it was active
@@ -84,9 +84,9 @@ func new_pattern(pattern_og: Pattern_Ongrid): # Defined type to avoid future mis
 # Execute pattern, then play sounds and particles based on pattern name and success.
 # Can be called from external scripts (Like hex_display replay mode)
 # Pattern_og can be left null to not set a gradient color.
-func execute_with_effects(pattern:Pattern, pattern_og = null):
-	var is_meta = consideration_mode or introspection_depth > 0 # If currently 'meta', for coloring patterns
-	var success = execute_pattern(pattern) # Execute the pattern
+func execute_with_effects(pattern: Pattern, pattern_og: Pattern_Ongrid = null) -> void:
+	var is_meta: bool = consideration_mode or introspection_depth > 0 # If currently 'meta', for coloring patterns
+	var success: bool = execute_pattern(pattern) # Execute the pattern
 	if is_meta:
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
 		if pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
@@ -120,18 +120,18 @@ func execute_with_effects(pattern:Pattern, pattern_og = null):
 		caster.node.particle_cast(1)
 
 # Quick way to set a pattern_og line to a gradient. Static.
-static func set_gradient(pattern_og: Pattern_Ongrid, gradient):
+static func set_gradient(pattern_og: Pattern_Ongrid, gradient: GradientTexture1D) -> void:
 	pattern_og.line.material.set_shader_parameter("gradient_texture", gradient)
 
 # Executes a given pattern (Of note: NOT a Pattern_Ongrid)
 # Returns success of execution. (True if successful)
-func execute_pattern(pattern: Pattern, update_on_success = true):
+func execute_pattern(pattern: Pattern, update_on_success: bool = true) -> bool:
 	# If scram mode, end hex.
 	if scram_mode:
 		print("Scram mode active, ending hex.")
 		return false # Return early (And "fail" via false, so meta-patterns don't continue)
 	
-	var success # Return value, true on successful pattern execution, false otherwise.
+	var success: bool # Return value, true on successful pattern execution, false otherwise.
 	if execution_depth > 128: # Max depth
 		stack.push_back(Bad_Iota.new(ErrorMM.DELVED_TOO_DEEP, "<-Hexecutor->", execution_depth))
 		success = false
@@ -154,7 +154,7 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 				success = true
 			else:
 				printerr("ERROR: Introspection mode enabled, but top of stack is not a Pattern_Metalist!")
-				return
+				return false
 		else: # Default mode, just execute the pattern
 			success = pattern.execute(self)
 			# If success, pattern is a spell, and execution depth is 0, request level validation update (Excluding if in scram mode, from casting enter)
@@ -180,7 +180,7 @@ func execute_pattern(pattern: Pattern, update_on_success = true):
 
 # Pattern_exe helper function to track changes to spellbook items
 # If a pattern_exe changes a spellbook item, it should call this function with the relevant index number.
-func log_spellbook_change(index:int):
+func log_spellbook_change(index: int) -> void:
 	if tracker_sb_item_changed == -1: # If no change has been logged yet, set.
 		tracker_sb_item_changed = index
 	elif tracker_sb_item_changed != index: # If a different change has already been logged,
@@ -189,22 +189,22 @@ func log_spellbook_change(index:int):
 # Debugging function, should not run in final product.
 # Ensures no ints enter the stack. Will warn in console and throw if it does.
 # Also ensures no duplicate array references are in the stack.
-func scan_stack():
-	var array_list = []
-	for item in stack:
+func scan_stack() -> void:
+	var array_list: Array = []
+	for item: Variant in stack:
 		if item is int:
 			printerr("WARNING: Int found in stack!")
 		if item is Vector2i:
 			printerr("WARNING: Vector2i found in stack!")
 		if item is Array:
-			for arr in array_list:
+			for arr: Array in array_list:
 				if is_same(arr, item): # By reference, not the same as ==
 					printerr("WARNING: Duplicate array reference found in stack!")
 			array_list.append(item)
 
 # Reset hexecutor func. Can also be called to reset hexecutor when not attached to a grid/display.
 # Does not touch execution_depth or charon_mode, as they should be reset by meta-patterns automatically.
-func reset(keep_raven = false):
+func reset(keep_raven: bool = false) -> void:
 	stack = []
 	if not keep_raven: # Thoths keeps ravenmind intact.
 		caster.node.ravenmind = null

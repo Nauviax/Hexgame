@@ -1,12 +1,12 @@
 class_name Pattern_Metalist
 
 # List of patterns that make up this metalist
-var patterns = []
+var patterns: Array = []
 
 # Add a pattern to this metalist
 # Special case for Retrospection, will instead complete the metalist.
 # Special case for Evanition, will remove the last pattern added. (If list is empty, just complete list.)
-func add_pattern(hexecutor: Hexecutor, pattern: Pattern): # Defined type
+func add_pattern(hexecutor: Hexecutor, pattern: Pattern) -> void: # Defined type
 	if pattern.name == "Introspection": # Nested metalist. Add as normal and increment depth
 		hexecutor.introspection_depth += 1
 		patterns.push_back(pattern)
@@ -21,7 +21,7 @@ func add_pattern(hexecutor: Hexecutor, pattern: Pattern): # Defined type
 
 	elif pattern.name == "Evanition": # Remove last pattern added
 		if patterns.size() > 0:
-			var removed = patterns.pop_back()
+			var removed: Pattern = patterns.pop_back()
 			if removed.name == "Introspection": # If removed pattern was introspection, decrement depth
 				hexecutor.introspection_depth -= 1
 			elif removed.name == "Retrospection": # If removed pattern was retrospection, increment depth
@@ -34,8 +34,8 @@ func add_pattern(hexecutor: Hexecutor, pattern: Pattern): # Defined type
 		patterns.push_back(pattern)
 
 # Show pattern names as a list, closing the [] only if complete
-func _to_string():
-	var result = "["
-	for pattern in patterns:
+func _to_string() -> String:
+	var result: String = "["
+	for pattern: Pattern in patterns:
 		result += str(pattern) + ", "
 	return result

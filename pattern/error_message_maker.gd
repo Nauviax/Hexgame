@@ -26,8 +26,8 @@ enum {
 # For the purposes of expected types, patterns can also use "number/vector" to specify multiple types, "entity (player)" to be more specific, or "(many)" if many types are allowed.
 
 # For all vars, use lowercase as inputs.
-static func make(type: int, name: String,  var1 = null, var2 = null, var3 = null, var4 = null):
-	var error_str = name + " :: " # All error messages start with the name of the pattern that threw the error
+static func make(type: int, name: String,  var1: Variant = null, var2: Variant = null, var3: Variant = null, var4: Variant = null) -> String:
+	var error_str: String = name + " :: " # All error messages start with the name of the pattern that threw the error
 	match type:
 		WRONG_ARG_COUNT:
 			error_str += "Not enough iotas in stack. Expected " + str(var1) + ", got " + str(var2) + "."
@@ -66,7 +66,7 @@ static func make(type: int, name: String,  var1 = null, var2 = null, var3 = null
 	return error_str
 
 # Returns the type of the given iota
-static func get_type(iota):
+static func get_type(iota: Variant) -> String:
 	if iota == null:
 		return "null"
 	if iota is int:

@@ -4,28 +4,28 @@ extends Resource # Should mean this object gets deleted automatically when not i
 # String that represents the pattern.
 # First character is the initial direction: 1-6 starting NE and going clockwise.
 # Subsequent characters are one from [L, l, s, r, R], representing hard left, left, straight etc.
-var p_code = ""
+var p_code: String = ""
 
 # Various pattern features
-var name = "" # Used for display in gui and identification in code
-var name_short = "" # Shorter, non-unique name for use in lists (Not set for some dynamic patterns. Normally because value is shown instead)
-var is_valid = false # False if no matching pattern found in valid_patterns.gd
-var is_spell = false # Spells interact with the level in some way, and have their own sound effect.
+var name: String = "" # Used for display in gui and identification in code
+var name_short: String = "" # Shorter, non-unique name for use in lists (Not set for some dynamic patterns. Normally because value is shown instead)
+var is_valid: bool = false # False if no matching pattern found in valid_patterns.gd
+var is_spell: bool = false # Spells interact with the level in some way, and have their own sound effect.
 # (Cont.) For our purposes, this includes patterns that get or read from / write to entities. For simplicity, so are Hermes and Thoth.
 # Casting more than one spell will invalidate single-cast attempts for the current level.
 
 # Executable code for this pattern.
-var p_exe_name # Used to load executable code. "Mind's Reflection" would become "minds_reflection"
-var p_exe = null
+var p_exe_name: String # Used to load executable code. "Mind's Reflection" would become "minds_reflection"
+var p_exe: Script = null
 
 # The value of this pattern. Relevant only for dynamic patterns.
 # For numerical reflection, this is just the number.
 # For bookkeeper's gambit, treat as binary where 1 is keep and 0 is discard.
 #	(And a reminder, the last bit (1s column) is the top of the stack)
-var value = null
+var value: float = 0
 
 # Pattern constructor. Takes a code string, then sets up pattern based on that.
-func _init(p_code: String):
+func _init(p_code: String) -> void:
 	self.p_code = p_code
 	# Get pattern name and validity, then get executable code.
 	Valid_Patterns.set_pattern_name(self)
@@ -34,8 +34,8 @@ func _init(p_code: String):
 	is_spell = p_exe.is_spell # Set spell status
 
 # Execute the pattern on the given stack
-func execute(hexecutor):
-	var iota_count = p_exe.iota_count
+func execute(hexecutor: Hexecutor) -> bool:
+	var iota_count: int = p_exe.iota_count
 	if hexecutor.stack.size() < iota_count:
 		hexecutor.stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_COUNT, name, iota_count, hexecutor.stack.size()))
 		return false
@@ -44,17 +44,17 @@ func execute(hexecutor):
 # _to_string override for fancy display
 # This function returns a shorthand name for the pattern, for use in lists.
 # To get the full length name, use pattern.get_meta_string() (Rather than str(pattern))
-func _to_string():
+func _to_string() -> String:
 	return get_meta_string(true)
 
 # Like _to_string, but returns the full name of the pattern.
-func get_meta_string(short = false):
-	var text
+func get_meta_string(short: bool = false) -> String:
+	var text: String
 	if is_valid:
 		if name == "Numerical Reflection":
 			text = "(" + str(value) + ")" if short else "Numerical Reflection (" + str(value) + ")"
 		elif name == "Bookkeeper's Gambit":
-			var str_gambit = Pattern.value_to_bookkeeper(value)
+			var str_gambit: String = Pattern.value_to_bookkeeper(value)
 			text = "(" + str_gambit + ")" if short else "Bookkeeper's Gambit (" + str_gambit + ")"
 		else: # Default case
 			text = name_short if short else name
@@ -63,9 +63,9 @@ func get_meta_string(short = false):
 	return "[url=P" + p_code + "]" + text + "[/url]" # Text will contain p_code as metadata
 	
 # Static function to convert a value (number) to a bookkeeper's gambit string
-static func value_to_bookkeeper(value):
-	var val_clone = value
-	var str_gambit = ""
+static func value_to_bookkeeper(value: float) -> String:
+	var val_clone: int = int(value) # May cause problems for large values, when converting float to int. Seems fine for now though.
+	var str_gambit: String = ""
 	# Treat value as binary, if bit is 1, add "x" to string, if bit is 0, add "-" to string
 	while val_clone > 0:
 		if val_clone % 2 == 1:
@@ -78,9 +78,9 @@ static func value_to_bookkeeper(value):
 	return str_gambit
 
 # For use in create_line
-static var line_scene = preload("res://resources/shaders/cast_line/cast_line.tscn")
-static var line_gradient = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
-static var vector_offsets = [ # Unit distance * 50
+static var line_scene: PackedScene = preload("res://resources/shaders/cast_line/cast_line.tscn")
+static var line_gradient: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
+static var vector_offsets: Array = [ # Unit distance * 50
 	Vector2(25, -43.3), # Top right
 	Vector2(50, 0), # Right
 	Vector2(25, 43.3), # Bottom right
@@ -91,19 +91,19 @@ static var vector_offsets = [ # Unit distance * 50
 
 # Creates and returns a Line2D object that represents the pattern.
 # Static so pattern object isn't required.
-static func create_line(p_code: String):
-	var line = line_scene.instantiate()
+static func create_line(p_code: String) -> Line2D:
+	var line: Line2D = line_scene.instantiate()
 	line.prep_line() # Creates material duplicate
 	line.add_point(Vector2(0, 0))
 	line.material.set_shader_parameter("gradient_texture", line_gradient)
 	# Line initial point at 0,0. Every char in p_code places a new point 1 unit away from the last.
 	# First char is initial direction, 1 being top right, 2 being right, etc to 6 being top left.
 	# Afterwards, L, l, s, r, R are hard left, left, straight, right, hard right. All on hex coordinates.
-	var first = p_code.substr(0, 1).to_int()
-	var dir = first - 1 # 1 is top right, which is index 0.
-	var pos = vector_offsets[dir] # Initial position
+	var first: int = p_code.substr(0, 1).to_int()
+	var dir: int = first - 1 # 1 is top right, which is index 0.
+	var pos: Vector2 = vector_offsets[dir] # Initial position
 	line.add_point(pos) 
-	var rest = p_code.substr(1)
+	var rest: String = p_code.substr(1)
 	for cc in rest:
 		match cc:
 			"L": dir = (dir - 2) % 6
@@ -115,11 +115,11 @@ static func create_line(p_code: String):
 		line.add_point(pos)
 	line.material.set_shader_parameter("segments", line.points.size() - 1.0) # Scale shader animation
 	# Scale and centre the line
-	var average = Vector2(0, 0)
-	var max_x = 0
-	var max_y = 0
-	var min_x = 0
-	var min_y = 0
+	var average: Vector2 = Vector2(0, 0)
+	var max_x: float = 0
+	var max_y: float = 0
+	var min_x: float = 0
+	var min_y: float = 0
 	for point in line.points: # Calculate average, and get min + max points
 		average += point
 		if point.x > max_x:
@@ -131,9 +131,9 @@ static func create_line(p_code: String):
 		elif point.y < min_y:
 			min_y = point.y
 	average /= line.points.size()
-	var dist_x = max_x - min_x
-	var dist_y = max_y - min_y
-	var scale
+	var dist_x: float = max_x - min_x
+	var dist_y: float = max_y - min_y
+	var scale: float
 	if dist_x > dist_y: # Scale based on largest distance. Small patterns treated as distance = 67 (A single line L->R is 50 units long)
 		scale = 135 / max(dist_x, 67) # If pattern is longer than it is tall, scale less harshly. Window is wider than it is tall.
 	else:

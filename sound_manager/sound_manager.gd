@@ -1,34 +1,34 @@
 extends Node2D
 
 # On pattern cast:
-@onready var normal = $Normal
-@onready var fail = $Fail
-@onready var spell = $Spell
-@onready var hermes = $Hermes
-@onready var thoth = $Thoth
+@onready var normal: AudioStreamPlayer = $Normal
+@onready var fail: AudioStreamPlayer = $Fail
+@onready var spell: AudioStreamPlayer = $Spell
+@onready var hermes: AudioStreamPlayer = $Hermes
+@onready var thoth: AudioStreamPlayer = $Thoth
 
-func play_normal():
+func play_normal() -> void:
 	normal.play()
 
-func play_fail():
+func play_fail() -> void:
 	fail.play()
 
-func play_spell():
+func play_spell() -> void:
 	spell.play()
 
-func play_hermes():
+func play_hermes() -> void:
 	hermes.play()
 
-func play_thoth():
+func play_thoth() -> void:
 	thoth.play()
 
 # On segment connect: (Also on spellbook scroll)
-@onready var segment = $AddSeg
+@onready var segment: AudioStreamPlayer = $AddSeg
 
-func play_segment():
+func play_segment() -> void:
 	segment.play()
 
 # Ambience: (Auto-play currently)
-@onready var aambience = $Ambience
+@onready var ambience: AudioStreamPlayer = $Ambience
 
 

@@ -1,13 +1,14 @@
 extends Node2D
+class_name Level_Base
 # Base level for all other levels
 
 # Reference to main_scene, purely to request a level transition (To world view)
 # Should not be used to get hexecutor or anything else. Open to better ways to do this.
-var main_scene
+var main_scene: Main_Scene
 
 # Reference to scene used to make this level
 # Used to reload level quickly
-var scene
+var scene: PackedScene
 
 # Level_logic and initiator for this level
 @export var level_logic: Script
@@ -25,7 +26,7 @@ var rnd: RandomNumberGenerator # Set in _ready()
 @export var is_level_puzzle: bool = true # False for level hubs mainly
 
 # True if level has been validated (And level_logic.validate() returned true)
-var is_level_valid = false
+var is_level_valid: bool = false
 
 # List of entities in the level (Entity object, not Node2D)
 var entities: Array
@@ -37,23 +38,23 @@ var objects: Array
 @onready var player: Player = $Player
 
 # Most recently revealed iota (For level verification)
-var revealed_iota = null
+var revealed_iota: Variant = null
 
 # Tilemap for the level
-@onready var tilemap = $TileMap
+@onready var tilemap: TileMap = $TileMap
 
 # Tilemap calculated centre and size (Real coords not fake)
-@onready var level_centre = $BottomRightPoint.position / 2
-@onready var level_size = max(level_centre.x, level_centre.y) * 2
-var transition_multiplier = 3.5 # Distance player is placed on transition, and how far to go to leave.
+@onready var level_centre: Vector2 = $BottomRightPoint.position / 2
+@onready var level_size: float = max(level_centre.x, level_centre.y) * 2
+var transition_multiplier: float = 3.5 # Distance player is placed on transition, and how far to go to leave. (While flying)
 
 # Raycast objects for the level (Enabled = false)
-@onready var raycast_b = $HexBlockRaycast
-@onready var raycast_e = $HexEntityRaycast
-@onready var raycast_i = $HexImpulseRaycast
+@onready var raycast_b: RayCast2D = $HexBlockRaycast
+@onready var raycast_e: RayCast2D = $HexEntityRaycast
+@onready var raycast_i: RayCast2D = $HexImpulseRaycast
 
 # Generate rest of base level info
-func _ready():
+func _ready() -> void:
 	# Get entities and objecets
 	reload_entities_list()
 	# Set random seed if still -1
@@ -71,7 +72,7 @@ func _ready():
 # Reload entities and objects list
 #  Get all children, add to entities array if they are an entity
 #  (Includes player)
-func reload_entities_list():
+func reload_entities_list() -> void:
 	entities = []
 	objects = []
 	for child in get_children():
@@ -83,7 +84,7 @@ func reload_entities_list():
 
 # Takes a player entity, and replaces the current player with the new one.
 # Also takes a direction to move the player to, as a normalised vector2. (As this function is called when a player is entering the level)
-func use_player(player_new: Player, dir: Vector2):
+func use_player(player_new: Player, dir: Vector2) -> void:
 	# Ensure relevant @onready things are got (Normally skipped when this is called quickly)
 	player = $Player
 	level_centre = $BottomRightPoint.position / 2
@@ -105,8 +106,8 @@ func use_player(player_new: Player, dir: Vector2):
 # Update function for the level.
 # Will respawn player if they end up illegally outside the level.
 # Will transition player to world map if they are more than 2.5 level_sizes away from the level centre.
-var process_count = 0
-func _physics_process(_delta):
+var process_count: int = 0
+func _physics_process(_delta: float) -> void:
 	if not Globals.player_control:
 		return # Player control required
 	process_count += 1
@@ -118,14 +119,14 @@ func _physics_process(_delta):
 			main_scene.transition_to_world() # Transition player to world map
 
 # Test if the level is complete (And save result)
-func validate():
+func validate() -> void:
 	if level_logic == null:
 		is_level_valid = false
 	else:
 		is_level_valid = level_logic.validate(self)
 
 # Remove an entity from the level, effectively killing it. Returns false on failure.
-func remove_entity(entity):
+func remove_entity(entity: Entity) -> bool:
 	if not entity.killable: # Player for example, can't be killed
 		return false
 	entities.erase(entity)
@@ -134,10 +135,11 @@ func remove_entity(entity):
 	return true
 
 # Raycasts for hexes (Uses literal/actual positions)
-static var raycast_dist = 1024 # (16 * 64, or 16 tiles)
+static var raycast_dist: int = 1024 # (16 * 64, or 16 tiles)
 
-# Can optionally use dir magnitude as distance, but uses 16 tiles by default
-func block_raycast(pos, dir, normalized = true): # Ignores glass
+# Can optionally use dir magnitude as distance, but uses 16 tiles by default.
+# All raycasts can return null, hence the Variant return value.
+func block_raycast(pos: Vector2, dir: Vector2, normalized: bool = true) -> Variant: # Ignores glass
 	if normalized:
 		raycast_b.target_position = dir * raycast_dist
 	else:
@@ -146,11 +148,11 @@ func block_raycast(pos, dir, normalized = true): # Ignores glass
 	raycast_b.force_raycast_update() # Works while disabled
 	if not raycast_b.is_colliding():
 		return null
-	var hit_pos = tilemap.to_local(raycast_b.get_collision_point()) # tilemap.local because later tilemap.local_to_map
-	var adj_pos = hit_pos - (raycast_b.get_collision_normal() * Entity.FAKE_SCALE / 2) # Nudge half a tile's width (Correct tile selection)
+	var hit_pos: Vector2 = tilemap.to_local(raycast_b.get_collision_point()) # tilemap.local because later tilemap.local_to_map
+	var adj_pos: Vector2 = hit_pos - (raycast_b.get_collision_normal() * Entity.FAKE_SCALE / 2) # Nudge half a tile's width (Correct tile selection)
 	return Vector2(tilemap.local_to_map(adj_pos))
 
-func block_side_raycast(pos, dir): # Ignores glass, returns both normal and collision point (point for particles only)
+func block_side_raycast(pos: Vector2, dir: Vector2) -> Variant: # Ignores glass, returns both normal and collision point (point for particles only)
 	raycast_b.target_position = dir * raycast_dist
 	raycast_b.position = pos
 	raycast_b.force_raycast_update() # Works while disabled
@@ -158,11 +160,11 @@ func block_side_raycast(pos, dir): # Ignores glass, returns both normal and coll
 		return null
 	return [raycast_b.get_collision_normal(), raycast_b.get_collision_point()]
 
-func entity_raycast(pos, dir):
+func entity_raycast(pos: Vector2, dir: Vector2) -> Variant:
 	raycast_e.target_position = dir * raycast_dist
 	raycast_e.position = pos
 	raycast_e.force_raycast_update() # Works while disabled
-	var hit = raycast_e.get_collider()
+	var hit: Object = raycast_e.get_collider()
 	if hit == null or not "entity" in hit: # If we hit something that isn't an entity (Like a wall)
 		return null # Miss
 	return hit.entity
@@ -171,8 +173,8 @@ func entity_raycast(pos, dir):
 #  - Don't forget to multiply tile offsets by Entity.FAKE_SCALE
 # Additionally, this raycast returns the literal/actual position of the hit, not the tile position
 # On a miss, returns pos + offset (Max distance)
-func impulse_raycast(pos, offset, is_floating):
-	var fs = Entity.FAKE_SCALE # Used here often enough to justify a shorter name
+func impulse_raycast(pos: Vector2, offset: Vector2, is_floating: bool) -> Vector2:
+	var fs: int = Entity.FAKE_SCALE # Used here often enough to justify a shorter name
 	if is_floating: # Disable collision with spikes if floating (Layer 4)
 		raycast_i.set_collision_mask_value(4, false)
 	raycast_i.target_position = offset
@@ -180,17 +182,17 @@ func impulse_raycast(pos, offset, is_floating):
 	raycast_i.force_raycast_update() # Works while disabled
 	if not raycast_i.is_colliding():
 		return (pos + offset) / fs
-	var hit_pos = to_local(raycast_i.get_collision_point()) # self.local because we aren't directly using tilemap
-	var adj_pos = hit_pos + offset/1000 # Get point just after hit to guarantee checking if hit tile is spikes
+	var hit_pos: Vector2 = to_local(raycast_i.get_collision_point()) # self.local because we aren't directly using tilemap
+	var adj_pos: Vector2 = hit_pos + offset/1000 # Get point just after hit to guarantee checking if hit tile is spikes
 	if is_floating: # Possibly redundant if statement, but ehhh
 		raycast_i.set_collision_mask_value(4, true)
 	return adj_pos / fs
 
 # Returns true if an entity is on the given tile
 # Takes a tile position (Uses fake/tilemap position system)
-func entity_at(pos):
-	var pos_true = pos * Entity.FAKE_SCALE
-	for entity in entities:
+func entity_at(pos: Vector2) -> bool:
+	var pos_true: Vector2 = pos * Entity.FAKE_SCALE
+	for entity: Entity in entities:
 		if entity.get_pos() == pos_true:
 			return true
 	return false
@@ -208,17 +210,17 @@ func entity_at(pos):
 # Layer 1
 #  21 = Spikes
 #  22 = Gate
-func get_tile_id(pos, layer):
-	var data = tilemap.get_cell_tile_data(layer, pos.round()) # Round pos, as tilemap will floor it otherwise.
+func get_tile_id(pos: Vector2, layer: int) -> int:
+	var data: TileData = tilemap.get_cell_tile_data(layer, pos.round()) # Round pos, as tilemap will floor it otherwise.
 	if data == null:
 		return 0
 	return data.get_custom_data("TileID")
 
 # Return a list of entities on a given tile
 # Takes a tile ID, assumes layer 0. Optionally get entities not on the tile.
-func entities_on_tile(tile_id, on_tile = true):
-	var entities_on_tile = []
-	for entity in entities:
+func entities_on_tile(tile_id: int, on_tile: bool = true) -> Array:
+	var entities_on_tile: Array = []
+	for entity: Entity in entities:
 		if (get_tile_id(entity.get_fake_pos(), 0) == tile_id) == on_tile:
 			entities_on_tile.append(entity)
 	return entities_on_tile
@@ -226,7 +228,7 @@ func entities_on_tile(tile_id, on_tile = true):
 # Force kill all entities in the level, excluding player.
 # Used to prevent old entities being used when a level is left.
 # NOT required on level exit. Exit clears the player spellbook so no references remain.
-func kill_all_entities():
-	for entity in entities:
+func kill_all_entities() -> void:
+	for entity: Entity in entities:
 		if entity != player.entity:
 			entity.delete()

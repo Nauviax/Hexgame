@@ -1,7 +1,7 @@
 extends Control
 
 # Parent controls visibility, so get reference
-@onready var parent_container = get_parent()
+@onready var parent_container: Control = get_parent()
 
 @export var tree: Tree
 @export var graphic_parent: Control
@@ -14,24 +14,24 @@ extends Control
 
 @export var popup_holder: Control # All popups should be children of this (Set in main_scene not in hexbook scene)
 
-@onready var static_pattern_dict = Valid_Patterns.static_patterns
+@onready var static_pattern_dict: Dictionary = Valid_Patterns.static_patterns
 
 # If true, follow mouse
-var follow_mouse = false
+var follow_mouse: bool = false
 
 # Pattern being displayed. Can be null
-var current_pattern = null
+var current_pattern: Pattern = null
 
 # Default description to show when no pattern is selected
 const default_description = "This is the Hexbook. It contains all available patterns, but will not be enough to teach hexcasting from zero.\n
 There are some changes from original hexcasting, mainly related to vectors being 2D and most spells being removed or significantly changed."
 
-func _process(_delta):
+func _process(_delta: float) -> void:
 	if follow_mouse:
 		position = get_global_mouse_position() - Vector2(35, 25)
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	# Clear hexbook text
 	title_label.text = ""
 	middle_container.visible = false
@@ -39,7 +39,7 @@ func _ready():
 
 	# Create tree
 	tree.create_item() # Initial root item
-	var top_item = make_item("Hexbook", true) # Title page
+	var top_item: TreeItem = make_item("Hexbook", true) # Title page
 	tree.set_selected(top_item, 0) # Select the first item
 	add_category("Basic Patterns", [
 		"1lLl", # Mind's Reflection
@@ -194,8 +194,8 @@ func _ready():
 
 # TreeItem maker, to simplify rest of code
 # Parent can be null to use root item
-func make_item(text: String, selectable: bool, parent = null, code = null):
-	var item = tree.create_item(parent)
+func make_item(text: String, selectable: bool, parent: TreeItem = null, code: String = "") -> TreeItem:
+	var item: TreeItem = tree.create_item(parent)
 	item.set_text(0, text)
 	item.set_metadata(0, code)
 	if selectable:
@@ -206,9 +206,9 @@ func make_item(text: String, selectable: bool, parent = null, code = null):
 	return item
 
 # Used to add a category of static patterns
-func add_category(cat_name: String, patterns: Array):
-	var category = make_item(cat_name, false)
-	for pattern in patterns:
+func add_category(cat_name: String, patterns: Array) -> void:
+	var category: TreeItem = make_item(cat_name, false)
+	for pattern: String in patterns:
 		make_item (
 			static_pattern_dict[pattern.substr(1)][0],
 			true, category, pattern
@@ -216,23 +216,23 @@ func add_category(cat_name: String, patterns: Array):
 	category.collapsed = true # To fit all categories in the tree view
 	
 # Handle display of given pattern or category
-func _on_pattern_select_item_selected():
+func _on_pattern_select_item_selected() -> void:
 	if graphic_parent.get_child_count() != 0: # Remove old graphic if exists
 		graphic_parent.get_child(0).queue_free()
-	var item = tree.get_selected()
+	var item: TreeItem = tree.get_selected()
 	if item:
-		var p_code = item.get_metadata(0)
-		if p_code: # Item has a pattern tied to it
-			current_pattern = Pattern.new(p_code) # Create a new pattern with the given code
+		var metadata: String = item.get_metadata(0)
+		if metadata != "": # Item has a pattern tied to it
+			current_pattern = Pattern.new(metadata) # Create a new pattern with the given code
 
 			# Display pattern line
-			var p_line = Pattern.create_line(p_code) 
+			var p_line: Line2D = Pattern.create_line(current_pattern.p_code) 
 			p_line.scale *= 1.3 # Make slightly larger, as more area than a popup
 			p_line.position *= 1.3
 			graphic_parent.add_child(p_line)
 			
 			# Set title
-			var p_name = current_pattern.name
+			var p_name: String = current_pattern.name
 			title_label.text = p_name
 
 			# Set misc labels
@@ -242,10 +242,10 @@ func _on_pattern_select_item_selected():
 			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe.iota_count)
 			
 			# Set description
-			var desc_text = ""
+			var desc_text: String = ""
 			if p_name == "Numerical Reflection" or p_name == "Bookkeeper's Gambit":
 				desc_text = "THIS IS A DYNAMIC PATTERN. The example shown above is just one of many possible patterns.\n\n"
-			for desc in current_pattern.p_exe.descs:
+			for desc: String in current_pattern.p_exe.descs:
 				desc_text += desc + "\n\n"
 			description_label.text = desc_text
 
@@ -255,24 +255,24 @@ func _on_pattern_select_item_selected():
 			description_label.text = default_description
 
 # On click, toggle collapse of category. Works even if already selected.
-func _on_pattern_select_item_mouse_selected(_position, _mouse_button_index):
-	var item = tree.get_selected()
+func _on_pattern_select_item_mouse_selected(_position: Vector2, _mouse_button_index: int) -> void:
+	var item: TreeItem = tree.get_selected()
 	item.collapsed = not item.collapsed # Toggle collapse
 
 # Drag functionality allows the window to be moved around
-func _on_drag_button_down():
+func _on_drag_button_down() -> void:
 	follow_mouse = true # Unlock movement temporarily
 
-func _on_drag_button_up():
+func _on_drag_button_up() -> void:
 	follow_mouse = false # Lock movement again
 
 # Close button, to hide hexbook
-func _on_close_pressed():
+func _on_close_pressed() -> void:
 	parent_container.hide()
 
 # Popup button, to show and auto-lock a pattern popup
-func _on_popup_prompt_pressed():
-	var popup = Hex_Popup.make_new(popup_holder)
+func _on_popup_prompt_pressed() -> void:
+	var popup: Hex_Popup = Hex_Popup.make_new(popup_holder)
 	popup.display("P" + current_pattern.p_code, false) # Show pattern
 	popup.lock() # Lock popup in place immediately
 	

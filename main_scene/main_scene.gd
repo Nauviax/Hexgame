@@ -1,25 +1,26 @@
 @tool
 extends Node2D
+class_name Main_Scene
 
 @onready var hexecutor: Hexecutor = null
 
 @export var grid: Node2D
-@onready var hex_display = $HexDisplay
+@onready var hex_display: Hex_Display = $HexDisplay
 @export var level_container: SubViewportContainer
-@onready var level_viewport = level_container.get_child(0)
+@onready var level_viewport: SubViewport = level_container.get_child(0)
 
-var world_view_scene = preload("res://worlds/world_view.tscn") 
+var world_view_scene: PackedScene = preload("res://worlds/world_view.tscn") 
 
-var loaded_level = null # Currently loaded level (Child of level_control)
-var level_list = [] # List of arrays that represent levels other than the loaded level. Appended to on new level load.
+var loaded_level: Node2D = null # Currently loaded level (Child of level_control, CAN BE LEVEL OR WORLD, so don't use level_base)
+var level_list: Array = [] # List of arrays that represent levels other than the loaded level. Appended to on new level load.
 # Pairs are in [[level_node, hexecutor, level_haver]] format.
 
 # For now, just load the hub scene
-func _ready():
+func _ready() -> void:
 	load_level_from_scene(preload("res://levels/island_1/external_hub_1/level.tscn"))
 
 # Unloads and saves the current level to level_list, then loads a new level given by the level_haver
-func save_then_load_level(level_haver: Level_Haver):
+func save_then_load_level(level_haver: Level_Haver) -> void:
 	# Save current level to level_list, along with hexecutor and the level_haver
 	level_list.push_back([loaded_level, hexecutor, level_haver])
 	# Remove the level as a child
@@ -28,10 +29,10 @@ func save_then_load_level(level_haver: Level_Haver):
 	# Clear grid
 	grid.reset(true) # Hard reset, clears border score
 	# Load scene
-	var scene = level_haver.get_level()
+	var scene: PackedScene = level_haver.get_level()
 	load_level_from_scene(scene)
 
-func load_level_from_scene(scene: PackedScene):
+func load_level_from_scene(scene: PackedScene) -> void:
 	# Load level
 	loaded_level = scene.instantiate()
 	level_viewport.add_child(loaded_level)
@@ -49,9 +50,9 @@ func load_level_from_scene(scene: PackedScene):
 	update_hex_display_on_level_change(true, loaded_level.is_level_puzzle)
 
 # Reset level, optionally keep seed or border score
-func reload_current_level(reset_border_score: bool, same_seed: bool = true):
+func reload_current_level(reset_border_score: bool, same_seed: bool = true) -> void:
 	# Prep new level (Seed is important for reload, as often same or specific seed is wanted)
-	var new_level = loaded_level.scene.instantiate()
+	var new_level: Level_Base = loaded_level.scene.instantiate()
 	new_level.main_scene = self
 	new_level.scene = loaded_level.scene
 	new_level.level_seed = loaded_level.level_seed if same_seed else -1 # Keep seed by default, -1 to force random
@@ -78,9 +79,9 @@ func exit_level() -> bool:
 		# No levels to load, return false
 		return false
 
-	var prev_level_stuff = level_list.pop_back()
+	var prev_level_stuff: Array = level_list.pop_back()
 	# Unload and delete current level
-	var level_validated = loaded_level.is_level_valid # For use in updating level_haver \/
+	var level_validated: bool = loaded_level.is_level_valid # For use in updating level_haver \/
 	level_viewport.remove_child(loaded_level)
 	loaded_level.queue_free()
 	grid.reset(true) # Hard reset, clears border score
@@ -101,11 +102,11 @@ func exit_level() -> bool:
 	return true
 
 # Transition from current level to the world view.
-func transition_to_world():
+func transition_to_world() -> void:
 	hexecutor.level_base = null # Remove reference to level_base, disables hexecutor.
-	var world_view = world_view_scene.instantiate()
+	var world_view: Node2D = world_view_scene.instantiate()
 	world_view.main_scene = self # So it can request to transition FROM world
-	var player = loaded_level.player
+	var player: Player = loaded_level.player
 	loaded_level.remove_child(player) # So it can be added to world_view
 	world_view.prepare(player, loaded_level.scene_file_path) # Load player into new world
 	hexecutor.caster = player.entity # Set caster to new player's entity
@@ -117,11 +118,11 @@ func transition_to_world():
 	update_hex_display_on_level_change(true, false) # Update hexy to clear entity references etc. World view isn't solveable, so no puzzle tools.
 
 # Transition from world view to selected level.
-func transition_from_world(selected_level: PackedScene):
-	var new_level = selected_level.instantiate()
+func transition_from_world(selected_level: PackedScene) -> void:
+	var new_level: Level_Base = selected_level.instantiate()
 	new_level.main_scene = self # So it can request to transition FROM world
 	new_level.scene = selected_level # For reloading
-	var player = loaded_level.player
+	var player: Player = loaded_level.player
 	loaded_level.remove_child(player) # So it can be added to world_view
 	new_level.use_player(player, -player.velocity.normalized()) # Load player into level
 	hexecutor.caster = player.entity # Set caster to new player's entity
@@ -146,16 +147,16 @@ func validate_level() -> bool:
 # Validate the current hex on multiple versions of the level, to ensure the hex works on all versions.
 # Returns [] on fail, and [hex size, border score] on success
 func extra_validate_level() -> Array:
-	var hex = hexecutor.replay_list
+	var hex: Array = hexecutor.replay_list
 	if hex.size() == 0:
 		return [] # No patterns yet
-	var border_score = grid.hex_border.get_score()
+	var border_score: int = grid.hex_border.get_score()
 	# Consider blocking user input during validation? !!!
 	for ii in range(10): # 10 random levels
 		# Reload level with new seed
 		reload_current_level(true, false)
 		# Execute the hex
-		for pattern in hex:
+		for pattern: Pattern in hex:
 			hexecutor.execute_pattern(pattern)
 		# Validate the level
 		if not validate_level():
@@ -166,12 +167,12 @@ func extra_validate_level() -> Array:
 	return [hex.size(), border_score] # Passed
 
 # Called with new patterns from grid. Executes them using hexecutor
-func new_pattern_drawn(pattern):
+func new_pattern_drawn(pattern: Pattern_Ongrid) -> void:
 	hexecutor.new_pattern(pattern)
 
 # Update hex_display iotas after a pattern is executed. Causes whole stack to update, but only specified spellbook items are updated.
 # 9-11 for raven, sentinel, and revealed iota. Any large number to update all, for when an unknown number of items may have changed. (Like after a meta pattern)
-func update_hex_display_on_execution(updated_sb_index: int = -1, updated_selection: bool = false): ### !!! SELECTION IMPLEMENMT
+func update_hex_display_on_execution(updated_sb_index: int = -1, updated_selection: bool = false) -> void:
 	hex_display.update_stack(hexecutor.stack)
 	if updated_sb_index > -1:
 		if updated_sb_index < 9:
@@ -181,7 +182,7 @@ func update_hex_display_on_execution(updated_sb_index: int = -1, updated_selecti
 		elif updated_sb_index == 10:
 			hex_display.update_sb_item(updated_sb_index, hexecutor.caster.node.sentinel_pos)
 		elif updated_sb_index == 11:
-			var revealed_iota = hexecutor.level_base.revealed_iota if hexecutor.level_base else null # level_base can be null if not in a level # !!! CHECK IF THIS IS NEEDED
+			var revealed_iota: Variant = hexecutor.level_base.revealed_iota if hexecutor.level_base else null # level_base can be null if not in a level # !!! CHECK IF THIS IS NEEDED
 			hex_display.update_sb_item(updated_sb_index, revealed_iota)
 		else: # Some large number. Nuclear option for when we don't know what changed.
 			hex_display.handle_update_all_iotas(hexecutor) 
@@ -190,28 +191,28 @@ func update_hex_display_on_execution(updated_sb_index: int = -1, updated_selecti
 
 
 # Update hex_display iotas after the level has changed. Causes all relevant strings to be updated.
-func update_hex_display_on_level_change(update_hexy:bool, is_level_puzzle: bool):
+func update_hex_display_on_level_change(update_hexy: bool, is_level_puzzle: bool) -> void:
 	if update_hexy:
 		hex_display.handle_update_all_iotas(hexecutor)
 	hex_display.set_puzzle_tool_visibility(is_level_puzzle)
 
 # Update border size display, also located in hex_display.
-func update_border_display():
+func update_border_display() -> void:
 	hex_display.update_border_label(grid.hex_border.border_score, grid.hex_border.perimeter, grid.hex_border.cast_score)
 
 # Clear grid, all patterns and reset stack
-func clear():
+func clear() -> void:
 	grid.reset(false) # Soft reset, keeps previous border score
 	hexecutor.reset()
 	hex_display.handle_clear_grid() # Update/Clear stack display
 
 # End replay mode, normally after player casts a pattern manually
-func end_replay_mode():
+func end_replay_mode() -> void:
 	if hex_display.replay_mode:
 		hex_display.end_replay()
 
 # Player casting functions, grid toggle/control
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("toggle_grid"):
 		hex_display.toggle_grid()
 		return # Done
@@ -250,5 +251,5 @@ func _input(event):
 			return # Done
 
 # Close game button
-func _on_close_game_pressed():
+func _on_close_game_pressed() -> void:
 	get_tree().quit()

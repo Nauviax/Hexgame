@@ -35,8 +35,8 @@ var entity: Entity = Entity.new("Player", self)
 # Player hex-casting variables
 var sb: Array
 var sb_sel: int = 0
-var sentinel_pos = null # Vector2, fake coords (Preserved on grid clear) (Ensure sentinel node is moved when this changes)
-var ravenmind = null # Iota (Not readable/writable by other entities, and lost on grid clear)
+var sentinel_pos: Variant = null # Vector2 OR null, hence Variant type. Fake coords. (Preserved on grid clear) (Ensure sentinel node is moved when this changes)
+var ravenmind: Variant = null # Iota (Not readable/writable by other entities, and lost on grid clear)
 
 # Variable constants for player movement
 const speed = 1024
@@ -45,21 +45,21 @@ const friction = 0.05 # Pull towards 0 when no input
 const tile_gravity = 10 # Pull strength of tiles (When slow enough)
 const tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
 const acceleration = 0.015
-var tile_snap = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
+var tile_snap: Vector2 = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
 
 # Variables for player flight
-var fly_chargeup = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
-var can_fly = false # Whether the player can start flying or not.
-var flying = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
-var stuck_flying = false # If true, player can't stop flying. Used in world_view.
-const fly_turnspeed = 0.075 # How fast the player turns while flying (Should be less than 1)
+var fly_chargeup: int = 0 # Charge to begin flying. 0 = not flying, 1-49 = charging, 50+ = flying (Flying has different movement)
+var can_fly: bool = false # Whether the player can start flying or not.
+var flying: bool = false # Whether the player is flying or not. True once charge reaches 50, but only false when charge reaches 0 again. (Player gains control earlier!)
+var stuck_flying: bool = false # If true, player can't stop flying. Used in world_view.
+const fly_turnspeed: float = 0.075 # How fast the player turns while flying (Should be less than 1)
 
 # Misc player variables
-var freeze_look_dir = false # Whether player look direction is following mouse, or frozen.
+var freeze_look_dir: bool = false # Whether player look direction is following mouse, or frozen.
 
 
 # Prepare player object
-func _ready():
+func _ready() -> void:
 	# Player character normally has 9 iota slots, and their spellbook can be read from and written to externally.
 	sb = player_sb.duplicate(true)
 	entity.readable = true
@@ -67,23 +67,23 @@ func _ready():
 	entity.killable = false
 
 # Get the selected spellbook iota
-func get_iota():
+func get_iota() -> Variant:
 	return sb[sb_sel]
 
 # Set selected page of spellbook to iota
-func set_iota(new_iota):
+func set_iota(new_iota: Variant) -> void:
 	sb[sb_sel] = new_iota
 
 # Increment spellbook.
-func inc_sb():
+func inc_sb() -> void:
 	sb_sel = (sb_sel + 1) % sb.size()
 
 # Decrement spellbook.
-func dec_sb():
+func dec_sb() -> void:
 	sb_sel = (sb_sel - 1 + sb.size()) % sb.size()
 
-# Set sentinel, and show/hide based on null status.
-func set_sentinel(pos):
+# Set sentinel, and show/hide based on null status. Again, Variant type for Vector2 AND null
+func set_sentinel(pos: Variant) -> void:
 	sentinel_pos = pos
 	if sentinel_pos == null:
 		sentinel.visible = false
@@ -92,14 +92,14 @@ func set_sentinel(pos):
 		sentinel.position = sentinel_pos * Entity.FAKE_SCALE
 
 # Player movement controls
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	# Regardless of player control, apply wind to background
 	scroll_background(Vector2(1, 0))
 	if not Globals.player_control:
 		return # Player control required
 
 	# Keyboard input
-	var input_dir = Vector2.ZERO
+	var input_dir: Vector2 = Vector2.ZERO
 	if Input.is_action_pressed("move_up"):
 		input_dir.y -= 1
 	if Input.is_action_pressed("move_down"):
@@ -135,7 +135,7 @@ func _physics_process(delta):
 			trailer_pgen.emitting = false # Stop trail particles
 
 	# Movement
-	var initial_pos = position # Used to scroll background based on movement
+	var initial_pos: Vector2 = position # Used to scroll background based on movement
 	if fly_chargeup < 30 and not Input.is_action_pressed("fly"): # Normal, grounded movement
 		if input_dir != Vector2.ZERO:
 			# Lerp towards input direction
@@ -143,20 +143,20 @@ func _physics_process(delta):
 		else:
 			# Apply friction
 			velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_floating else friction)
-			var vel_len = velocity.length()
+			var vel_len: float = velocity.length()
 			# If close enough and slow enough, snap to grid
-			var tile_centre = position.snapped(tile_snap)
-			var tile_dir = tile_centre - position
+			var tile_centre: Vector2 = position.snapped(tile_snap)
+			var tile_dir: Vector2 = tile_centre - position
 			if tile_dir.length() < 1 and vel_len < 25:
 				position = tile_centre
 				velocity = Vector2.ZERO
 			# Otherwise, apply velocity towards nearest tile centre
 			elif vel_len < tile_gravity_max_vel:
 				velocity += tile_dir.normalized() * tile_gravity
-		var collision = move_and_collide(velocity * delta)
+		var collision: KinematicCollision2D = move_and_collide(velocity * delta)
 		if collision:
 			# Bounce off of collision
-			var col_norm = collision.get_normal()
+			var col_norm: Vector2 = collision.get_normal()
 			# Bounce only horizontally or vertically, as most/all collisions are with tiles.
 			if abs(col_norm.x) > abs(col_norm.y):
 				velocity.x *= -bounce
@@ -167,10 +167,10 @@ func _physics_process(delta):
 		# This means holding fly while not floating will effectively act as a brake for normal player movement.
 		if fly_chargeup < 50:
 			velocity = lerp(velocity, Vector2.ZERO, friction * 2)
-			var collision = move_and_collide(velocity * delta)
+			var collision: KinematicCollision2D = move_and_collide(velocity * delta)
 			if collision:
 				# Bounce only horizontally or vertically, as most/all collisions are with tiles.
-				var col_norm = collision.get_normal()
+				var col_norm: Vector2 = collision.get_normal()
 				if abs(col_norm.x) > abs(col_norm.y):
 					velocity.x *= -bounce
 					# Step away based on depth in collision
@@ -182,8 +182,8 @@ func _physics_process(delta):
 		# If finished charging, apply flight movement instead
 		else:
 			if input_dir.x != 0 or input_dir.y != 0:
-				var angle_dif = velocity.angle_to(input_dir)
-				var new_angle = velocity.angle() + angle_dif * fly_turnspeed
+				var angle_dif: float = velocity.angle_to(input_dir)
+				var new_angle: float = velocity.angle() + angle_dif * fly_turnspeed
 				velocity = Vector2.from_angle(new_angle) * speed
 			position += velocity * delta # Ignore collisions, as we're flying
 	
@@ -194,7 +194,7 @@ func _physics_process(delta):
 	set_look_dir(get_local_mouse_position())
 
 # Func for aiming player's look line (Taking in mouse position)
-func set_look_dir(mouse_pos: Vector2):
+func set_look_dir(mouse_pos: Vector2) -> void:
 	# Check if able to control look direction
 	if freeze_look_dir:
 		return
@@ -204,7 +204,7 @@ func set_look_dir(mouse_pos: Vector2):
 	entity.look_dir = mouse_pos.normalized()
 
 # Player mouse input controls
-func _input(event):
+func _input(event: InputEvent) -> void:
 	if not Globals.player_control:
 		return # Player control required
 	if event is InputEventMouseButton:
@@ -216,8 +216,8 @@ func _input(event):
 
 # Player cast particle controls (Called from hexecutor or a pattern exe normally)
 # Cast type takes an int, 0 for normal, 1 for fail, 2 for meta
-func particle_cast(cast_type: int):
-	var cast_color
+func particle_cast(cast_type: int) -> void:
+	var cast_color: Color
 	match cast_type:
 		0:
 			cast_color = Color(0.9, 0.8, 1.0) # Light purple ish
@@ -229,20 +229,20 @@ func particle_cast(cast_type: int):
 	cast_cast_pgen.restart() # Restart so that new particles are shown
 
 # Vector2 inputs are in REAL coordinates, and relative to level NOT player.
-func particle_target(target_pos: Vector2):
+func particle_target(target_pos: Vector2) -> void:
 	cast_target_pgen.position = target_pos - position
 	cast_target_pgen.restart()
 		
-func particle_trail(trail_pos: Vector2, trail_vect: Vector2): 
+func particle_trail(trail_pos: Vector2, trail_vect: Vector2) -> void: 
 	# Set pos
 	cast_trail_pgen.position = trail_pos - position
 	# Set rotation and scale to line up with trail_vect
-	var pro_mat = cast_trail_pgen.process_material
-	var v_length = trail_vect.length() / 2 # Half length as emission shape expands in both directions (Annoying)
+	var pro_mat: Material = cast_trail_pgen.process_material
+	var v_length: float = trail_vect.length() / 2 # Half length as emission shape expands in both directions (Annoying)
 	pro_mat.emission_shape_scale.x = v_length
 	pro_mat.emission_shape_offset.x = v_length - (Entity.FAKE_SCALE / 2) # Offset by a half tile, as particles move forwards anyway.
 	cast_trail_pgen.amount = int(v_length / 4)
-	var v_angle = trail_vect.angle()
+	var v_angle: float = trail_vect.angle()
 	cast_trail_pgen.rotation = v_angle
 	pro_mat.angle_min = v_angle * -57.296 # Convert to degrees
 	pro_mat.angle_max = pro_mat.angle_min
@@ -250,21 +250,21 @@ func particle_trail(trail_pos: Vector2, trail_vect: Vector2):
 	cast_trail_pgen.restart()
 
 # Clear targeting casting particles. Normally called when entering a level, to prevent weird particle positions on return.
-func particle_clear_targets():
+func particle_clear_targets() -> void:
 	cast_target_pgen.emitting = false
 	cast_trail_pgen.emitting = false
 
 # Set background theme
 # Options: "Inside", "Outside"
-func set_background_theme(theme: String):
+func set_background_theme(theme: String) -> void:
 	# Set background theme 
 	parallax_near.texture = load("res://resources/parallax/" + theme + "_near.png")
 	parallax_far.texture = load("res://resources/parallax/" + theme + "_far.png")
 
 # Scroll background by given amount
-func scroll_background(amount: Vector2):
-	var mod = 2 * parallax_near.texture.get_width() # So scroll can loop without jumping
-	var relative_amnt = -amount / 4
+func scroll_background(amount: Vector2) -> void:
+	var mod: int = 2 * parallax_near.texture.get_width() # So scroll can loop without jumping
+	var relative_amnt: Vector2 = -amount / 4
 	parallax_near.position.x = fmod(parallax_near.position.x + relative_amnt.x, mod)
 	parallax_near.position.y = fmod(parallax_near.position.y + relative_amnt.y, mod)
 	relative_amnt /= 2
@@ -272,13 +272,13 @@ func scroll_background(amount: Vector2):
 	parallax_far.position.y = fmod(parallax_far.position.y + relative_amnt.y, mod)
 
 # Handle collision with spikes (Importantly, clear floating when exiting)
-func _on_spike_checker_body_entered(_body):
+func _on_spike_checker_body_entered(_body: Node2D) -> void:
 	# If floating, ignore
 	if not entity.is_floating:
 		# Invert velocity, plus some.
 		velocity *= -1.25 # Originally was 1 + bounce, but low bounce values can result in player clipping through spikes.
 
-func _on_spike_checker_body_exited(_body):
+func _on_spike_checker_body_exited(_body: Node2D) -> void:
 	# Clear floating
 	if not flying: # Don't clear floating if flying
 		entity.is_floating = false

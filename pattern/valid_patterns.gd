@@ -2,8 +2,8 @@ class_name Valid_Patterns
 
 # Sets the name and validity of the given pattern
 # Returns true on success. Blank string name on failure.
-static func set_pattern_name(pattern):
-	var raw_code = pattern.p_code.right(-1) # Drop the initial number
+static func set_pattern_name(pattern: Pattern) -> void:
+	var raw_code: String = pattern.p_code.right(-1) # Drop the initial number
 
 	# Check if raw_code is a Numerical Reflection
 	if numerical_check(pattern, raw_code):
@@ -17,7 +17,7 @@ static func set_pattern_name(pattern):
 	
 	# Check if raw_code is a static pattern
 	if raw_code in static_patterns:
-		var name_pair = static_patterns[raw_code]
+		var name_pair: Array = static_patterns[raw_code]
 		pattern.name = name_pair[0]
 		pattern.name_short = name_pair[1]
 		pattern.is_valid = true
@@ -33,7 +33,7 @@ static func set_pattern_name(pattern):
 # Dictionary of static patterns. Key maps to a short array, where the first item is the name of the pattern, and the second is a NON-UNIQUE short name version.
 # Key is the raw_code value, which excludes p_code's initial number (Rotation is irrelevant)
 # Short names for Numerical Reflection and Bookkeeper's Gambit are just their value, and Invalid Pattern just it's p_code.
-static var static_patterns = { # !!! I would like to remove short names somehow, but need lists of patterns to display nicer.
+static var static_patterns: Dictionary = { # !!! I would like to remove short names somehow, but need lists of patterns to display nicer.
 	# Basic Patterns
 	"LL": ["Compass' Purification", "ComPu"],
 	"lLl": ["Mind's Reflection", "MinRe"],
@@ -197,17 +197,17 @@ static var static_patterns = { # !!! I would like to remove short names somehow,
 # After drawing a 0, "rL" is a 1, "s" is another 0.
 # If at any point (First char, after 1, after 0) the next character(s) do not match these rules, return false.
 # 1s and 0s are saved to the value var. To write a single value, bitshift value left by 1 and add 1 or 0.
-static func bookkeeper_check(pattern, raw_code):
+static func bookkeeper_check(pattern: Pattern, raw_code: String) -> bool:
 	# First check empty raw_code. This actually is a valid bookkeeper's gambit.
 	if len(raw_code) == 0:
 		pattern.name = "Bookkeeper's Gambit"
 		pattern.value = 0 # A single line just means keep.
 		return true
 
-	var value = 0 # Value to be written to pattern. In binary, 0 means keep, 1 means toss.
+	var value: int = 0 # Value to be written to pattern. In binary, 0 means keep, 1 means toss.
 					# The least significant bit is the top of the stack.
-	var ii = 0 # Char being read
-	var state = 2 # Represents last drawn value. 0 = 0, 1 = 1, 2 = start.
+	var ii: int = 0 # Char being read
+	var state: int = 2 # Represents last drawn value. 0 = 0, 1 = 1, 2 = start.
 	while ii < len(raw_code):
 		match state:
 			2: # Starting state
@@ -258,7 +258,7 @@ static func bookkeeper_check(pattern, raw_code):
 		ii += 1
 	# If we get here, we have a valid bookkeeper's gambit.
 	pattern.name = "Bookkeeper's Gambit"
-	pattern.value = value
+	pattern.value = value # NOTE: Value is converted to a float here. This MAY cause issues, but is probably fine.
 	return true
 
 # ---------------------- #
@@ -266,7 +266,7 @@ static func bookkeeper_check(pattern, raw_code):
 # Checks if the given pattern is a Numerical Reflection
 # Check is done by viewing first 4 characters of raw_code
 # Will set name and value of pattern on match.
-static func numerical_check(pattern, raw_code):
+static func numerical_check(pattern: Pattern, raw_code: String) -> bool:
 	# First check that raw_code is at least 4 characters long
 	if len(raw_code) < 4:
 		return false
@@ -286,8 +286,8 @@ static func numerical_check(pattern, raw_code):
 # Calculates the numeric value of a numerical reflection.
 # Pass in only the dynamic part of the code. Not the entire raw_code.
 # Returns only positive values.
-static func calculate_num(code):
-	var value = 0.0
+static func calculate_num(code: String) -> float:
+	var value: float = 0.0
 	for cc in code:
 		match cc:
 			"L":
