@@ -210,7 +210,7 @@ func add_category(cat_name: String, patterns: Array) -> void:
 	var category: TreeItem = make_item(cat_name, false)
 	for pattern: String in patterns:
 		make_item (
-			static_pattern_dict[pattern.substr(1)][0],
+			static_pattern_dict[pattern.substr(1)][1], # Second item should be display name
 			true, category, pattern
 		)
 	category.collapsed = true # To fit all categories in the tree view
@@ -232,20 +232,19 @@ func _on_pattern_select_item_selected() -> void:
 			graphic_parent.add_child(p_line)
 			
 			# Set title
-			var p_name: String = current_pattern.name
-			title_label.text = p_name
+			title_label.text = current_pattern.name_display
 
 			# Set misc labels
 			middle_container.visible = true
 			code_label.text = current_pattern.p_code
-			is_spell_label.text = "Spell" if current_pattern.p_exe.is_spell else "Pattern"
-			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe.iota_count)
+			is_spell_label.text = "Spell" if current_pattern.is_spell else "Pattern"
+			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe_iota_count)
 			
 			# Set description
 			var desc_text: String = ""
-			if p_name == "Numerical Reflection" or p_name == "Bookkeeper's Gambit":
+			if current_pattern.name_internal == Valid_Patterns.Pattern_Enum.numerical_reflection or current_pattern.name_internal == Valid_Patterns.Pattern_Enum.bookkeepers_gambit:
 				desc_text = "THIS IS A DYNAMIC PATTERN. The example shown above is just one of many possible patterns.\n\n"
-			for desc: String in current_pattern.p_exe.descs:
+			for desc: String in current_pattern.descs:
 				desc_text += desc + "\n\n"
 			description_label.text = desc_text
 

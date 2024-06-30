@@ -108,7 +108,7 @@ func _physics_process(delta: float) -> void:
 		input_dir.x -= 1
 	if Input.is_action_pressed("move_right"):
 		input_dir.x += 1
-	if entity.is_floating and can_fly and Input.is_action_pressed("fly"): # All flight conditions met
+	if entity.is_levitating and can_fly and Input.is_action_pressed("fly"): # All flight conditions met
 		# Flight chargeup control
 		if  fly_chargeup < 50:
 			fly_chargeup += 1
@@ -131,7 +131,7 @@ func _physics_process(delta: float) -> void:
 			camera.zoom = Vector2.ONE # Reset zoom
 			body.scale = Vector2.ONE # Reset scale
 			flying = false
-			entity.is_floating = false # Stop floating
+			entity.is_levitating = false # Stop levitating
 			trailer_pgen.emitting = false # Stop trail particles
 
 	# Movement
@@ -139,10 +139,10 @@ func _physics_process(delta: float) -> void:
 	if fly_chargeup < 30 and not Input.is_action_pressed("fly"): # Normal, grounded movement
 		if input_dir != Vector2.ZERO:
 			# Lerp towards input direction
-			velocity = lerp(velocity, input_dir.normalized() * speed, acceleration / 2 if entity.is_floating else acceleration)
+			velocity = lerp(velocity, input_dir.normalized() * speed, acceleration / 2 if entity.is_levitating else acceleration)
 		else:
 			# Apply friction
-			velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_floating else friction)
+			velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_levitating else friction)
 			var vel_len: float = velocity.length()
 			# If close enough and slow enough, snap to grid
 			var tile_centre: Vector2 = position.snapped(tile_snap)
@@ -164,7 +164,7 @@ func _physics_process(delta: float) -> void:
 				velocity.y *= -bounce
 	else: # Flight mechanics
 		# If still charging, just apply friction (though stronger than normal)
-		# This means holding fly while not floating will effectively act as a brake for normal player movement.
+		# This means holding fly while not levitating will effectively act as a brake for normal player movement.
 		if fly_chargeup < 50:
 			velocity = lerp(velocity, Vector2.ZERO, friction * 2)
 			var collision: KinematicCollision2D = move_and_collide(velocity * delta)
@@ -271,14 +271,14 @@ func scroll_background(amount: Vector2) -> void:
 	parallax_far.position.x = fmod(parallax_far.position.x + relative_amnt.x, mod)
 	parallax_far.position.y = fmod(parallax_far.position.y + relative_amnt.y, mod)
 
-# Handle collision with spikes (Importantly, clear floating when exiting)
+# Handle collision with spikes (Importantly, clear levitating when exiting)
 func _on_spike_checker_body_entered(_body: Node2D) -> void:
-	# If floating, ignore
-	if not entity.is_floating:
+	# If levitating, ignore
+	if not entity.is_levitating:
 		# Invert velocity, plus some.
 		velocity *= -1.25 # Originally was 1 + bounce, but low bounce values can result in player clipping through spikes.
 
 func _on_spike_checker_body_exited(_body: Node2D) -> void:
-	# Clear floating
-	if not flying: # Don't clear floating if flying
-		entity.is_floating = false
+	# Clear levitating
+	if not flying: # Don't clear levitating if flying
+		entity.is_levitating = false

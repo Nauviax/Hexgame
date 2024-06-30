@@ -89,11 +89,11 @@ func execute_with_effects(pattern: Pattern, pattern_og: Pattern_Ongrid = null) -
 	var success: bool = execute_pattern(pattern) # Execute the pattern
 	if is_meta:
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
-		if pattern.name == "Retrospection" and introspection_depth == 0: # Special case for last retrospection
+		if pattern.name_internal == Valid_Patterns.Pattern_Enum.retrospection and introspection_depth == 0: # Special case for last retrospection
 			if pattern_og:
 				Hexecutor.set_gradient(pattern_og, normal_gradient) # Use normal instead
 			caster.node.particle_cast(0)
-		elif pattern.name == "Consideration" and consideration_mode: # Special case for consideration, except in a pair. (The first of the pair is normal)
+		elif pattern.name_internal == Valid_Patterns.Pattern_Enum.consideration and consideration_mode: # Special case for consideration, except in a pair. (The first of the pair is normal)
 			if pattern_og:
 				Hexecutor.set_gradient(pattern_og, normal_gradient) # Use normal instead
 			caster.node.particle_cast(0)
@@ -102,9 +102,9 @@ func execute_with_effects(pattern: Pattern, pattern_og: Pattern_Ongrid = null) -
 				Hexecutor.set_gradient(pattern_og, meta_gradient)
 			caster.node.particle_cast(2)
 	elif success: # Pattern is valid and executed successfully
-		if pattern.name == "Thoth's Gambit":
+		if pattern.name_internal == Valid_Patterns.Pattern_Enum.thoths_gambit:
 			SoundManager.play_thoth()
-		elif pattern.name == "Hermes' Gambit":
+		elif pattern.name_internal == Valid_Patterns.Pattern_Enum.hermes_gambit:
 			SoundManager.play_hermes()
 		elif pattern.is_spell: # Spells are patterns that interact with the level in some way, including getting or reading from entities.
 			SoundManager.play_spell()

@@ -63,7 +63,7 @@ func update_position() -> void:
 # Displays pattern info for a given p_code (Starts with "P" for pattern/p_code)
 # Displays entity info for a given entity (Starts with "E" for entity) # Not implemented at all right now
 # Displays error message for given error (Starts with "B" for bad_iota)
-# Displays plain text (Starts with "M" for message) (!!! Possibly allow meta to specify custom title?)
+# Displays plain text (Starts with "M" for message)
 func display(meta: String, show_above: bool = false) -> void:
 	if locked_display: # If locked, don't change display and throw an error (Should never happen, but just in case)
 		printerr("WARNING: Attempted to update display of a locked popup.")
@@ -77,20 +77,15 @@ func display(meta: String, show_above: bool = false) -> void:
 			middle_container.visible = true # Used for pattern info
 			current_pattern = Pattern.new(rest) # Create a new pattern with the given p_code
 
-			var p_name: String = current_pattern.name
-			title_label.text = p_name
-			if p_name == "Numerical Reflection":
-				title_label.text += " | " + str(current_pattern.value)
-			elif p_name == "Bookkeeper's Gambit":
-				title_label.text += " | " + Pattern.value_to_bookkeeper(current_pattern.value)
+			title_label.text = current_pattern.name_display
 
 			code_label.text = current_pattern.p_code
-			is_spell_label.text = "Spell" if current_pattern.p_exe.is_spell else "Pattern"
-			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe.iota_count)
+			is_spell_label.text = "Spell" if current_pattern.is_spell else "Pattern"
+			iota_count_label.text = "Iotas In: " + str(current_pattern.p_exe_iota_count)
 			desc_page = 0 # Reset page if new pattern
 
-			set_description(current_pattern.p_exe.descs[0])
-			if current_pattern.p_exe.descs.size() > 1: # Disable button if only one description
+			set_description(current_pattern.descs[0])
+			if current_pattern.descs.size() > 1: # Disable button if only one description
 				desc_button.disabled = false
 			else:
 				desc_button.disabled = true
@@ -139,8 +134,8 @@ func stop_display() -> void:
 
 # Toggle displayed description for patten (Not shown for non-patterns)
 func _on_next_desc_pressed() -> void:
-	desc_page = (desc_page + 1) % current_pattern.p_exe.descs.size()
-	set_description(current_pattern.p_exe.descs[desc_page])
+	desc_page = (desc_page + 1) % current_pattern.descs.size()
+	set_description(current_pattern.descs[desc_page])
 
 # Drag functionality allows the window to be moved around while locked
 func _on_drag_button_down() -> void:

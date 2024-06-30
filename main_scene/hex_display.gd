@@ -113,7 +113,7 @@ func iota_to_string(iota: Variant, inside_list: bool = false) -> String:
 			var length_score: int = 0 # An estimate of how long the list will be, to determine if it should be shortened.
 			for ii: Variant in iota:
 				if ii is Pattern:
-					length_score += 7 # Length of most pattern's shorthand name, plus ", "
+					length_score += ii.name_short.length() + 2 # Length of short name, plus ", "
 				elif ii is Array:
 					length_score += 8 # Length of "(list), "
 				elif ii is Bad_Iota:

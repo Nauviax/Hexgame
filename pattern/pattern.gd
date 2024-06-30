@@ -4,19 +4,23 @@ extends Resource # Should mean this object gets deleted automatically when not i
 # String that represents the pattern.
 # First character is the initial direction: 1-6 starting NE and going clockwise.
 # Subsequent characters are one from [L, l, s, r, R], representing hard left, left, straight etc.
-var p_code: String = ""
+var p_code: String
 
 # Various pattern features
-var name: String = "" # Used for display in gui and identification in code
-var name_short: String = "" # Shorter, non-unique name for use in lists (Not set for some dynamic patterns. Normally because value is shown instead)
+var name_internal: Valid_Patterns.Pattern_Enum # Used for pattern identification in code
+var name_display: String # Nicer name to be shown to user. Shows extra content for dynamic patterns.
+var name_short: String # Shorter, non-unique name for use in lists (Not set for some dynamic patterns. Normally because value is shown instead)
 var is_valid: bool = false # False if no matching pattern found in valid_patterns.gd
 var is_spell: bool = false # Spells interact with the level in some way, and have their own sound effect.
 # (Cont.) For our purposes, this includes patterns that get or read from / write to entities. For simplicity, so are Hermes and Thoth.
 # Casting more than one spell will invalidate single-cast attempts for the current level.
 
-# Executable code for this pattern.
-var p_exe_name: String # Used to load executable code. "Mind's Reflection" would become "minds_reflection"
-var p_exe: Script = null
+# Executable information for this pattern.
+var p_exe: Callable # Used to call relevant execute func. Takes Hexecutor and Pattern as arguments.
+var p_exe_iota_count: int # Number of arguments this pattern requires on the stack. If variable, will be the minimum, or just 0.
+
+# Description pages for this patten. This array will be shared so DO NOT MODIFY THE ARRAY.
+var descs: Array
 
 # The value of this pattern. Relevant only for dynamic patterns.
 # For numerical reflection, this is just the number.
@@ -27,19 +31,15 @@ var value: float = 0
 # Pattern constructor. Takes a code string, then sets up pattern based on that.
 func _init(p_code: String) -> void:
 	self.p_code = p_code
-	# Get pattern name and validity, then get executable code.
-	Valid_Patterns.set_pattern_name(self)
-	p_exe_name = name.to_lower().replace(" ", "_").replace("'", "").replace(":", "")
-	p_exe = load("res://pattern/exe_folder/" + p_exe_name + ".gd")
-	is_spell = p_exe.is_spell # Set spell status
+	# Sets pattern name, validity, executable func, and other related data.
+	Valid_Patterns.set_pattern_data(self)
 
 # Execute the pattern on the given stack
 func execute(hexecutor: Hexecutor) -> bool:
-	var iota_count: int = p_exe.iota_count
-	if hexecutor.stack.size() < iota_count:
-		hexecutor.stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_COUNT, name, iota_count, hexecutor.stack.size()))
+	if hexecutor.stack.size() < p_exe_iota_count:
+		hexecutor.stack.push_back(Bad_Iota.new(ErrorMM.WRONG_ARG_COUNT, name_display, p_exe_iota_count, hexecutor.stack.size()))
 		return false
-	return p_exe.execute(hexecutor, self)
+	return p_exe.call(hexecutor, self) # Call the pattern's execute function
 
 # _to_string override for fancy display
 # This function returns a shorthand name for the pattern, for use in lists.
@@ -47,35 +47,9 @@ func execute(hexecutor: Hexecutor) -> bool:
 func _to_string() -> String:
 	return get_meta_string(true)
 
-# Like _to_string, but returns the full name of the pattern.
+# Like _to_string, but can return the long name of the pattern.
 func get_meta_string(short: bool = false) -> String:
-	var text: String
-	if is_valid:
-		if name == "Numerical Reflection":
-			text = "(" + str(value) + ")" if short else "Numerical Reflection (" + str(value) + ")"
-		elif name == "Bookkeeper's Gambit":
-			var str_gambit: String = Pattern.value_to_bookkeeper(value)
-			text = "(" + str_gambit + ")" if short else "Bookkeeper's Gambit (" + str_gambit + ")"
-		else: # Default case
-			text = name_short if short else name
-	else:
-		text = "(" + p_code + ")" if short else "Invalid Pattern (" + p_code + ")"
-	return "[url=P" + p_code + "]" + text + "[/url]" # Text will contain p_code as metadata
-	
-# Static function to convert a value (number) to a bookkeeper's gambit string
-static func value_to_bookkeeper(value: float) -> String:
-	var val_clone: int = int(value) # May cause problems for large values, when converting float to int. Seems fine for now though.
-	var str_gambit: String = ""
-	# Treat value as binary, if bit is 1, add "x" to string, if bit is 0, add "-" to string
-	while val_clone > 0:
-		if val_clone % 2 == 1:
-			str_gambit = "x" + str_gambit
-		else:
-			str_gambit = "-" + str_gambit
-		val_clone = val_clone >> 1
-	if str_gambit == "": # For the do-nothing gambit
-		str_gambit = "-"
-	return str_gambit
+	return "[url=P" + p_code + "]" + (name_short if short else name_display) + "[/url]" # Text will contain p_code as metadata
 
 # For use in create_line
 static var line_scene: PackedScene = preload("res://resources/shaders/cast_line/cast_line.tscn")

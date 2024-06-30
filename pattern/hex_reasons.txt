@@ -156,8 +156,8 @@ Spells
 		- Now works like blink, but NOT through blocks (Inc glass)
 			- Specifically, this acts like a tp.
 			- Note, not the eye part. Can still impulse sideways.
-		- Requires floating to impulse over spikes. Removes floating afterwards.
-			- Additionally, ice physics if floating. Ignore vect magnitude and just keep going.
+		- Requires levitating to impulse over spikes. Removes levitating afterwards.
+			- Additionally, ice physics if levitating. Ignore vect magnitude and just keep going.
 		- Can impulse through entities, but not land on entity.
 		- If blocked by wall or at end by entity, find next closest tile on line.
 
@@ -179,5 +179,5 @@ Spells
 		- Reduce player friction and allow over spikes (Lose on exit spikes) and flight.
 		- For others, allow survive impulse over spikes once (Can be over many spikes)
 			- Lost after impulse
-		- Applying to already floating entity will remove the effect.
+		- Applying to already levitating entity will remove the effect.
 		

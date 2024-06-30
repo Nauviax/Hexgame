@@ -15,10 +15,10 @@ var writeable: bool = false
 
 # Per-Entity variables that affect what spells affect them.
 var killable: bool = true # Explosion, Impulse into spikes
-var moveable: bool = true # Teleport, Impulse, Floating etc (set_pos and similar still function, this must be checked per spell!)
+var moveable: bool = true # Teleport, Impulse, Levitating etc (set_pos and similar still function, this must be checked per spell!)
 
-# True if this entity is floating. (Via Float spell, Floating spell)
-var is_floating: bool = false
+# True if this entity is levitating. (Via Levitate spell)
+var is_levitating: bool = false
 
 # Constructor
 func _init(name: String, node: Node2D) -> void:

@@ -173,9 +173,9 @@ func entity_raycast(pos: Vector2, dir: Vector2) -> Variant:
 #  - Don't forget to multiply tile offsets by Entity.FAKE_SCALE
 # Additionally, this raycast returns the literal/actual position of the hit, not the tile position
 # On a miss, returns pos + offset (Max distance)
-func impulse_raycast(pos: Vector2, offset: Vector2, is_floating: bool) -> Vector2:
+func impulse_raycast(pos: Vector2, offset: Vector2, is_levitating: bool) -> Vector2:
 	var fs: int = Entity.FAKE_SCALE # Used here often enough to justify a shorter name
-	if is_floating: # Disable collision with spikes if floating (Layer 4)
+	if is_levitating: # Disable collision with spikes if levitating (Layer 4)
 		raycast_i.set_collision_mask_value(4, false)
 	raycast_i.target_position = offset
 	raycast_i.position = pos
@@ -184,7 +184,7 @@ func impulse_raycast(pos: Vector2, offset: Vector2, is_floating: bool) -> Vector
 		return (pos + offset) / fs
 	var hit_pos: Vector2 = to_local(raycast_i.get_collision_point()) # self.local because we aren't directly using tilemap
 	var adj_pos: Vector2 = hit_pos + offset/1000 # Get point just after hit to guarantee checking if hit tile is spikes
-	if is_floating: # Possibly redundant if statement, but ehhh
+	if is_levitating: # Possibly redundant if statement, but ehhh
 		raycast_i.set_collision_mask_value(4, true)
 	return adj_pos / fs
 
