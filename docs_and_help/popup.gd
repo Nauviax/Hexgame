@@ -61,8 +61,7 @@ func update_position() -> void:
 	position = get_global_mouse_position() + Vector2(5, (-5-background.size.y) if show_above else 5.0) - (Vector2(30, 30) if locked_display else Vector2.ZERO)
 
 # Displays pattern info for a given p_code (Starts with "P" for pattern/p_code)
-# Displays entity info for a given entity (Starts with "E" for entity) # Not implemented at all right now
-# Displays error message for given error (Starts with "B" for bad_iota)
+# Displays error message for given error (Starts with "E" for error)
 # Displays plain text (Starts with "M" for message)
 func display(meta: String, show_above: bool = false) -> void:
 	if locked_display: # If locked, don't change display and throw an error (Should never happen, but just in case)
@@ -97,18 +96,19 @@ func display(meta: String, show_above: bool = false) -> void:
 	else: # Non-patterns get less info shown
 		current_pattern = null # Clear current pattern
 		middle_container.visible = false
-		if type == "B": # Error (E reserved for entities, possibly change later, and make this a match not elif (!!!))
-			title_label.text = "Error"
-			set_description(rest)
-		elif type == "L": # List, decode square brackets and display fairly normally.
-			title_label.text = "List"
-			set_description(rest.replace("BBCODELEFT", "[").replace("BBCODERIGHT", "]"))
-		elif type == "M": # Message, basically plain text
-			title_label.text = "Message"
-			set_description(rest)
-		else:
-			title_label.text = "Unknown"
-			set_description(meta)
+		match type:
+			"E": # Error
+				title_label.text = "Error"
+				set_description(rest)
+			"L": # List, decode square brackets and display fairly normally.
+				title_label.text = "List"
+				set_description(rest.replace("BBCODELEFT", "[").replace("BBCODERIGHT", "]"))
+			"M": # Message, basically plain text
+				title_label.text = "Message"
+				set_description(rest)
+			_: # Default to unknown, shouldn't happen
+				title_label.text = "Unknown"
+				set_description(meta)
 	# Show self
 	update_position()
 	visible = true

@@ -16,4 +16,4 @@ func _to_string() -> String:
 	for ii in range(10):
 		var random_index: int = randi() % characters.length()
 		rand_chars += characters[random_index]
-	return "[url=B" + error_msg + "]" + rand_chars + "[/url]"
+	return "[url=E" + error_msg + "]" + rand_chars + "[/url]"
