@@ -13,7 +13,7 @@ static func set_pattern_data(pattern: Pattern) -> void:
 		pattern.is_valid = true
 		pattern.name_internal = Pattern_Enum.numerical_reflection
 		pattern.name_display = "Numerical Reflection (" + str(pattern.value) + ")"
-		pattern.name_short = "(" + str(pattern.value) + ")" # !!! NR(3) ? or just (3) ?
+		pattern.name_short = "NR(" + str(pattern.value) + ")"
 		pattern.is_spell = false
 		pattern.p_exe_iota_count = 0
 		pattern.descs = numerical_reflection_descs
@@ -25,7 +25,7 @@ static func set_pattern_data(pattern: Pattern) -> void:
 		pattern.is_valid = true
 		pattern.name_internal = Pattern_Enum.bookkeepers_gambit
 		pattern.name_display = "Bookkeeper's Gambit (" + value_to_bookkeeper(pattern.value) + ")"
-		pattern.name_short = "(" + value_to_bookkeeper(pattern.value) + ")" # !!! BG(x) ? or just (x) ?
+		pattern.name_short = "BG(" + value_to_bookkeeper(pattern.value) + ")"
 		pattern.is_spell = false
 		pattern.p_exe_iota_count = 0
 		pattern.descs = bookkeepers_gambit_descs
@@ -49,7 +49,7 @@ static func set_pattern_data(pattern: Pattern) -> void:
 	pattern.is_valid = false
 	pattern.name_internal = Pattern_Enum.invalid_pattern
 	pattern.name_display = "Invalid Pattern (" + pattern.p_code + ")"
-	pattern.name_short = "(" + pattern.p_code + ")" # !!! ??(x) ? or just (x) ?
+	pattern.name_short = "??(" + pattern.p_code + ")"
 	pattern.is_spell = false
 	pattern.p_exe_iota_count = 0
 	pattern.descs = invalid_pattern_descs
