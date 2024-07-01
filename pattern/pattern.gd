@@ -6,10 +6,14 @@ extends Resource # Should mean this object gets deleted automatically when not i
 # Subsequent characters are one from [L, l, s, r, R], representing hard left, left, straight etc.
 var p_code: String
 
-# Various pattern features
+# More names that represent this pattern. Strings are pre-generated here to hopefully save on performance.
 var name_internal: Valid_Patterns.Pattern_Enum # Used for pattern identification in code
 var name_display: String # Nicer name to be shown to user. Shows extra content for dynamic patterns.
 var name_short: String # Shorter, non-unique name for use in lists (Not set for some dynamic patterns. Normally because value is shown instead)
+var name_display_meta: String # Name with metadata, for use when hover text is needed.
+var name_short_meta: String # Short name with metadata, for use in lists.
+
+# Various pattern features
 var is_valid: bool = false # False if no matching pattern found in valid_patterns.gd
 var is_spell: bool = false # Spells interact with the level in some way, and have their own sound effect.
 # (Cont.) For our purposes, this includes patterns that get or read from / write to entities. For simplicity, so are Hermes and Thoth.
@@ -33,6 +37,9 @@ func _init(p_code: String) -> void:
 	self.p_code = p_code
 	# Sets pattern name, validity, executable func, and other related data.
 	Valid_Patterns.set_pattern_data(self)
+	# Generate meta strings
+	name_display_meta = "[url=P" + p_code + "]" + name_display + "[/url]"
+	name_short_meta = "[url=P" + p_code + "]" + name_short + "[/url]"
 
 # Execute the pattern on the given stack
 func execute(hexecutor: Hexecutor) -> bool:
@@ -42,14 +49,9 @@ func execute(hexecutor: Hexecutor) -> bool:
 	return p_exe.call(hexecutor, self) # Call the pattern's execute function
 
 # _to_string override for fancy display
-# This function returns a shorthand name for the pattern, for use in lists.
-# To get the full length name, use pattern.get_meta_string() (Rather than str(pattern))
+# This function returns name_short_meta, for use in lists. Other strings can be grabbed from the object normally.
 func _to_string() -> String:
-	return get_meta_string(true)
-
-# Like _to_string, but can return the long name of the pattern.
-func get_meta_string(short: bool = false) -> String:
-	return "[url=P" + p_code + "]" + (name_short if short else name_display) + "[/url]" # Text will contain p_code as metadata
+	return name_short_meta
 
 # For use in create_line
 static var line_scene: PackedScene = preload("res://resources/shaders/cast_line/cast_line.tscn")

@@ -103,7 +103,7 @@ func iota_to_string(iota: Variant, inside_list: bool = false) -> String:
 	if iota == null:
 		return "null" if inside_list else "" # Don't show nulls in spellbook, but do show in lists.
 	elif iota is Pattern:
-		return iota.get_meta_string(inside_list) # Shorten if inside list, Full length if not.
+		return iota.name_short_meta if inside_list else iota.name_display_meta # Shorten if inside list, Full length if not.
 	elif iota is Array:
 		var text: String = "["
 		var max_length: int = 0 # How many items to display before shortening
