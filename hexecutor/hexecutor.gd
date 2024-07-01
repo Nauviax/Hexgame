@@ -148,7 +148,7 @@ func execute_pattern(pattern: Pattern, update_on_success: bool = true) -> bool:
 				stack.push_back(pattern) # Append to stack with no list
 			consideration_mode = false
 			success = true
-		elif introspection_depth > 0 and pattern.name != "Consideration": # Multi meta-pattern mode, see var declaration.
+		elif introspection_depth > 0 and pattern.name_internal != Valid_Patterns.Pattern_Enum.consideration: # Multi meta-pattern mode, see var declaration.
 			if stack.size() > 0 and stack[-1] is Pattern_Metalist:
 				stack[-1].add_pattern(self, pattern)
 				success = true
