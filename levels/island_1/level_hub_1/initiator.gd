@@ -1,4 +1,4 @@
-# External Hub 1 Initiator
+# Level Hub 1 Initiator
 static func initiate(level_base: Level_Base) -> void:
 	# Create starting hexes for player, and set as sb slot 1 and 2
 	# If player spellbook is not empty, do not overwrite it. (Run on first enter only)

@@ -15,8 +15,8 @@ var levels: Array
 # Levels that this world contains
 # Format: [position, level path, display name]
 static var levels_data: Array = [
-	[Vector2(-1000, -1000), "res://levels/island_1/external_hub_1/level.tscn", "Island 1"],
-	[Vector2(1000, -1000), "res://levels/island_2/external_hub_2/level.tscn", "Island 2"],
+	[Vector2(-1000, -1000), "res://levels/island_1/level_hub_1/level.tscn", "Island 1"],
+	[Vector2(1000, -1000), "res://levels/island_2/level_hub_2/level.tscn", "Island 2"],
 ]
 
 # Reference to level_in_world scene, to load level hitboxes into world.

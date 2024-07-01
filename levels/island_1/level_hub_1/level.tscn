@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://t077eoly46ro"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_bsy5j"]
-[ext_resource type="Script" path="res://levels/island_1/external_hub_1/initiator.gd" id="3_7nuf2"]
+[ext_resource type="Script" path="res://levels/island_1/level_hub_1/initiator.gd" id="3_7nuf2"]
 [ext_resource type="PackedScene" uid="uid://b4j870xcpnwb8" path="res://entity/non_player/level_haver.tscn" id="6_55olu"]
 [ext_resource type="PackedScene" uid="uid://dwqaokidtig5y" path="res://levels/island_1/reveal_iota/level.tscn" id="7_5kcfm"]
 [ext_resource type="PackedScene" uid="uid://ct0c4xg0rkvmu" path="res://levels/island_1/tutorial/level.tscn" id="8_j7ra6"]
