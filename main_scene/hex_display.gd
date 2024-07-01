@@ -40,7 +40,7 @@ class_name Hex_Display
 var replay_mode: bool = false
 
 # Reference to the current popup. Should be reset after locking in place.
-@onready var popup: Hex_Popup = Hex_Popup.make_new(popup_holder)
+@onready var cur_popup: Hex_Popup = Hex_Popup.make_new(popup_holder)
 
 # On ready, hide replay controls
 func _ready() -> void:
@@ -183,19 +183,19 @@ func _on_extra_validate_pressed() -> void: # The repeating one
 
 # Handle meta-text and other pattern hovers
 func _on_meta_hover_started(meta: Variant) -> void:
-	popup.display(meta)
+	cur_popup.display(meta)
 
 func _on_meta_hover_started_low(meta: Variant) -> void:
-	popup.display(meta, true) # Display above mouse rather than below
+	cur_popup.display(meta, true) # Display above mouse rather than below
 
 func _on_meta_clicked(_meta: Variant) -> void:
-	if not popup.visible:
+	if not cur_popup.visible:
 		return # Popup hasn't been used yet.
-	popup.lock() # Stop info from following mouse or disappearing
-	popup = Hex_Popup.make_new(popup_holder) # Get new popup
+	cur_popup.lock() # Stop info from following mouse or disappearing
+	cur_popup = Hex_Popup.make_new(popup_holder) # Get new popup
 
 func _on_meta_hover_ended(_meta: Variant) -> void:
-	popup.stop_display()
+	cur_popup.stop_display()
 
 # Handle replay and replay controls
 
@@ -278,3 +278,9 @@ func step_replay() -> void:
 		main_scene.hexecutor.execute_with_effects(next) # Execute pattern
 	replay_index += 1
 	update_replay_timeline_label()
+
+# Quickly close all locked popups. cur_popup is not included, as it would not be locked.
+func _on_close_popups_pressed() -> void:
+	var popups: Array = popup_holder.get_children()
+	for popup: Hex_Popup in popups:
+		popup.close_if_locked()

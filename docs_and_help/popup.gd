@@ -147,5 +147,9 @@ func _on_drag_button_up() -> void:
 
 # Close button, for deleting the window once it's been locked. Does nothing if not locked.
 func _on_close_pressed() -> void:
+	close_if_locked()
+
+# Close if locked. This func should be called to close a popup, as the only unlocked popup is the one managed by Hex_Display.
+func close_if_locked() -> void:
 	if locked_display:
 		queue_free() # Delete self

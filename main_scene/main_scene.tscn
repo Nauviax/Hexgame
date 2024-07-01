@@ -152,7 +152,7 @@ handle_input_locally = false
 canvas_item_default_texture_filter = 0
 canvas_item_default_texture_repeat = 1
 physics_object_picking = true
-size = Vector2i(2, 2)
+size = Vector2i(1370, 1080)
 render_target_update_mode = 4
 
 [node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelArea"]
@@ -203,6 +203,11 @@ text = "Border score:
 0 + 0 = 0"
 autowrap_mode = 2
 
+[node name="ClosePopups" type="Button" parent="HexDisplay/MainSplit/LevelArea/OLDSTUFF"]
+layout_mode = 2
+text = "Close
+Popups"
+
 [node name="HexbookHolder" type="CenterContainer" parent="HexDisplay"]
 visible = false
 layout_mode = 2
@@ -235,3 +240,4 @@ mouse_filter = 2
 [connection signal="meta_hover_ended" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Reveal" to="HexDisplay" method="_on_meta_hover_ended"]
 [connection signal="meta_hover_started" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/Reveal" to="HexDisplay" method="_on_meta_hover_started"]
 [connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/ToggleGrid" to="HexDisplay" method="_on_toggle_grid_pressed"]
+[connection signal="pressed" from="HexDisplay/MainSplit/LevelArea/OLDSTUFF/ClosePopups" to="HexDisplay" method="_on_close_popups_pressed"]
