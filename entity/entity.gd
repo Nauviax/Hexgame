@@ -18,7 +18,19 @@ var killable: bool = true # Explosion, Impulse into spikes
 var moveable: bool = true # Teleport, Impulse, Levitating etc (set_pos and similar still function, this must be checked per spell!)
 
 # True if this entity is levitating. (Via Levitate spell)
-var is_levitating: bool = false
+var is_levitating: bool = false:
+	set(val):
+		is_levitating = val
+		if val and (not levitation_particle_gen): # If levitating and no particle generator, create one.
+			levitation_particle_gen = levitation_particle_gen_scene.instantiate()
+			node.add_child(levitation_particle_gen)
+		elif (not val) and levitation_particle_gen: # If not levitating and particle generator exists, delete it.
+			levitation_particle_gen.queue_free()
+			levitation_particle_gen = null
+
+# Particle generator scene for levitation effect. Should be added as a child of "node" when levitating.
+var levitation_particle_gen_scene: PackedScene = preload("res://resources/particles/levitation_particle_gen.tscn")
+var levitation_particle_gen: Node2D = null
 
 # Constructor
 func _init(name: String, node: Node2D) -> void:
@@ -73,7 +85,6 @@ func delete() -> void:
 	alive = false # Set alive to false, so that other functions know this entity is dead.
 	node.queue_free()
 	node = null
-
 
 # Coordinate conversions
 # Fake takes 0,0 as centre of top left tile, but actual positions take 0,0 as top left CORNER

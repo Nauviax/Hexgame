@@ -38,7 +38,7 @@ anim_speed_max = 1.5
 [sub_resource type="Gradient" id="Gradient_i01ie"]
 colors = PackedColorArray(0.784314, 0.784314, 0.784314, 1, 1, 1, 1, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_udj2l"]
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fgvaa"]
 gradient = SubResource("Gradient_i01ie")
 width = 2
 
@@ -53,7 +53,7 @@ angular_velocity_max = 100.0
 gravity = Vector3(0, 0, 0)
 damping_max = 100.0
 scale_max = 1.5
-color_ramp = SubResource("GradientTexture1D_udj2l")
+color_ramp = SubResource("GradientTexture1D_fgvaa")
 anim_speed_min = 1.0
 anim_speed_max = 1.5
 
