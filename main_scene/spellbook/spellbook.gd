@@ -61,7 +61,7 @@ func update_selected_iota(index: int) -> void:
 
 # Used to update a specific value in the spellbook_strings list. Also sets the current tab to the given page index (0-3 inclusive).
 func update_spellbook_item(index: int, value: String, update: bool, silent: bool) -> void:
-	spellbook_strings[index] = value
+	spellbook_strings[index] = "" if value == "null" else value # Don't show null, just hide.
 	if update:
 		if not silent:
 			tab_bar.current_tab = index / 3

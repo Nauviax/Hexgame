@@ -101,7 +101,7 @@ func update_stack(stack: Array) -> void:
 # !!! Investigate weird hover hitbox issue. Solution is to put a space as last character, but don't use yet unless necessary.
 func iota_to_string(iota: Variant, inside_list: bool = false) -> String:
 	if iota == null:
-		return "null" if inside_list else "" # Don't show nulls in spellbook, but do show in lists.
+		return "null"
 	elif iota is Pattern:
 		return iota.name_short_meta if inside_list else iota.name_display_meta # Shorten if inside list, Full length if not.
 	elif iota is Array:
