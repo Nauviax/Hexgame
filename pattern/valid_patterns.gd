@@ -1484,8 +1484,8 @@ static func zone_distillation_exe(hexecutor: Hexecutor, pattern: Pattern) -> boo
 # Takes a result_unsorted list and returns a list of just sorted entities
 # Sort determines which entity is further, using the second element of the list.
 static func zone_dist_sort(unsorted: Array) -> Array:
-	unsorted.sort_custom(func(aa: Array, bb: Array) -> Array: return aa[1] < bb[1])
-	return unsorted.map(func(item: Array) -> Array: return item[0])
+	unsorted.sort_custom(func(aa: Array, bb: Array) -> bool: return aa[1] < bb[1])
+	return unsorted.map(func(item: Array) -> Entity: return item[0])
 
 # ----- List Manipulation -----
 
