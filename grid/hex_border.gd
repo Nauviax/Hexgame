@@ -163,15 +163,11 @@ func redraw() -> void:
 	line.add_point(point_pos(p5) + p5_offset)
 	line.add_point(point_pos(p6) + p6_offset)
 	
-	# Calculate perimeter (Rounded down to int)
-	perimeter = int(calc_dist_v2i(p1, p2) + calc_dist_v2i(p2, p3) + calc_dist_v2i(p3, p4) + calc_dist_v2i(p4, p5) + calc_dist_v2i(p5, p6) + calc_dist_v2i(p6, p1))
+	# Calculate perimeter (Rounded down to int) (Godot 4.3 adding vector2i.distance_to was unironically the best part of 4.3)
+	perimeter = int(p1.distance_to(p2) + p2.distance_to(p3) + p3.distance_to(p4) + p4.distance_to(p5) + p5.distance_to(p6) + p6.distance_to(p1))
 	
 	# Redraw
 	main_scene.update_border_display()
-
-# Calculates distance between two Vector2i, because Vector2i doesn't have a .distance_to method (!!! Look into other ways of doing this!)
-func calc_dist_v2i(p1: Vector2i, p2: Vector2i) -> float:
-	return sqrt((p2.x - p1.x) ** 2 + (p2.y - p1.y) ** 2)
 
 # Revert to the previous border, warning in logs if empty
 func undo() -> void:

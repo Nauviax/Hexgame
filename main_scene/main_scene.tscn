@@ -152,7 +152,7 @@ handle_input_locally = false
 canvas_item_default_texture_filter = 0
 canvas_item_default_texture_repeat = 1
 physics_object_picking = true
-size = Vector2i(1370, 1080)
+size = Vector2i(2, 2)
 render_target_update_mode = 4
 
 [node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelArea"]
