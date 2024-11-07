@@ -49,8 +49,8 @@ func _init(GRIDSPACING: float, ROWSPACING: float, main_scene: Main_Scene) -> voi
 	self.main_scene = main_scene
 
 	line = Line2D.new()
-	line.width = 1.5
-	line.default_color = Color(0, 0, 0, 0.3)
+	line.width = 2.0
+	line.default_color = Color(0.9, 0.9, 0.9, 0.4)
 	line.closed = true # Loop back to p1
 
 	# Offsets for redraw function
