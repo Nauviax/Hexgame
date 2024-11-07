@@ -1,87 +1,51 @@
-class_name Pattern_Ongrid
-# This class exists to represent a pattern on the grid. It is deleted when grid is cleared.
-# Pattern var should also be discarded when this is deleted, unless it is on the stack/saved somewhere.
+extends Node2D
+class_name Pattern_On_Grid
+# This class is used to display a pattern on the grid, and later(!!!) enable the player to interact with it.
 
-# List of grid points that make up this pattern.
-# point.in_use should be set false before deleting this pattern.
-var points: Array = []
+# Line2D object that will display the pattern.
+var grid_line2d: Line2D
 
-# The Line2D object that represents this pattern.
-# Held here so it can be deleted when this pattern is deleted.
-var line: Line2D = null
+# Ordered array of grid point objects that make up this pattern. First point is considered "origin".
+var grid_points: Array = []
 
-# Pattern object that this represents. Stores most data related to this pattern.
+# Pattern object that this represents.
 var pattern: Pattern = null
 
-# Pattern_Ongrid constructor. Takes points and line, then creates a pattern object.
-func _init(point_init: Array, line_init: Line2D) -> void:
-	points = point_init
-	# All points are now in use.
-	for pnt: Grid_Point in points:
-		pnt.in_use = true
-	line = line_init
+# Line2D to be used to show the pattern. Gradient should be updated later, as by default it's just black.
+static var line_scene: PackedScene = preload("res://resources/shaders/cast_line/cast_line.tscn")
 
-	# Create pattern object, calculating p_code from points.
-	pattern = Pattern.new(Pattern_Ongrid.calc_p_code(points))
+# Pattern on grid constructor. Takes the list of points that make up the pattern, and the relevant pattern object.
+func _init(grid_points: Array, pattern: Pattern) -> void:
+	self.grid_points = grid_points
+	self.pattern = pattern
 
-# Remove pattern from grid, freeing up all points and removing line graphic.
+	# Create and prepare Line2D
+	grid_line2d = line_scene.instantiate()
+	add_child(grid_line2d)
+	grid_line2d.prep_line() # Creates material duplicate
+	# grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient) # Unrequired, a default is already set.
+
+	# Set the points of the line to the grid points.
+	for point: Grid_Point in grid_points:
+		grid_line2d.add_point(point.position)
+		point.in_use = true
+
+	# Update shader segments
+	grid_line2d.material.set_shader_parameter("segments", grid_line2d.get_point_count() - 1.0)
+
+	# Tell pattern object where the line has been drawn.
+	self.pattern.grid_location = Vector2i(grid_points[0].x_id, grid_points[0].y_id)
+
+# Remove the pattern from the grid, freeing up all points and removing the line graphic.
 func remove() -> void:
 	# Free up all points.
-	for pnt: Grid_Point in points:
-		pnt.in_use = false
-	points.clear()
+	for point: Grid_Point in grid_points:
+		point.in_use = false
+	grid_points.clear()
 	# Remove line graphic.
-	line.queue_free()
+	grid_line2d.queue_free()
+	grid_line2d = null
+	pattern = null
+	# Remove this node.
+	queue_free()
 
-# Calculates p_code from points.
-static func calc_p_code(points: Array) -> String:
-	# Get the initial direction.
-	var dir: int = get_dir(points[0], points[1])
-	var dir2: int = -1 # Used in for loop
-	var p_code: String = str(dir) # The return value. Starts with a num, then letters.
-	# For every other point, get the turn from the previous point.
-	for ii in range(2, points.size()):
-		dir2 = get_dir(points[ii-1], points[ii])
-		p_code += get_turn(dir, dir2)
-		dir = dir2
-	return p_code
-	
-# Calculates the direction from point a to point b. (1-6 starting NE and going clockwise.)
-static func get_dir(aa: Grid_Point, bb: Grid_Point) -> int:
-	var xx: int = bb.x_id - aa.x_id
-	var yy: int = bb.y_id - aa.y_id
-	if xx == 0:
-		if yy == 1:
-			return 3
-		else: # y == -1
-			return 6
-	elif xx == 1:
-		if yy == 0:
-			return 2
-		else: # y == -1
-			return 1
-	else: # x == -1
-		if yy == 0:
-			return 5
-		else: # y == 1
-			return 4
-
-# Calculates the turn from direction a to direction b. (L, l, s, r, R)
-# Inputs are 1-6 starting NE and going clockwise.
-static func get_turn(aa: int, bb: int) -> String:
-	var turn: int = bb - aa
-	if turn < 0: # Avoid negative numbers
-		turn += 6
-	match turn:
-		0:
-			return "s"
-		1:
-			return "r"
-		2:
-			return "R"
-		4:
-			return "L"
-		5:
-			return "l"
-		_:
-			return "X" # Should never happen. (This is also the "3" case.)

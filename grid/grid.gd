@@ -14,7 +14,7 @@ const ROWSPACING: float = GRIDSPACING * 0.866  # Distance between each row, base
 const GRIDOFFSET = Vector2(8, 12) # Offset of the grid from the top left corner of the screen
 const NODEAREA = Vector2(1370, 1080) # Area that grid is expected to take up
 
-var points: Array = [] # List to store the points
+var points_dict: Dictionary = {} # Fancy dictionary to quickly get a grid point when given a Vector2i. (Not all ids exist, thus dictionary.)
 var cur_points: Array = [] # List to store points in the current pattern (Ordered first to latest)
 var line: Line2D = null # The line being drawn
 # The shader + gradient used for the line being cast
@@ -23,7 +23,7 @@ static var line_gradient: GradientTexture1D = preload("res://resources/shaders/c
 @onready var mouse_line_color: Color = line_gradient.gradient.get_color(line_gradient.gradient.get_point_count() - 1)
 var mouse_line: Line2D = null # The line being drawn between last point and mouse
 var hex_border: Hex_Border = null # The border around the patterns drawn
-var patterns: Array = [] # List of patterns (Mainly for deletion afterwards)
+var patterns: Array = [] # List of patterns, type Pattern. (Mainly for deletion afterwards)
 
 # Prepare *stuff*
 func _ready() -> void:
@@ -38,7 +38,7 @@ func _ready() -> void:
 			if not Engine.is_editor_hint():
 				point.set_id(ii - (jj/2), jj) # Set the id of the point
 			add_child(point)
-			points.append(point)
+			points_dict[Vector2i(ii - (jj/2), jj)] = point
 	
 	# Prepare node size
 	grid_area_shape.shape.size = NODEAREA
@@ -48,7 +48,10 @@ func _ready() -> void:
 	# Editor mode can complain about a few things, this prevents that.
 	if not Engine.is_editor_hint():
 		# Prepare Line2D
-		new_line()
+		line = line_scene.instantiate()
+		line.prep_line() # Creates material duplicate
+		line.material.set_shader_parameter("gradient_texture", line_gradient)
+		add_child(line)
 		
 		# Prepare Hex border
 		hex_border = Hex_Border.new(GRIDSPACING, ROWSPACING, main_scene)
@@ -71,7 +74,6 @@ func _on_grid_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
 			# Don't clear if grid.cur_points is not empty (Pattern in progress)
 			if cur_points.size() == 0:
-				SoundManager.play_fail() # Sound effect
 				main_scene.clear() # Clear grid, but also related gui and hexecutor
 			return
 
@@ -150,6 +152,11 @@ func on_point(point: Grid_Point) -> void:
 	line.add_point(point.position)
 	line.material.set_shader_parameter("segments", line.get_point_count() - 1.0) # Update shader segments
 
+	# Update hex border
+	update_hex_border(point)
+
+# Update the hex border with the given point, or create it if it's the first point.
+func update_hex_border(point: Grid_Point) -> void:
 	# If this is the first point ever, create the hex border
 	if hex_border.line.get_point_count() == 0:
 		hex_border.create_border(point)
@@ -165,27 +172,70 @@ func send_pattern() -> void:
 		line.clear_points()
 		line.material.set_shader_parameter("segments", 0.0) # Update shader segments
 		hex_border.undo() # Initial click could have changed border
-	else: # Create and send pattern, (And save result to list here) then prepare new line.
-		var pattern: Pattern_Ongrid = Pattern_Ongrid.new(cur_points, line)
-		patterns.push_back(pattern)
+	else: # Create, display on grid and save reference, send pattern, then reset line.
+		var pattern: Pattern = Pattern.new(Pattern.calc_p_code(cur_points))
+		var pattern_on_grid: Pattern_On_Grid = pattern.create_on_grid(cur_points)
+		add_child(pattern_on_grid) # Add pattern_on_grid to scene via this grid
+		patterns.push_back(pattern) # Pattern now contains the pattern_on_grid, so only need to keep track of pattern
 		main_scene.new_pattern_drawn(pattern)
-		new_line()
+		line.clear_points() # Ready for next pattern
+		line.material.set_shader_parameter("segments", 0.0) # Update shader segments
 	cur_points = [] # New list, don't clear the old one
 	hex_border.clear_history() # Clear history
 
-# Set line to a new instance of Line2D
-func new_line() -> void:
-	line = line_scene.instantiate()
-	line.prep_line() # Creates material duplicate
-	line.material.set_shader_parameter("gradient_texture", line_gradient)
-	add_child(line)
+# Given an existing pattern (May not be displayed yet), draw it on the grid.
+# Ignores collision checks for other on_grid patterns, and overwrites any existing pattern_on_grid that this pattern may have.
+func draw_existing_pattern(pattern: Pattern) -> void:
+	var p_grid_points: Array = p_code_to_points(pattern.p_code, pattern.grid_location)
+	var pattern_on_grid: Pattern_On_Grid = pattern.create_on_grid(p_grid_points)
+	add_child(pattern_on_grid) # Add pattern_on_grid to scene via this grid
+	patterns.push_back(pattern) # Keep track of recently added pattern
+
+	# Update hex border with each point in the pattern (Probably a better way to do this, but ah well.)
+	for point: Grid_Point in p_grid_points:
+		update_hex_border(point)
 
 # Reset grid. Optionally either update or clear border score.
 func reset(hard: bool = false) -> void:
-	for pattern_on_grid: Pattern_Ongrid in patterns:
-		pattern_on_grid.remove() # Clears points and line
+	for pattern: Pattern in patterns:
+		pattern.remove_on_grid() # Clears points and line
 	patterns = []
 	if hard:
 		hex_border.reset_hard()
 	else:
 		hex_border.reset()
+
+# Given a p_code and a starting grid point coordinate, return a list of grid points that will make up the pattern.
+func p_code_to_points(p_code: String, start: Vector2i) -> Array:
+	var points: Array = [] # List of grid points, NOT Vector2i
+	var pos: Vector2i = start # Vector2i representing a grid point
+	points.push_back(points_dict[pos]) # First point is always the start point
+
+	var dir: int = p_code.substr(0, 1).to_int() - 1 # 1 is top right, NE, which is index 0. Goes clockwise until 6 (index 5)
+	match dir: # Adjust pos based on new dir
+		0: pos += Vector2i(1, -1)
+		1: pos += Vector2i(1, 0)
+		2: pos += Vector2i(0, 1)
+		3: pos += Vector2i(-1, 1)
+		4: pos += Vector2i(-1, 0)
+		5: pos += Vector2i(0, -1)
+	points.push_back(points_dict[pos]) # Second point in direction of p_code first char
+
+	var rest: String = p_code.substr(1)
+	for cc in rest:
+		match cc: # Figure out new direction
+			"L": dir = posmod(dir - 2, 6)
+			"l": dir = posmod(dir - 1, 6)
+			"s": pass
+			"r": dir = posmod(dir + 1, 6)
+			"R": dir = posmod(dir + 2, 6)
+		match dir: # Adjust pos based on new dir
+			0: pos += Vector2i(1, -1)
+			1: pos += Vector2i(1, 0)
+			2: pos += Vector2i(0, 1)
+			3: pos += Vector2i(-1, 1)
+			4: pos += Vector2i(-1, 0)
+			5: pos += Vector2i(0, -1)
+		points.push_back(points_dict[pos]) # Find and add the point to the list
+
+	return points

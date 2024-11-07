@@ -49,8 +49,8 @@ func load_level_from_scene(scene: PackedScene) -> void:
 	# Update hex_display, level tools
 	update_hex_display_on_level_change(true, loaded_level.is_level_puzzle)
 
-# Reset level, optionally keep seed or border score
-func reload_current_level(reset_border_score: bool, same_seed: bool = true) -> void:
+# Reset level, optionally keep seed.
+func reload_current_level(same_seed: bool) -> void:
 	# Prep new level (Seed is important for reload, as often same or specific seed is wanted)
 	var new_level: Level_Base = loaded_level.scene.instantiate()
 	new_level.main_scene = self
@@ -60,7 +60,7 @@ func reload_current_level(reset_border_score: bool, same_seed: bool = true) -> v
 	# Unload and delete current level
 	level_viewport.remove_child(loaded_level)
 	loaded_level.queue_free()
-	grid.reset(reset_border_score) # Soft reset, saves border score
+	grid.reset(true) # Hard reset, reset border score
 
 	# Adopt new level
 	loaded_level = new_level
@@ -154,21 +154,26 @@ func extra_validate_level() -> Array:
 	# Consider blocking user input during validation? !!!
 	for ii in range(10): # 10 random levels
 		# Reload level with new seed
-		reload_current_level(true, false)
+		reload_current_level(false)
 		# Execute the hex
 		for pattern: Pattern in hex:
 			hexecutor.execute_pattern(pattern)
 		# Validate the level
 		if not validate_level():
 			# On fail, regenerate level with same seed and enable replay mode
-			reload_current_level(true, true)
+			reload_current_level(true)
 			hex_display.begin_replay(hex) # Start with given hex
 			return [] # Failed
 	return [hex.size(), border_score] # Passed
 
 # Called with new patterns from grid. Executes them using hexecutor
-func new_pattern_drawn(pattern: Pattern_Ongrid) -> void:
+func new_pattern_drawn(pattern: Pattern) -> void:
 	hexecutor.new_pattern(pattern)
+
+# Called with old patterns from replay. Add to grid, then execute as a replay pattern (Won't end replay mode)
+func new_replay_pattern(pattern: Pattern) -> void:
+	grid.draw_existing_pattern(pattern)
+	hexecutor.new_pattern(pattern, true) # True so execution won't end replay mode
 
 # Update hex_display iotas after a pattern is executed. Causes whole stack to update, but only specified spellbook items are updated.
 # 9-11 for raven, sentinel, and revealed iota. Any large number to update all, for when an unknown number of items may have changed. (Like after a meta pattern)
@@ -202,6 +207,7 @@ func update_border_display() -> void:
 
 # Clear grid, all patterns and reset stack
 func clear() -> void:
+	SoundManager.play_fail() # Sound effect for clear grid
 	grid.reset(false) # Soft reset, keeps previous border score
 	hexecutor.reset()
 	hex_display.handle_clear_grid() # Update/Clear stack display

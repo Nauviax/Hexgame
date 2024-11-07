@@ -32,6 +32,10 @@ var descs: Array
 #	(And a reminder, the last bit (1s column) is the top of the stack)
 var value: float = 0
 
+# Grid information for this pattern, if pattern is on grid.
+var pattern_on_grid: Pattern_On_Grid = null # Line graphic object for this pattern
+var grid_location: Vector2i = Vector2.ZERO # Location on grid, using Grid_Point coordinates.
+
 # Pattern constructor. Takes a code string, then sets up pattern based on that.
 func _init(p_code: String) -> void:
 	self.p_code = p_code
@@ -53,6 +57,16 @@ func execute(hexecutor: Hexecutor) -> bool:
 func _to_string() -> String:
 	return name_short_meta
 
+# Create and save a Pattern_On_Grid object to this pattern, and return it for convenience.
+func create_on_grid(points: Array) -> Pattern_On_Grid:
+	pattern_on_grid = Pattern_On_Grid.new(points, self)
+	return pattern_on_grid
+
+# Tell the pattern_on_grid object to remove itself, then set it to null.
+func remove_on_grid() -> void:
+	pattern_on_grid.remove()
+	pattern_on_grid = null
+
 # For use in create_line
 static var line_scene: PackedScene = preload("res://resources/shaders/cast_line/cast_line.tscn")
 static var line_gradient: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/normal.tres")
@@ -65,7 +79,7 @@ static var vector_offsets: Array = [ # Unit distance * 50
 	Vector2(-25, -43.3) # Top left
 ]
 
-# Creates and returns a Line2D object that represents the pattern.
+# Creates and returns a scaled Line2D object that represents the pattern. Used for non-grid display.
 # Static so pattern object isn't required.
 static func create_line(p_code: String) -> Line2D:
 	var line: Line2D = line_scene.instantiate()
@@ -117,3 +131,56 @@ static func create_line(p_code: String) -> Line2D:
 	line.scale = Vector2(scale, scale)
 	line.position = -average * scale
 	return line
+
+# Calculates a p_code from given grid points, which can then be used to call init.
+static func calc_p_code(points: Array) -> String:
+	# Get the initial direction.
+	var dir: int = get_dir(points[0], points[1])
+	var dir2: int = -1 # Used in for loop
+	var p_code: String = str(dir) # The return value. Starts with a num, then letters.
+	# For every other point, get the turn from the previous point.
+	for ii in range(2, points.size()):
+		dir2 = get_dir(points[ii-1], points[ii])
+		p_code += get_turn(dir, dir2)
+		dir = dir2
+	return p_code
+	
+# Calculates the direction from point a to point b. (1-6 starting NE and going clockwise.)
+static func get_dir(aa: Grid_Point, bb: Grid_Point) -> int:
+	var xx: int = bb.x_id - aa.x_id
+	var yy: int = bb.y_id - aa.y_id
+	if xx == 0:
+		if yy == 1:
+			return 3
+		else: # y == -1
+			return 6
+	elif xx == 1:
+		if yy == 0:
+			return 2
+		else: # y == -1
+			return 1
+	else: # x == -1
+		if yy == 0:
+			return 5
+		else: # y == 1
+			return 4
+
+# Calculates the turn from direction a to direction b. (L, l, s, r, R)
+# Inputs are 1-6 starting NE and going clockwise.
+static func get_turn(aa: int, bb: int) -> String:
+	var turn: int = bb - aa
+	if turn < 0: # Avoid negative numbers
+		turn += 6
+	match turn:
+		0:
+			return "s"
+		1:
+			return "r"
+		2:
+			return "R"
+		4:
+			return "L"
+		5:
+			return "l"
+		_:
+			return "X" # Should never happen. (This is also the "3" case.)

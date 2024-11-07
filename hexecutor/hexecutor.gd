@@ -75,18 +75,20 @@ func _init(level_base: Level_Base, caster: Entity, main_scene: Main_Scene, is_ma
 	self.is_main_hexecutor = is_main_hexecutor
 		
 # Tries to validate the pattern, colors it, and executes it (With sounds)
-func new_pattern(pattern_og: Pattern_Ongrid) -> void: # Defined type to avoid future mistakes
+func new_pattern(pattern: Pattern, part_of_replay: bool = false) -> void: # Defined type to avoid future mistakes
 	# Splash of color and sound
-	execute_with_effects(pattern_og.pattern, pattern_og)
-	# End replay mode if it was active
-	main_scene.end_replay_mode()
+	execute_with_effects(pattern)
+	if not part_of_replay:
+		# If this is NOT a replay pattern, end replay mode if it is active
+		main_scene.end_replay_mode()
 
 # Execute pattern, then play sounds and particles based on pattern name and success.
 # Can be called from external scripts (Like hex_display replay mode)
 # Pattern_og can be left null to not set a gradient color.
-func execute_with_effects(pattern: Pattern, pattern_og: Pattern_Ongrid = null) -> void:
+func execute_with_effects(pattern: Pattern) -> void:
 	var is_meta: bool = consideration_mode or introspection_depth > 0 # If currently 'meta', for coloring patterns
 	var success: bool = execute_pattern(pattern) # Execute the pattern
+	var pattern_og: Pattern_On_Grid = pattern.pattern_on_grid # Get the pattern on grid object, if it exists
 	if is_meta:
 		SoundManager.play_normal() # No fancy thoth etc sounds while appending to a pattern list
 		if pattern.name_internal == Valid_Patterns.Pattern_Enum.retrospection and introspection_depth == 0: # Special case for last retrospection
@@ -120,10 +122,10 @@ func execute_with_effects(pattern: Pattern, pattern_og: Pattern_Ongrid = null) -
 		caster.node.particle_cast(1)
 
 # Quick way to set a pattern_og line to a gradient. Static.
-static func set_gradient(pattern_og: Pattern_Ongrid, gradient: GradientTexture1D) -> void:
-	pattern_og.line.material.set_shader_parameter("gradient_texture", gradient)
+static func set_gradient(pattern_og: Pattern_On_Grid, gradient: GradientTexture1D) -> void:
+	pattern_og.grid_line2d.material.set_shader_parameter("gradient_texture", gradient)
 
-# Executes a given pattern (Of note: NOT a Pattern_Ongrid)
+# Executes a given pattern.
 # Returns success of execution. (True if successful)
 func execute_pattern(pattern: Pattern, update_on_success: bool = true) -> bool:
 	# If scram mode, end hex.

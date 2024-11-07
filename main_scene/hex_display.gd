@@ -208,7 +208,7 @@ func begin_replay(patterns: Array = []) -> void: # Optionally specify patterns t
 		return # No replay to begin
 	replay_mode = true
 	Globals.player_control = false
-	main_scene.reload_current_level(false) # Reload level, same state, keep border score
+	main_scene.reload_current_level(true) # Reload level, same seed
 	replay_controls.show()
 	preplay_controls.hide()
 	replay_index = 0
@@ -245,7 +245,7 @@ func _on_begin_replay_button_pressed() -> void:
 	begin_replay()
 
 func _on_reset_level_pressed() -> void:
-	main_scene.reload_current_level(true, false) # Hard reset, new seed
+	main_scene.reload_current_level(false) # Reset, new seed
 
 func _on_cont_here_pressed() -> void:
 	end_replay()
@@ -271,11 +271,9 @@ func step_replay() -> void:
 		return # No more patterns to execute
 	var next: Pattern = replay_patterns[replay_index]
 	if next == null:
-		SoundManager.play_fail() # Sound effect for clear grid
-		main_scene.hexecutor.reset() # Clear grid on null
-		handle_clear_grid() # Update stack display
+		main_scene.clear() # Clear grid, but also related gui and hexecutor
 	else:
-		main_scene.hexecutor.execute_with_effects(next) # Execute pattern
+		main_scene.new_replay_pattern(next) # Add visually to grid, then execute via hexecutor
 	replay_index += 1
 	update_replay_timeline_label()
 
