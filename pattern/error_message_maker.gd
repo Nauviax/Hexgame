@@ -1,26 +1,26 @@
 class_name ErrorMM
 
 enum {
-	WRONG_ARG_COUNT, # Expected a specific number of arguments, but recieved too few. Takes two arguments: expected count, got count
-	WRONG_ARG_TYPE, # Expected an argument of a specific type, but got a different type. Takes two arguments: expected location, expected type, got iota
-	WRONG_ARG_PAIR, # Expected a pair of arguments, but the pair didn't match any expected pair type. Takes two arguments: got iota 1, got iota 2
+	WRONG_ARG_COUNT, 		# Expected a specific number of arguments, but recieved too few. Takes two arguments: expected count, got count
+	WRONG_ARG_TYPE, 		# Expected an argument of a specific type, but got a different type. Takes two arguments: expected location, expected type, got iota
+	WRONG_ARG_PAIR, 		# Expected a pair of arguments, but the pair didn't match any expected pair type. Takes two arguments: got iota 1, got iota 2
 
-	INVALID_PATTERN, # The pattern provided was invalid. Takes one argument: p_code
-	DIV_BY_ZERO, # Attempted to divide by zero. Takes no arguments
-	OUT_OF_RANGE, # The provided number was out of range. Takes four arguments: expected location, min, max, got iota. (Pass "any" for min or max if none)
+	INVALID_PATTERN, 		# The pattern provided was invalid. Takes one argument: p_code
+	DIV_BY_ZERO, 			# Attempted to divide by zero. Takes no arguments
+	OUT_OF_RANGE, 			# The provided number was out of range. Takes four arguments: expected location, min, max, got iota. (Pass "any" for min or max if none)
 
-	NOT_LEVEL_HAVER, # Attempted to use a level-haver-based function on a non-level-haver. Takes no arguments
-	BAD_EVANITION, # Evanition executed outside of Introspection. Takes no arguments
-	CASTER_IN_RANGE, # Attempted to cast a spell in range of the caster, when the caster can't be in range of the spell. Takes no arguments
-	LIST_CONTAINS_INVALID, # A list contains an invalid iota. Takes four arguments: expected location, expected type, got iota index, got iota
-	NO_SENTINEL, # Tried to access the sentinel while it was null. Takes no arguments
-	HASTY_RETROSPECTION, # Retrospection executed without a previous matching Introspection. Takes no arguments
-	NO_GATE, # Vector given to teleport did not lead to a gate. Takes two arguments: Given vector, "gate" pos
+	NOT_LEVEL_HAVER, 		# Attempted to use a level-haver-based function on a non-level-haver. Takes no arguments
+	BAD_EVANITION, 			# Evanition executed outside of Introspection. Takes no arguments
+	CASTER_IN_RANGE, 		# Attempted to cast a spell in range of the caster, when the caster can't be in range of the spell. Takes no arguments
+	LIST_CONTAINS_INVALID, 	# A list contains an invalid iota. Takes four arguments: expected location, expected type, got iota index, got iota
+	NO_SENTINEL, 			# Tried to access the sentinel while it was null. Takes no arguments
+	HASTY_RETROSPECTION, 	# Retrospection executed without a previous matching Introspection. Takes no arguments
+	NO_GATE, 				# Vector given to teleport did not lead to a gate. Takes two arguments: Given vector, "gate" pos
 
-	DELVED_TOO_DEEP, # Execution depth exceeded the maximum. Takes one argument: current depth
-	CASTING_DISABLED, # Attempted to cast a pattern, but casting is disabled. Takes no arguments
-	CUSTOM, # Custom error message. Takes one argument: The message. Not recommended to be used as can be hard to make changes.
-	NONE # No error message. Used for invalid game states, or whenever code doesn't know what error to throw. Ideally never used or at least never called.
+	DELVED_TOO_DEEP, 		# Execution depth exceeded the maximum. Takes one argument: current depth
+	CASTING_DISABLED, 		# Attempted to cast a pattern, but casting is disabled. Takes no arguments
+	CUSTOM, 				# Custom error message. Takes one argument: The message. Not recommended to be used as can be hard to make changes.
+	NONE 					# No error message. Used for invalid game states, or whenever code doesn't know what error to throw. Ideally never used or at least never called.
 }
 
 # For the purposes of expected types, patterns can also use "number/vector" to specify multiple types, "entity (player)" to be more specific, or "(many)" if many types are allowed.
