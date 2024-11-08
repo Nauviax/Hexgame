@@ -19,7 +19,7 @@ enum State {
 	FREE, 		# Point is not in use.
 	DRAWING,	# Being used to draw a new pattern.
 	TAKEN,		# Has been used to draw a pattern, can no longer be used.
-	RESERVED,	# Belongs to a pattern, but said pattern is being moved. Effectively a free point.
+	RESERVED,	# Belongs to a pattern, but said pattern is being moved. Effectively a free point. (Should have priority over HOVERED)
 	HOVERED,	# A pattern is being held above this point. Effectively a free point, unless pattern is placed here.
 	# !!! Hovered AND reserved state may be useful too
 }

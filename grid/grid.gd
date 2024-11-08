@@ -19,11 +19,21 @@ var cur_points: Array = [] # List to store points in the current pattern (Ordere
 var line: Line2D = null # The line being drawn
 # The shader + gradient used for the line being cast
 static var line_scene: PackedScene = preload("res://resources/shaders/cast_line/cast_line.tscn")
-static var line_gradient: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/casting.tres")
-@onready var mouse_line_color: Color = line_gradient.gradient.get_color(line_gradient.gradient.get_point_count() - 1)
+static var line_gradient_casting: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/casting.tres") # Drawing color
+static var line_gradient_dragging: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/meta.tres") # Dragging color
+static var line_gradient_collision: GradientTexture1D = preload("res://resources/shaders/cast_line/gradient_textures/fail.tres") # Invalid position while dragging
+@onready var mouse_line_color: Color = line_gradient_casting.gradient.get_color(line_gradient_casting.gradient.get_point_count() - 1)
 var mouse_line: Line2D = null # The line being drawn between last point and mouse
 var hex_border: Hex_Border = null # The border around the patterns drawn
 var patterns: Array = [] # List of patterns, type Pattern. (Mainly for deletion afterwards)
+
+# Drag logic variables
+var dragging: bool = false # If a pattern is being dragged
+var drag_pattern: Pattern = null # The pattern being dragged. (Access to points via pattern_on_grid)
+var drag_point_index: int = 0 # The index of the point in the pattern that dragging started on. Used as "center" point.
+var drag_old_gradient: GradientTexture1D = null # The gradient texture of the line before dragging (Will be updated during drag, and restored after)
+var drag_pattern_hovered_points: Array = [] # Points that are hovered by the pattern being dragged. May contain duplicates.
+var drag_new_pos_is_valid: bool = false # If the new position of the currently dragged pattern is valid
 
 # Prepare *stuff*
 func _ready() -> void:
@@ -50,7 +60,7 @@ func _ready() -> void:
 		# Prepare Line2D
 		line = line_scene.instantiate()
 		line.prep_line() # Creates material duplicate
-		line.material.set_shader_parameter("gradient_texture", line_gradient)
+		line.material.set_shader_parameter("gradient_texture", line_gradient_casting)
 		add_child(line)
 		
 		# Prepare Hex border
@@ -66,9 +76,12 @@ func _on_grid_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx
 		return
 	# Mouse input
 	if event is InputEventMouseButton:
-		# Tell grid to send pattern on mouse up
+		# On mouse up, either send drawn pattern to be executed, or stop dragging.
 		if event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed() == false:
-			send_pattern()
+			if dragging:
+				place_dragged_pattern()
+			else:
+				send_pattern()
 			return
 		# Clear hexecutor/grid etc on right click
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
@@ -77,20 +90,28 @@ func _on_grid_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx
 				main_scene.clear() # Clear grid, but also related gui and hexecutor
 			return
 
-# Also send pattern on mouse exit
+# Also handle mouse up on grid exit.
 func _on_grid_area_2d_mouse_exited() -> void:
-	send_pattern()
+	if dragging:
+		place_dragged_pattern()
+	else:
+		send_pattern()
 
 # On every frame, update the mouse_line to go between the latest point and the mouse
 # If cur_points is empty, mouse_line is hidden
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	# Handle dragging
+	if dragging:
+		var grab_pos: Vector2 = drag_pattern.pattern_on_grid.grid_line2d.points[drag_point_index]
+		drag_pattern.pattern_on_grid.grid_line2d.position = to_local(get_global_mouse_position()) - grab_pos # Move pattern to mouse
+	# Handle extra drawing line for mouse
 	if len(cur_points) > 0:
 		if mouse_line == null:
 			mouse_line = Line2D.new()
 			mouse_line.width = 3
-			# Set line color last color of line_gradient
+			# Set line color last color of line_gradient_casting
 			mouse_line.set_default_color(mouse_line_color)
 			add_child(mouse_line)
 			mouse_line.add_point(cur_points[-1].position)
@@ -104,20 +125,80 @@ func _process(_delta: float) -> void:
 			mouse_line.queue_free()
 			mouse_line = null
 
-# Handle pattern drawing
+# Handle point input
 func on_point(point: Grid_Point) -> void:
+	# If currently dragging a pattern, update hover points
+	if dragging:
+		# Free old hovered points
+		for old_point: Grid_Point in drag_pattern_hovered_points:
+			if old_point.state == Grid_Point.State.HOVERED: # Avoid toggling state if it's reserved
+				old_point.state = Grid_Point.State.FREE
+		drag_pattern_hovered_points = []
+		# Get a new list of hovered points, by checking the coord id distance between the dragged pattern point and the calling point
+		var drag_points: Array = drag_pattern.pattern_on_grid.grid_points
+		var drag_point: Grid_Point = drag_points[drag_point_index]
+		var dx: int = point.x_id - drag_point.x_id
+		var dy: int = point.y_id - drag_point.y_id
+		var position_is_valid: bool = true
+		# Create a new list of points by adding the dx and dy to each point in the pattern, and using the points_dict to get the point
+		for d_point: Grid_Point in drag_points:
+			var new_coord: Vector2i = Vector2i(d_point.x_id + dx, d_point.y_id + dy)
+			if points_dict.has(new_coord): # Point exists in grid
+				var new_point: Grid_Point = points_dict[new_coord]
+				drag_pattern_hovered_points.push_back(new_point) # Save the point for later
+				if new_point.is_in_use(): # If OTHER pattern exists here, don't allow it to be placed
+					position_is_valid = false
+			else: # Pattern is out of bounds, don't allow it to be placed
+				position_is_valid = false
+		# Update state of hovered points
+		for new_point: Grid_Point in drag_pattern_hovered_points:
+			if new_point.state == Grid_Point.State.FREE: # Don't override reserved points
+				new_point.state = Grid_Point.State.HOVERED
+		# Update line color based on position validity
+		drag_new_pos_is_valid = position_is_valid
+		if position_is_valid:
+			drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_dragging)
+		else:
+			drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_collision)
+		return # Done!
+
+	# If not drawing OR dragging, but just clicked a point that contains a pattern, start dragging it.
+	if point.is_in_use():
+		if len(cur_points) > 0:
+			return # Don't allow dragging if a pattern is being drawn.
+		for pattern: Pattern in patterns:
+			if point in pattern.pattern_on_grid.grid_points:
+				drag_pattern = pattern
+				dragging = true
+				var drag_points: Array = drag_pattern.pattern_on_grid.grid_points
+				# Save the index of the clicked point in the pattern
+				drag_point_index = drag_points.find(point)
+				# Set all points in the pattern to reserved
+				for d_point: Grid_Point in drag_points:
+					d_point.state = Grid_Point.State.RESERVED
+				# Save the current gradient texture, then set the new one
+				drag_old_gradient = drag_pattern.pattern_on_grid.grid_line2d.material.get_shader_parameter("gradient_texture")
+				drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_dragging)
+				return # No need to do anything else.
+		if !dragging:
+			printerr("Point is in use, but no pattern found. Coordinates: " + str(point.x_id) + ", " + str(point.y_id))
+			return # Do nothing if no pattern found
+
+	# Otherwise, (So also point not in use,) run drawing logic with calling point (Trying desperately to split this function up. May do so more later.)
+	on_point_draw(point)
+
+# Drawing logic for on_point
+func on_point_draw(point: Grid_Point) -> void:
 	var cur_length: int = len(cur_points)
-
-	# Check if the point is not the latest point in cur_points, or if it is already in use
-	if point.is_in_use() or (cur_length > 0 and point == cur_points[-1]):
-		return # Do nothing
-
 	var latest_point: Grid_Point = null # The latest point in cur_points. Used in multiple checks
+
+	if cur_length > 0: # Get the latest/last used point in cur_points, if it exists
+		latest_point = cur_points[-1]
+		if latest_point == point: # If latest point IS the calling point, do nothing.
+			return
 
 	# Checks related to distance require at least 1 point in cur_points.
 	if cur_length >= 1:
-		latest_point = cur_points[-1] # Set latest_point to the latest point in cur_points
-
 		# Calculate difference between latest point and current point x_id and y_id
 		# Point is too far if abs x or y dif is > 1, or if the abs sum is > 1 (Allow one type of diagonal)
 		var x_dif: int = point.x_id - latest_point.x_id 
@@ -167,6 +248,14 @@ func update_hex_border(point: Grid_Point) -> void:
 	else:
 		hex_border.expand_border(point)
 
+# Regenerate the hex border completely, based on the current patterns being displayed.
+# Should be used when a pattern is moved, or any situation where the border may shrink unpredictably. (Note, growing is fine. Only use if shrinking.)
+func regenerate_hex_border() -> void:
+	hex_border.reset(false) # Clear border, but do not update score.
+	for pattern: Pattern in patterns:
+		for point: Grid_Point in pattern.pattern_on_grid.grid_points:
+			update_hex_border(point)
+
 # Sends the created pattern to hexecutor via main_scene (Unless it's a single point)
 func send_pattern() -> void:
 	if cur_points.size() == 0:
@@ -185,6 +274,37 @@ func send_pattern() -> void:
 		line.material.set_shader_parameter("segments", 0.0) # Update shader segments
 	cur_points = [] # New list, don't clear the old one
 	hex_border.clear_history() # Clear history
+
+# Place the dragged pattern on the grid if the new position is valid, or reset if not.
+func place_dragged_pattern() -> void:
+	# Restore old gradient texture
+	drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", drag_old_gradient)
+	# Stop following mouse
+	drag_pattern.pattern_on_grid.grid_line2d.position = Vector2.ZERO
+	if drag_new_pos_is_valid: # Place in new position
+		# Free reserved points
+		for old_point: Grid_Point in drag_pattern.pattern_on_grid.grid_points:
+			old_point.state = Grid_Point.State.FREE
+		# Take new points
+		for new_point: Grid_Point in drag_pattern_hovered_points:
+			new_point.state = Grid_Point.State.TAKEN
+		# Update pattern line points, and grid point list
+		for ii in range(drag_pattern.pattern_on_grid.grid_points.size()):
+			drag_pattern.pattern_on_grid.grid_line2d.set_point_position(ii, drag_pattern_hovered_points[ii].position)
+			drag_pattern.pattern_on_grid.grid_points[ii] = drag_pattern_hovered_points[ii]
+		# Regenerate hex border
+		regenerate_hex_border()
+	else: # Reset to old position
+		# Clear hovered points
+		for old_point: Grid_Point in drag_pattern_hovered_points:
+			if old_point.state == Grid_Point.State.HOVERED: # Only reset hovered points
+				old_point.state = Grid_Point.State.FREE 
+		# Set all points in the pattern to used again
+		for d_point: Grid_Point in drag_pattern.pattern_on_grid.grid_points:
+			d_point.state = Grid_Point.State.TAKEN
+	# Cleanup
+	dragging = false
+	drag_pattern = null
 
 # Given an existing pattern (May not be displayed yet), draw it on the grid.
 # Ignores collision checks for other on_grid patterns, and overwrites any existing pattern_on_grid that this pattern may have.
