@@ -9,19 +9,38 @@ class_name Grid_Point
 var x_id: int = 0
 var y_id: int = 0
 
-# in_use means the point is part of a previous pattern
-var in_use: bool = false:
-	set(val):
-		in_use = val
-		if in_use:
-			polygon.color = Color(1, 0, 0, 1) # Red when in use
-		else:
-			polygon.color = Color(1, 1, 1, 1) # White when not in use
-
 # Had issues when not using this method. This works anyway.
 func set_id(x: int, y: int) -> void:
 	x_id = x
 	y_id = y
+
+# Various states this point can have. Affects is_free() and point's color.
+enum State {
+	FREE, 		# Point is not in use.
+	DRAWING,	# Being used to draw a new pattern.
+	TAKEN,		# Has been used to draw a pattern, can no longer be used.
+	RESERVED,	# Belongs to a pattern, but said pattern is being moved. Effectively a free point.
+	HOVERED,	# A pattern is being held above this point. Effectively a free point, unless pattern is placed here.
+	# !!! Hovered AND reserved state may be useful too
+}
+
+# State var for this point. Changing state will automatically update the point's color
+var state: State = State.FREE:
+	set(val):
+		state = val
+		match state:
+			State.FREE: polygon.color = Color(1, 1, 1, 1) # White
+			State.DRAWING: polygon.color = Color(1, 1, 0, 1) # Yellow
+			State.TAKEN: polygon.color = Color(1, 0, 0, 1) # Red
+			State.RESERVED: polygon.color = Color(1, 0.6, 0, 1) # Orange
+			State.HOVERED: polygon.color = Color(1, 1, 0, 1) # Yellow
+			_: pass # !!! TODO
+
+
+# Returns true if this point is considered "taken"
+# Currently this is false if point is anything other than TAKEN, but may change in future.
+func is_in_use() -> bool:
+	return state == State.TAKEN
 
 # Call parent when mouse entered while clicking (If grid has control)
 func _on_mouse_area_mouse_entered() -> void:

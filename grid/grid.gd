@@ -109,7 +109,7 @@ func on_point(point: Grid_Point) -> void:
 	var cur_length: int = len(cur_points)
 
 	# Check if the point is not the latest point in cur_points, or if it is already in use
-	if point.in_use or (cur_length > 0 and point == cur_points[-1]):
+	if point.is_in_use() or (cur_length > 0 and point == cur_points[-1]):
 		return # Do nothing
 
 	var latest_point: Grid_Point = null # The latest point in cur_points. Used in multiple checks
@@ -130,7 +130,9 @@ func on_point(point: Grid_Point) -> void:
 		# Check if the point is the previous point (Go back one)
 		if cur_points[-2] == point:
 			SoundManager.play_segment() # Sound effect
-			cur_points.pop_back() # Remove the latest point from cur_points
+			var popped_point: Grid_Point = cur_points.pop_back() # Remove the latest point from cur_points
+			if not (popped_point in cur_points):
+				popped_point.state = Grid_Point.State.FREE # Undo DRAWING state if not being used anymore
 			line.remove_point(line.get_point_count() - 1)
 			line.material.set_shader_parameter("segments", line.get_point_count() - 1.0) # Update shader segments
 			hex_border.undo() # Revert to previous border
@@ -149,6 +151,7 @@ func on_point(point: Grid_Point) -> void:
 	# All checks done. Add point to cur_points and line
 	SoundManager.play_segment() # Sound effect
 	cur_points.append(point)
+	point.state = Grid_Point.State.DRAWING # Set point state, showing it's being used to draw
 	line.add_point(point.position)
 	line.material.set_shader_parameter("segments", line.get_point_count() - 1.0) # Update shader segments
 

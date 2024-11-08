@@ -28,7 +28,7 @@ func _init(grid_points: Array, pattern: Pattern) -> void:
 	# Set the points of the line to the grid points.
 	for point: Grid_Point in grid_points:
 		grid_line2d.add_point(point.position)
-		point.in_use = true
+		point.state = Grid_Point.State.TAKEN
 
 	# Update shader segments
 	grid_line2d.material.set_shader_parameter("segments", grid_line2d.get_point_count() - 1.0)
@@ -40,7 +40,7 @@ func _init(grid_points: Array, pattern: Pattern) -> void:
 func remove() -> void:
 	# Free up all points.
 	for point: Grid_Point in grid_points:
-		point.in_use = false
+		point.state = Grid_Point.State.FREE
 	grid_points.clear()
 	# Remove line graphic.
 	grid_line2d.queue_free()
