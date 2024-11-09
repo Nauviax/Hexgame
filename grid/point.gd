@@ -8,13 +8,7 @@ class_name Grid_Point
 
 static var scale_max_distance: float = 400.0 # Distance at which points will show as 0 scale
 
-var x_id: int = 0
-var y_id: int = 0
-
-# Had issues when not using this method. This works anyway.
-func set_id(x: int, y: int) -> void:
-	x_id = x
-	y_id = y
+var xy_id: Vector2i = Vector2i(0, 0)
 
 # Various states this point can have. Affects is_free() and point's color.
 enum State {

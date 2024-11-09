@@ -34,7 +34,7 @@ func _init(grid_points: Array, pattern: Pattern) -> void:
 	grid_line2d.material.set_shader_parameter("segments", grid_line2d.get_point_count() - 1.0)
 
 	# Tell pattern object where the line has been drawn.
-	self.pattern.grid_location = Vector2i(grid_points[0].x_id, grid_points[0].y_id)
+	self.pattern.grid_location = grid_points[0].xy_id
 
 # Remove the pattern from the grid, freeing up all points and removing the line graphic.
 func remove() -> void:

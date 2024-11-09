@@ -68,8 +68,8 @@ func expand_border(point: Grid_Point) -> void:
 		printerr("Warning: HexBorder.new_point() called before initial border created.")
 		return
 	# Otherwise, find new p1-p6 that create a hexagon enclosing the new point (p7) and all previous points
-	var p7_x: int = point.x_id
-	var p7_y: int = point.y_id
+	var p7_x: int = point.xy_id.x
+	var p7_y: int = point.xy_id.y
 	var p7_x_y: int = p7_x + p7_y
 
 	# Initial values based on points 1-6 (See large comment later in func for details)
@@ -129,16 +129,13 @@ func expand_border(point: Grid_Point) -> void:
 
 # Create the border around the given point
 func create_border(point: Grid_Point) -> void:
-	var x_id: int = point.x_id
-	var y_id: int = point.y_id
-
-	p1 = Vector2i(x_id, y_id)
-	p2 = Vector2i(x_id, y_id)
-	p3 = Vector2i(x_id, y_id)
-	p4 = Vector2i(x_id, y_id)
-	p5 = Vector2i(x_id, y_id)
-	p6 = Vector2i(x_id, y_id)
-
+	var xy_id: Vector2i = point.xy_id
+	p1 = xy_id
+	p2 = xy_id
+	p3 = xy_id
+	p4 = xy_id
+	p5 = xy_id
+	p6 = xy_id
 	# Redraw border
 	redraw()
 

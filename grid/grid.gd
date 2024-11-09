@@ -49,9 +49,9 @@ func _ready() -> void:
 				x_offset = GRIDSPACING / 2
 			point.position = GRIDOFFSET + Vector2(ii * GRIDSPACING + x_offset, jj * ROWSPACING) # Set the position of the point
 			if not Engine.is_editor_hint():
-				point.set_id(ii - (jj/2), jj) # Set the id of the point
+				point.xy_id = Vector2i(ii - (jj/2), jj) # Set the id of the point
 			add_child(point)
-			points_dict[Vector2i(ii - (jj/2), jj)] = point
+			points_dict[point.xy_id] = point
 	
 	# Prepare node size
 	grid_area_shape.shape.size = NODEAREA
@@ -157,7 +157,7 @@ func on_point_update_hover(point: Grid_Point) -> void:
 		drag_pattern_hovered_points = []
 		# Sum the hovered point position and drag_pattern_as_centred_vector2i, to represent the pattern at the hovered position
 		var new_vector2i_positions: Array = []
-		var clicked_vector2i: Vector2i = Vector2i(point.x_id, point.y_id)
+		var clicked_vector2i: Vector2i = point.xy_id
 		for pattern_point: Vector2i in drag_pattern_as_centred_vector2i:
 			new_vector2i_positions.push_back(pattern_point + clicked_vector2i)
 		var position_is_valid: bool = true
@@ -195,7 +195,7 @@ func on_point_start_drag(point: Grid_Point) -> void:
 			drag_pattern_as_centred_vector2i = []
 			var drag_point: Grid_Point = drag_points[drag_point_index]
 			for pattern_point: Grid_Point in drag_points:
-				drag_pattern_as_centred_vector2i.push_back(Vector2i(pattern_point.x_id - drag_point.x_id, pattern_point.y_id - drag_point.y_id))
+				drag_pattern_as_centred_vector2i.push_back(pattern_point.xy_id - drag_point.xy_id)
 			# Set all points in the pattern to reserved
 			for pattern_point: Grid_Point in drag_points:
 				pattern_point.state = Grid_Point.State.RESERVED
@@ -204,7 +204,7 @@ func on_point_start_drag(point: Grid_Point) -> void:
 			drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_dragging)
 			return # No need to do anything else.
 	if !dragging:
-		printerr("Point is in use, but no pattern found. Coordinates: " + str(point.x_id) + ", " + str(point.y_id))
+		printerr("Point is in use, but no pattern found. Coordinates: " + str(point.xy_id))
 		return # Do nothing if no pattern found
 
 # Drawing logic for on_point
@@ -221,8 +221,8 @@ func on_point_draw(point: Grid_Point) -> void:
 	if cur_length >= 1:
 		# Calculate difference between latest point and current point x_id and y_id
 		# Point is too far if abs x or y dif is > 1, or if the abs sum is > 1 (Allow one type of diagonal)
-		var x_dif: int = point.x_id - latest_point.x_id 
-		var y_dif: int = point.y_id - latest_point.y_id
+		var x_dif: int = point.xy_id.x - latest_point.xy_id.x 
+		var y_dif: int = point.xy_id.y - latest_point.xy_id.y
 		if (abs(x_dif) > 1 or abs(y_dif) > 1 or abs(x_dif + y_dif) > 1):
 			return # Do nothing
 	

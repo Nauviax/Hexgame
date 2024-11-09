@@ -147,20 +147,19 @@ static func calc_p_code(points: Array) -> String:
 	
 # Calculates the direction from point a to point b. (1-6 starting NE and going clockwise.)
 static func get_dir(aa: Grid_Point, bb: Grid_Point) -> int:
-	var xx: int = bb.x_id - aa.x_id
-	var yy: int = bb.y_id - aa.y_id
-	if xx == 0:
-		if yy == 1:
+	var dist: Vector2i = bb.xy_id - aa.xy_id
+	if dist.x == 0:
+		if dist.y == 1:
 			return 3
 		else: # y == -1
 			return 6
-	elif xx == 1:
-		if yy == 0:
+	elif dist.x == 1:
+		if dist.y == 0:
 			return 2
 		else: # y == -1
 			return 1
 	else: # x == -1
-		if yy == 0:
+		if dist.y == 0:
 			return 5
 		else: # y == 1
 			return 4
