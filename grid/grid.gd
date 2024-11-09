@@ -142,6 +142,10 @@ func _process(_delta: float) -> void:
 
 # Handle point left mouse input
 func on_point_left(point: Grid_Point) -> void:
+	# Firstly, if a popup is active, close it.
+	if popup_active:
+		cur_popup.stop_display()
+		popup_active = false
 	# If currently dragging a pattern, update hover points
 	if dragging:
 		point_update_hover(point)
