@@ -282,6 +282,7 @@ func send_pattern() -> void:
 		return # Do nothing
 	if cur_points.size() == 1:
 		line.clear_points()
+		cur_points[0].state = Grid_Point.State.FREE # Undo DRAWING state
 		line.material.set_shader_parameter("segments", 0.0) # Update shader segments
 		hex_border.undo() # Initial click could have changed border
 	else: # Create, display on grid and save reference, send pattern, then reset line.
