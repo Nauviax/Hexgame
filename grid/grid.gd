@@ -31,9 +31,12 @@ var patterns: Array = [] # List of patterns, type Pattern. (Mainly for deletion 
 var dragging: bool = false # If a pattern is being dragged
 var drag_pattern: Pattern = null # The pattern being dragged. (Access to points via pattern_on_grid)
 var drag_point_index: int = 0 # The index of the point in the pattern that dragging started on. Used as "center" point.
+var last_called_point: Grid_Point = null # The last point that called the grid. Used to re-call a hover update at last position.
 var drag_old_gradient: GradientTexture1D = null # The gradient texture of the line before dragging (Will be updated during drag, and restored after)
-var drag_pattern_hovered_points: Array = [] # Points that are hovered by the pattern being dragged. May contain duplicates.
-var drag_new_pos_is_valid: bool = false # If the new position of the currently dragged pattern is valid
+var drag_pattern_as_centred_vector2i: Array = [] # Represents the pattern grid points as Vector2i, centred so that clicked point is (0,0). May be rotated during drag.
+var drag_pattern_num_rotates: int = 0 # Number of 60 degree rotations the dragged pattern has been rotated. Used for updating p_code once placed.
+var drag_pattern_hovered_points: Array = [] # Grid points that are hovered by the pattern being dragged. May contain duplicates.
+var drag_new_pos_is_valid: bool = true # If the new position of the currently dragged pattern is valid
 
 # Prepare *stuff*
 func _ready() -> void:
@@ -83,11 +86,17 @@ func _on_grid_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx
 			else:
 				send_pattern()
 			return
-		# Clear hexecutor/grid etc on right click
+		# Rotate dragged pattern on right click
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed() == true:
-			# Don't clear if grid.cur_points is not empty (Pattern in progress)
-			if cur_points.size() == 0:
-				main_scene.clear() # Clear grid, but also related gui and hexecutor
+			if dragging:
+				rotate_dragged_pattern()
+			return
+		# Clear hexecutor/grid etc on middle click
+		if event.button_index == MOUSE_BUTTON_MIDDLE and event.is_pressed() == true:
+			# If dragging, or if grid.cur_points is not empty because of active drawing, do nothing.
+			if dragging or cur_points.size() > 0:
+				return
+			main_scene.clear() # Clear grid, but also related gui and hexecutor
 			return
 
 # Also handle mouse up on grid exit.
@@ -129,22 +138,33 @@ func _process(_delta: float) -> void:
 func on_point(point: Grid_Point) -> void:
 	# If currently dragging a pattern, update hover points
 	if dragging:
-		# Free old hovered points
+		on_point_update_hover(point)
+	# If not drawing OR dragging, but just clicked a point that contains a pattern, start dragging it.
+	elif point.is_in_use():
+		if len(cur_points) == 0: # Don't allow dragging if a pattern is being drawn.
+			on_point_start_drag(point)
+	# Otherwise, (So also point not in use,) run drawing logic with calling point.
+	else:
+		on_point_draw(point)
+	last_called_point = point # Remember last point called
+
+# Hover Drag logic for on_point. Also called by rotate to update hovered points.
+func on_point_update_hover(point: Grid_Point) -> void:
+# Free old hovered points
 		for old_point: Grid_Point in drag_pattern_hovered_points:
 			if old_point.state == Grid_Point.State.HOVERED: # Avoid toggling state if it's reserved
 				old_point.state = Grid_Point.State.FREE
 		drag_pattern_hovered_points = []
-		# Get a new list of hovered points, by checking the coord id distance between the dragged pattern point and the calling point
-		var drag_points: Array = drag_pattern.pattern_on_grid.grid_points
-		var drag_point: Grid_Point = drag_points[drag_point_index]
-		var dx: int = point.x_id - drag_point.x_id
-		var dy: int = point.y_id - drag_point.y_id
+		# Sum the hovered point position and drag_pattern_as_centred_vector2i, to represent the pattern at the hovered position
+		var new_vector2i_positions: Array = []
+		var clicked_vector2i: Vector2i = Vector2i(point.x_id, point.y_id)
+		for pattern_point: Vector2i in drag_pattern_as_centred_vector2i:
+			new_vector2i_positions.push_back(pattern_point + clicked_vector2i)
 		var position_is_valid: bool = true
-		# Create a new list of points by adding the dx and dy to each point in the pattern, and using the points_dict to get the point
-		for d_point: Grid_Point in drag_points:
-			var new_coord: Vector2i = Vector2i(d_point.x_id + dx, d_point.y_id + dy)
-			if points_dict.has(new_coord): # Point exists in grid
-				var new_point: Grid_Point = points_dict[new_coord]
+		# Create a new list of points by using the points_dict to check if point exists
+		for new_vector2i: Vector2i in new_vector2i_positions:
+			if points_dict.has(new_vector2i): # Point exists in grid
+				var new_point: Grid_Point = points_dict[new_vector2i]
 				drag_pattern_hovered_points.push_back(new_point) # Save the point for later
 				if new_point.is_in_use(): # If OTHER pattern exists here, don't allow it to be placed
 					position_is_valid = false
@@ -162,30 +182,30 @@ func on_point(point: Grid_Point) -> void:
 			drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_collision)
 		return # Done!
 
-	# If not drawing OR dragging, but just clicked a point that contains a pattern, start dragging it.
-	if point.is_in_use():
-		if len(cur_points) > 0:
-			return # Don't allow dragging if a pattern is being drawn.
-		for pattern: Pattern in patterns:
-			if point in pattern.pattern_on_grid.grid_points:
-				drag_pattern = pattern
-				dragging = true
-				var drag_points: Array = drag_pattern.pattern_on_grid.grid_points
-				# Save the index of the clicked point in the pattern
-				drag_point_index = drag_points.find(point)
-				# Set all points in the pattern to reserved
-				for d_point: Grid_Point in drag_points:
-					d_point.state = Grid_Point.State.RESERVED
-				# Save the current gradient texture, then set the new one
-				drag_old_gradient = drag_pattern.pattern_on_grid.grid_line2d.material.get_shader_parameter("gradient_texture")
-				drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_dragging)
-				return # No need to do anything else.
-		if !dragging:
-			printerr("Point is in use, but no pattern found. Coordinates: " + str(point.x_id) + ", " + str(point.y_id))
-			return # Do nothing if no pattern found
-
-	# Otherwise, (So also point not in use,) run drawing logic with calling point (Trying desperately to split this function up. May do so more later.)
-	on_point_draw(point)
+# Logic to start dragging a pattern.
+func on_point_start_drag(point: Grid_Point) -> void:
+	for pattern: Pattern in patterns:
+		if point in pattern.pattern_on_grid.grid_points:
+			drag_pattern = pattern
+			dragging = true
+			var drag_points: Array = drag_pattern.pattern_on_grid.grid_points
+			# Save the index of the clicked point in the pattern
+			drag_point_index = drag_points.find(point)
+			# Create a vector2i list of the pattern's points for easier manipulation, with the clicked point as the "center"
+			drag_pattern_as_centred_vector2i = []
+			var drag_point: Grid_Point = drag_points[drag_point_index]
+			for pattern_point: Grid_Point in drag_points:
+				drag_pattern_as_centred_vector2i.push_back(Vector2i(pattern_point.x_id - drag_point.x_id, pattern_point.y_id - drag_point.y_id))
+			# Set all points in the pattern to reserved
+			for pattern_point: Grid_Point in drag_points:
+				pattern_point.state = Grid_Point.State.RESERVED
+			# Save the current gradient texture, then set the new one
+			drag_old_gradient = drag_pattern.pattern_on_grid.grid_line2d.material.get_shader_parameter("gradient_texture")
+			drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", line_gradient_dragging)
+			return # No need to do anything else.
+	if !dragging:
+		printerr("Point is in use, but no pattern found. Coordinates: " + str(point.x_id) + ", " + str(point.y_id))
+		return # Do nothing if no pattern found
 
 # Drawing logic for on_point
 func on_point_draw(point: Grid_Point) -> void:
@@ -275,36 +295,70 @@ func send_pattern() -> void:
 	cur_points = [] # New list, don't clear the old one
 	hex_border.clear_history() # Clear history
 
+# Rotate the given pattern 60 degrees clockwise. "Simulated" only, does not affect the actual pattern until placed.
+func rotate_dragged_pattern() -> void:
+	# Rotate pattern_as_centred_vector2i 60 degrees clockwise, and log a rotation (For updating p_code later)
+	for ii in range(drag_pattern_as_centred_vector2i.size()):
+		var old_point: Vector2i = drag_pattern_as_centred_vector2i[ii]
+		drag_pattern_as_centred_vector2i[ii] = Vector2i(-old_point.y, old_point.x + old_point.y)
+	drag_pattern_num_rotates += 1
+	# Update hovered points, at wherever was most recently hovered.
+	on_point_update_hover(last_called_point)
+	# Update line2d points. Doing this in a weird way because rotated line may be off-grid (Hovered points may be incomplete)
+	var pattern_positions: Array = drag_pattern.pattern_on_grid.grid_line2d.points
+	var centre_of_rotation: Vector2 = pattern_positions[drag_point_index]
+	for ii in range(pattern_positions.size()):
+		var old_relative_pos: Vector2 = pattern_positions[ii] - centre_of_rotation
+		var rotated_pos: Vector2 = old_relative_pos.rotated(1.04719755) + centre_of_rotation # 1.04719755 is ~60 degrees in radians
+		drag_pattern.pattern_on_grid.grid_line2d.set_point_position(ii, rotated_pos)
+
 # Place the dragged pattern on the grid if the new position is valid, or reset if not.
 func place_dragged_pattern() -> void:
+	var pattern_grid_points: Array = drag_pattern.pattern_on_grid.grid_points
 	# Restore old gradient texture
 	drag_pattern.pattern_on_grid.grid_line2d.material.set_shader_parameter("gradient_texture", drag_old_gradient)
 	# Stop following mouse
 	drag_pattern.pattern_on_grid.grid_line2d.position = Vector2.ZERO
 	if drag_new_pos_is_valid: # Place in new position
-		# Free reserved points
-		for old_point: Grid_Point in drag_pattern.pattern_on_grid.grid_points:
-			old_point.state = Grid_Point.State.FREE
-		# Take new points
-		for new_point: Grid_Point in drag_pattern_hovered_points:
-			new_point.state = Grid_Point.State.TAKEN
-		# Update pattern line points, and grid point list
-		for ii in range(drag_pattern.pattern_on_grid.grid_points.size()):
-			drag_pattern.pattern_on_grid.grid_line2d.set_point_position(ii, drag_pattern_hovered_points[ii].position)
-			drag_pattern.pattern_on_grid.grid_points[ii] = drag_pattern_hovered_points[ii]
-		# Regenerate hex border
-		regenerate_hex_border()
+		# If this is the exact same position, just reclaim the points.
+		if drag_pattern_hovered_points == []:
+			for old_point: Grid_Point in pattern_grid_points:
+				old_point.state = Grid_Point.State.TAKEN
+		# Otherwise, free old points, take new points, and update pattern line points
+		else:
+			# Free reserved points
+			for old_point: Grid_Point in pattern_grid_points:
+				old_point.state = Grid_Point.State.FREE
+			# Take new points
+			for new_point: Grid_Point in drag_pattern_hovered_points:
+				new_point.state = Grid_Point.State.TAKEN
+			# Update pattern line points, and grid point list
+			for ii in range(pattern_grid_points.size()):
+				drag_pattern.pattern_on_grid.grid_line2d.set_point_position(ii, drag_pattern_hovered_points[ii].position)
+				pattern_grid_points[ii] = drag_pattern_hovered_points[ii]
+			# Update p_code (Add rotations to the first number in p_code, between 1-6) (!!! CHECK THIS WORKS ONCE RCLICK POPUP ALLOWS ME TO CHECK)
+			drag_pattern.p_code = str((int(drag_pattern.p_code[0]) + drag_pattern_num_rotates - 1) % 6 + 1) + drag_pattern.p_code.substr(1)
+			# Regenerate hex border
+			regenerate_hex_border()
 	else: # Reset to old position
+		# If pattern was rotated, reset the line points to the original position
+		if drag_pattern_num_rotates > 0: # Even if multiple of 6, to prevent rounding errors
+			for ii in range(pattern_grid_points.size()):
+				drag_pattern.pattern_on_grid.grid_line2d.set_point_position(ii, pattern_grid_points[ii].position)
 		# Clear hovered points
 		for old_point: Grid_Point in drag_pattern_hovered_points:
 			if old_point.state == Grid_Point.State.HOVERED: # Only reset hovered points
 				old_point.state = Grid_Point.State.FREE 
 		# Set all points in the pattern to used again
-		for d_point: Grid_Point in drag_pattern.pattern_on_grid.grid_points:
+		for d_point: Grid_Point in pattern_grid_points:
 			d_point.state = Grid_Point.State.TAKEN
 	# Cleanup
 	dragging = false
 	drag_pattern = null
+	drag_pattern_as_centred_vector2i = []
+	drag_pattern_num_rotates = 0
+	drag_pattern_hovered_points = []
+	drag_old_gradient = null
 
 # Given an existing pattern (May not be displayed yet), draw it on the grid.
 # Ignores collision checks for other on_grid patterns, and overwrites any existing pattern_on_grid that this pattern may have.
