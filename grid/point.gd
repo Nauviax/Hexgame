@@ -67,8 +67,4 @@ func _process(_delta: float) -> void:
 	var dist: float = global_position.distance_to(mouse_pos)
 	# var scale_factor: float = init_scale * exp(-dist / 150) # Old scale factor logic. Possibly cooler, but probably slower.
 	var scale_factor: float = max(0, init_scale * (1 - dist / scale_max_distance))
-<<<<<<< HEAD
-=======
-
->>>>>>> f0a7d51abc57ae80f2530fdfd1338fc8d62fabfc
 	polygon.scale = Vector2(scale_factor, scale_factor)
