@@ -38,19 +38,24 @@ var state: State = State.FREE:
 func is_in_use() -> bool:
 	return state == State.TAKEN
 
-# Call parent when mouse entered while clicking (If grid has control)
+# Call parent when mouse entered, different depending if clicking/dragging (Only if grid has control)
 func _on_mouse_area_mouse_entered() -> void:
 	if Globals.player_control:
 		return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		parent_grid.on_point(self)
+		parent_grid.on_point_left(self)
+	else:
+		parent_grid.on_point_hover(self)
 
-# Call parent when mouse starts clicking on me (If grid has control)
+# Call parent when mouse starts clicking on this point (Only if grid has control)
 func _on_mouse_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if Globals.player_control:
 		return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		parent_grid.on_point(self)
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			parent_grid.on_point_left(self)
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			parent_grid.on_point_right(self)
 
 # Animate based on mouse distance
 func _process(_delta: float) -> void:

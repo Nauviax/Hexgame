@@ -38,6 +38,12 @@ var drag_pattern_num_rotates: int = 0 # Number of 60 degree rotations the dragge
 var drag_pattern_hovered_points: Array = [] # Grid points that are hovered by the pattern being dragged. May contain duplicates.
 var drag_new_pos_is_valid: bool = true # If the new position of the currently dragged pattern is valid
 
+# Popup variables
+@export var popup_holder: Control # All popups should be children of this node
+var popup_active: bool = false # If a popup is currently being tracked by grid. cur_popup may not always be null when this is false.
+var cur_popup: Hex_Popup = null # The (UNLOCKED) popup being used by the grid. Can be null.
+
+
 # Prepare *stuff*
 func _ready() -> void:
 	# Draw points
@@ -134,22 +140,22 @@ func _process(_delta: float) -> void:
 			mouse_line.queue_free()
 			mouse_line = null
 
-# Handle point input
-func on_point(point: Grid_Point) -> void:
+# Handle point left mouse input
+func on_point_left(point: Grid_Point) -> void:
 	# If currently dragging a pattern, update hover points
 	if dragging:
-		on_point_update_hover(point)
+		point_update_hover(point)
 	# If not drawing OR dragging, but just clicked a point that contains a pattern, start dragging it.
 	elif point.is_in_use():
 		if len(cur_points) == 0: # Don't allow dragging if a pattern is being drawn.
-			on_point_start_drag(point)
+			point_start_drag(point)
 	# Otherwise, (So also point not in use,) run drawing logic with calling point.
 	else:
-		on_point_draw(point)
+		point_draw(point)
 	last_called_point = point # Remember last point called
 
 # Hover Drag logic for on_point. Also called by rotate to update hovered points.
-func on_point_update_hover(point: Grid_Point) -> void:
+func point_update_hover(point: Grid_Point) -> void:
 # Free old hovered points
 		for old_point: Grid_Point in drag_pattern_hovered_points:
 			if old_point.state == Grid_Point.State.HOVERED: # Avoid toggling state if it's reserved
@@ -183,7 +189,7 @@ func on_point_update_hover(point: Grid_Point) -> void:
 		return # Done!
 
 # Logic to start dragging a pattern.
-func on_point_start_drag(point: Grid_Point) -> void:
+func point_start_drag(point: Grid_Point) -> void:
 	for pattern: Pattern in patterns:
 		if point in pattern.pattern_on_grid.grid_points:
 			drag_pattern = pattern
@@ -208,7 +214,7 @@ func on_point_start_drag(point: Grid_Point) -> void:
 		return # Do nothing if no pattern found
 
 # Drawing logic for on_point
-func on_point_draw(point: Grid_Point) -> void:
+func point_draw(point: Grid_Point) -> void:
 	var cur_length: int = len(cur_points)
 	var latest_point: Grid_Point = null # The latest point in cur_points. Used in multiple checks
 
@@ -304,7 +310,7 @@ func rotate_dragged_pattern() -> void:
 		drag_pattern_as_centred_vector2i[ii] = Vector2i(-old_point.y, old_point.x + old_point.y)
 	drag_pattern_num_rotates += 1
 	# Update hovered points, at wherever was most recently hovered.
-	on_point_update_hover(last_called_point)
+	point_update_hover(last_called_point)
 	# Update line2d points. Doing this in a weird way because rotated line may be off-grid (Hovered points may be incomplete)
 	var pattern_positions: Array = drag_pattern.pattern_on_grid.grid_line2d.points
 	var centre_of_rotation: Vector2 = pattern_positions[drag_point_index]
@@ -382,6 +388,39 @@ func reset(hard: bool = false) -> void:
 		hex_border.reset_hard()
 	else:
 		hex_border.reset()
+
+# Handle right clicks on points, disabled during dragging. Used primarily for pattern popups.
+func on_point_right(point: Grid_Point) -> void:
+	if dragging:
+		return # Right click reserved for rotating dragged pattern
+	if popup_active:
+		if cur_popup.visible: # Should be visible when active, but just in case.
+			cur_popup.lock()
+			cur_popup = null
+			popup_active = false
+			return
+	elif point.is_in_use():
+		for pattern: Pattern in patterns:
+			if point in pattern.pattern_on_grid.grid_points:
+				if cur_popup == null: # Generate new popup if none exists (Or keep old one if one exists already)
+					cur_popup = Hex_Popup.make_new(popup_holder)
+				cur_popup.display("P" + pattern.p_code)
+				popup_active = true
+				return
+		printerr("Point is in use, but no pattern found. Coordinates: " + str(point.xy_id))
+
+# Handle mouse movement over points when no buttons are pressed. Used to close popups.
+func on_point_hover(point: Grid_Point) -> void:
+	if popup_active:
+		# If point is in use, get the pattern that it is part of. If it's the same pattern as the popup, do nothing.
+		if point.is_in_use():
+			for pattern: Pattern in patterns:
+				if point in pattern.pattern_on_grid.grid_points:
+					if cur_popup.current_pattern.p_code == pattern.p_code: # Could technically be different pattern, but same p_code is close enough.
+						return # Do nothing
+		# Otherwise, hide the popup
+		cur_popup.stop_display()
+		popup_active = false
 
 # Given a p_code and a starting grid point coordinate, return a list of grid points that will make up the pattern.
 func p_code_to_points(p_code: String, start: Vector2i) -> Array:
