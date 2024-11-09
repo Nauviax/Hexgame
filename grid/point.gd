@@ -6,6 +6,8 @@ class_name Grid_Point
 @onready var init_scale: float = polygon.scale.x
 @onready var parent_grid: Node2D = get_parent()
 
+static var scale_max_distance: float = 400.0 # Distance at which points will show as 0 scale
+
 var x_id: int = 0
 var y_id: int = 0
 
@@ -63,5 +65,6 @@ func _process(_delta: float) -> void:
 		return
 	var mouse_pos: Vector2 = get_global_mouse_position()
 	var dist: float = global_position.distance_to(mouse_pos)
-	var scale_factor: float = init_scale * exp(-dist / 100) # Adjust the div value as needed
+	# var scale_factor: float = init_scale * exp(-dist / 150) # Old scale factor logic. Possibly cooler, but probably slower.
+	var scale_factor: float = max(0, init_scale * (1 - dist / scale_max_distance))
 	polygon.scale = Vector2(scale_factor, scale_factor)
