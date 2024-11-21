@@ -279,8 +279,11 @@ func scroll_background(amount: Vector2) -> void:
 func _on_spike_checker_body_entered(_body: Node2D) -> void:
 	# If levitating, ignore
 	if not entity.is_levitating:
-		# Invert velocity, plus some.
-		velocity *= -1.25 # Originally was 1 + bounce, but low bounce values can result in player clipping through spikes.
+		# Invert velocity, and apply both a percentage and flat bonus to velocity. (Flat, so 0 velocity players can't enter spikes)
+		velocity *= -1.2 # Launch away faster than impact
+		# Add the velocity as a normalised vector to itself, acting as a small flat bonus. This way the spikes still have an effect at low speeds.
+		velocity += velocity.normalized() * 100
+
 
 func _on_spike_checker_body_exited(_body: Node2D) -> void:
 	# Clear levitating
