@@ -46,7 +46,7 @@ var revealed_iota: Variant = null
 # Tilemap calculated centre and size (Real coords not fake)
 @onready var level_centre: Vector2 = $BottomRightPoint.position / 2
 @onready var level_size: float = max(level_centre.x, level_centre.y) * 2
-var transition_multiplier: float = 3.5 # Distance player is placed on transition, and how far to go to leave. (While flying)
+var transition_multiplier: float = 5 # Distance player is placed on transition, and how far to go to leave. (While flying)
 
 # Raycast objects for the level (Enabled = false)
 @onready var raycast_b: RayCast2D = $HexBlockRaycast
