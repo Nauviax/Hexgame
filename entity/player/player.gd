@@ -40,11 +40,12 @@ var ravenmind: Variant = null # Iota (Not readable/writable by other entities, a
 
 # Variable constants for player movement
 const speed = 1024
-const bounce = 0.25 # Velocity preserved on collision (0.1 means 10% in collision direction)
-const friction = 0.05 # Pull towards 0 when no input
-const tile_gravity = 10 # Pull strength of tiles (When slow enough)
+const bounce = 0.50 # Velocity preserved on collision (0.1 means 10% in collision direction)
+const friction_no_input = 0.15 # Pull towards 0 when no input
+const friction_input = 0.02 # Pull towards 0 during player input
+const tile_gravity = 15 # Pull strength of tiles (When slow enough)
 const tile_gravity_max_vel = 75 # Maximum velocity before tile gravity stops
-const acceleration = 0.015
+const acceleration = 0.030
 var tile_snap: Vector2 = Vector2(Entity.FAKE_SCALE, Entity.FAKE_SCALE) # Should equal grid scale, so player snaps to grid.
 
 # Variables for player flight
@@ -138,11 +139,14 @@ func _physics_process(delta: float) -> void:
 	var initial_pos: Vector2 = position # Used to scroll background based on movement
 	if fly_chargeup < 30 and not Input.is_action_pressed("fly"): # Normal, grounded movement
 		if input_dir != Vector2.ZERO:
+			# Apply friction_input if not levitating
+			if not entity.is_levitating:
+				velocity = lerp(velocity, Vector2.ZERO, friction_input)
 			# Lerp towards input direction
 			velocity = lerp(velocity, input_dir.normalized() * speed, acceleration / 2 if entity.is_levitating else acceleration)
 		else:
-			# Apply friction
-			velocity = lerp(velocity, Vector2.ZERO, friction / 4 if entity.is_levitating else friction)
+			# Apply friction_no_input
+			velocity = lerp(velocity, Vector2.ZERO, friction_no_input / 4 if entity.is_levitating else friction_no_input)
 			var vel_len: float = velocity.length()
 			# If close enough and slow enough, snap to grid
 			var tile_centre: Vector2 = position.snapped(tile_snap)
@@ -163,10 +167,10 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.y *= -bounce
 	else: # Flight mechanics
-		# If still charging, just apply friction (though stronger than normal)
+		# If still charging, just apply friction_no_input (though stronger than normal)
 		# This means holding fly while not levitating will effectively act as a brake for normal player movement.
 		if fly_chargeup < 50:
-			velocity = lerp(velocity, Vector2.ZERO, friction * 2)
+			velocity = lerp(velocity, Vector2.ZERO, friction_no_input * 2)
 			var collision: KinematicCollision2D = move_and_collide(velocity * delta)
 			if collision:
 				# Bounce only horizontally or vertically, as most/all collisions are with tiles.
