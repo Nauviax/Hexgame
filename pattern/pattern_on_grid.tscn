@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dnfs48hfr24oa"]
 
-[ext_resource type="Script" path="res://pattern/pattern_on_grid.gd" id="1_5b6w5"]
+[ext_resource type="Script" uid="uid://ddeh6vlrqowwm" path="res://pattern/pattern_on_grid.gd" id="1_5b6w5"]
 
 [node name="PatternOnGrid" type="Node2D"]
 script = ExtResource("1_5b6w5")

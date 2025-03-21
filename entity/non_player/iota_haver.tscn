@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cbo0lm0clhhmu"]
 
-[ext_resource type="Script" path="res://entity/non_player/iota_haver.gd" id="1_fbb2e"]
+[ext_resource type="Script" uid="uid://rhlmcfi2s7mr" path="res://entity/non_player/iota_haver.gd" id="1_fbb2e"]
 [ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/shitty_entity_sprite.png" id="2_m0j2c"]
 [ext_resource type="Theme" uid="uid://bk1llxpthaj7w" path="res://resources/ui/main_theme.tres" id="3_088dk"]
 [ext_resource type="StyleBox" uid="uid://cgibn2xtk7bja" path="res://resources/ui/label_background_style_override.tres" id="4_letx3"]

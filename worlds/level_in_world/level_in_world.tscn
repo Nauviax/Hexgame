@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://bcrk21oby4p0a"]
 
-[ext_resource type="Script" path="res://worlds/level_in_world/level_in_world.gd" id="1_5qsyk"]
+[ext_resource type="Script" uid="uid://ck2gdtpovmmnd" path="res://worlds/level_in_world/level_in_world.gd" id="1_5qsyk"]
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="2_bt7lj"]
-[ext_resource type="Script" path="res://worlds/level_in_world/pointer.gd" id="3_t2we7"]
+[ext_resource type="Script" uid="uid://cvgm3cfsoh7ue" path="res://worlds/level_in_world/pointer.gd" id="3_t2we7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ybvlb"]
 size = Vector2(512, 512)

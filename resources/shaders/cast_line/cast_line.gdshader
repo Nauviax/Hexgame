@@ -27,9 +27,9 @@ void fragment()
 		UV.y - VERTICAL_AMPLITUDE * noise(
 			TIME * VERTICAL_SPEED - UV.x * VERTICAL_SPACING * (segments + 0.1)
 			)
-		); 
+		);
 	vec4 texColor = texture(TEXTURE, uv);
-	
+
 	// Sample the gradient texture using the x-coordinate of the UV
 	vec3 gradientValue = texture(gradient_texture, UV).rgb;
 

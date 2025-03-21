@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://iy2km8hcnni2"]
 
-[ext_resource type="Script" path="res://worlds/world_view.gd" id="1_nkc0k"]
+[ext_resource type="Script" uid="uid://8jilmky28uj5" path="res://worlds/world_view.gd" id="1_nkc0k"]
 [ext_resource type="PackedScene" uid="uid://bcrk21oby4p0a" path="res://worlds/level_in_world/level_in_world.tscn" id="2_3ralq"]
 
 [node name="WorldView" type="Node2D"]

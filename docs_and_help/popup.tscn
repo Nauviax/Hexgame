@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b64fs4i6xedgl" path="res://resources/ui/popup_bg.png" id="1_ho7y6"]
 [ext_resource type="Theme" uid="uid://dymyqo6i3f2r3" path="res://resources/ui/small_theme.tres" id="1_rv7nq"]
-[ext_resource type="Script" path="res://docs_and_help/popup.gd" id="1_v4881"]
+[ext_resource type="Script" uid="uid://ckkk5ej0tnck4" path="res://docs_and_help/popup.gd" id="1_v4881"]
 [ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="3_n3cin"]
 
 [node name="Popup" type="PanelContainer" node_paths=PackedStringArray("title_label", "code_label", "is_spell_label", "iota_count_label", "middle_container", "graphic_parent", "desc_button", "description_label", "background")]

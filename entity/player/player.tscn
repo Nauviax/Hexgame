@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=3 uid="uid://crqwgh2ejsj6j"]
 
-[ext_resource type="Script" path="res://entity/player/player.gd" id="1_vgx7j"]
+[ext_resource type="Script" uid="uid://boupwv0vymms0" path="res://entity/player/player.gd" id="1_vgx7j"]
 [ext_resource type="Texture2D" uid="uid://bkenq7bgqh8cl" path="res://resources/sprites/look_line.png" id="3_bh7jj"]
 [ext_resource type="Texture2D" uid="uid://deq85nlvq103y" path="res://resources/sprites/godot.svg" id="3_xybjd"]
 [ext_resource type="Material" uid="uid://bign75jf214vt" path="res://resources/particles/particlegen_material.tres" id="4_4enp4"]
@@ -155,29 +155,29 @@ z_index = -1
 material = ExtResource("4_4enp4")
 emitting = false
 amount = 192
-process_material = SubResource("ParticleProcessMaterial_57jpk")
 texture = ExtResource("4_6ucrj")
 lifetime = 2.0
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_57jpk")
 
 [node name="PrePoofer" type="GPUParticles2D" parent="."]
 z_index = -1
 material = ExtResource("4_4enp4")
 emitting = false
 amount = 96
-process_material = SubResource("ParticleProcessMaterial_kwktj")
 texture = ExtResource("4_6ucrj")
 lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_kwktj")
 
 [node name="Trailer" type="GPUParticles2D" parent="."]
 z_index = -1
 material = ExtResource("4_4enp4")
 emitting = false
 amount = 32
-process_material = SubResource("ParticleProcessMaterial_vp5b2")
 texture = ExtResource("4_6ucrj")
 lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_vp5b2")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
@@ -210,29 +210,29 @@ z_index = -1
 material = ExtResource("4_4enp4")
 emitting = false
 amount = 32
-process_material = SubResource("ParticleProcessMaterial_nocfk")
 texture = ExtResource("7_l3q2f")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_nocfk")
 
 [node name="CastOnTarget" type="GPUParticles2D" parent="."]
 z_index = -3
 material = ExtResource("4_4enp4")
 emitting = false
 amount = 32
-process_material = SubResource("ParticleProcessMaterial_xn7h4")
 texture = ExtResource("7_l3q2f")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_xn7h4")
 
 [node name="CastOnTrail" type="GPUParticles2D" parent="."]
 z_index = -3
 material = ExtResource("4_4enp4")
 emitting = false
-process_material = SubResource("ParticleProcessMaterial_fjvua")
 texture = ExtResource("9_eydf6")
 one_shot = true
 explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_fjvua")
 
 [connection signal="body_entered" from="SpikeChecker" to="." method="_on_spike_checker_body_entered"]
 [connection signal="body_exited" from="SpikeChecker" to="." method="_on_spike_checker_body_exited"]

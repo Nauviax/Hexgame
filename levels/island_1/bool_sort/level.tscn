@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://wkuc0osgt70a"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_q6nao"]
-[ext_resource type="Script" path="res://levels/island_1/bool_sort/level_logic.gd" id="2_oeevx"]
-[ext_resource type="Script" path="res://levels/island_1/bool_sort/initiator.gd" id="3_ma73j"]
+[ext_resource type="Script" uid="uid://dot8jwrr0ee66" path="res://levels/island_1/bool_sort/level_logic.gd" id="2_oeevx"]
+[ext_resource type="Script" uid="uid://vqph6xvu73qc" path="res://levels/island_1/bool_sort/initiator.gd" id="3_ma73j"]
 [ext_resource type="PackedScene" uid="uid://cbo0lm0clhhmu" path="res://entity/non_player/iota_haver.tscn" id="4_ub756"]
 [ext_resource type="PackedScene" uid="uid://c1cg53xmco1n3" path="res://entity/objects/sign.tscn" id="5_rdm0s"]
 

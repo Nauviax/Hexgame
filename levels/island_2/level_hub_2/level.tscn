@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ddf1bsj2ug77n"]
 
 [ext_resource type="PackedScene" uid="uid://dp0v5jhyadmwq" path="res://levels/level_base.tscn" id="1_hqtvq"]
-[ext_resource type="Script" path="res://levels/island_1/level_hub_1/initiator.gd" id="3_6l7h6"]
+[ext_resource type="Script" uid="uid://2abgs1klf37w" path="res://levels/island_1/level_hub_1/initiator.gd" id="3_6l7h6"]
 [ext_resource type="PackedScene" uid="uid://b4j870xcpnwb8" path="res://entity/non_player/level_haver.tscn" id="6_j44ca"]
 
 [node name="LevelBase" instance=ExtResource("1_hqtvq")]

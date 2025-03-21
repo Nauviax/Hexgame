@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cfdar60cveplw"]
 
-[ext_resource type="Shader" path="res://resources/shaders/cast_line/cast_line.gdshader" id="1_gaeia"]
+[ext_resource type="Shader" uid="uid://decev5rtk4np1" path="res://resources/shaders/cast_line/cast_line.gdshader" id="1_gaeia"]
 [ext_resource type="Texture2D" uid="uid://laqu8ruo1res" path="res://resources/shaders/cast_line/gradient_textures/none.tres" id="2_cbm12"]
 
 [resource]

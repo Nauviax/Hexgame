@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bwev5ipwpsij"]
 
 [ext_resource type="Theme" uid="uid://dymyqo6i3f2r3" path="res://resources/ui/small_theme.tres" id="1_4uhpw"]
-[ext_resource type="Script" path="res://main_scene/spellbook/spellbook.gd" id="2_omdxi"]
+[ext_resource type="Script" uid="uid://h4xrckt8kawo" path="res://main_scene/spellbook/spellbook.gd" id="2_omdxi"]
 [ext_resource type="StyleBox" uid="uid://d1lsblv7vr1cg" path="res://resources/ui/rich_text_left_padding_override.tres" id="2_we7rw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toulv"]

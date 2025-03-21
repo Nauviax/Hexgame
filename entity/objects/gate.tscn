@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bjgwscbdyxshm"]
 
-[ext_resource type="Script" path="res://entity/objects/gate.gd" id="1_34ixo"]
+[ext_resource type="Script" uid="uid://cgh2x2p0v1bxo" path="res://entity/objects/gate.gd" id="1_34ixo"]
 [ext_resource type="Texture2D" uid="uid://cicqmvqwp8vi8" path="res://resources/sprites/shitty_entity_sprite.png" id="2_nd8vq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lirxu"]

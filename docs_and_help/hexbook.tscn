@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dj45rcuk0lphe"]
 
-[ext_resource type="Script" path="res://docs_and_help/hexbook.gd" id="1_66vxv"]
+[ext_resource type="Script" uid="uid://dl3kgmsp0bl2a" path="res://docs_and_help/hexbook.gd" id="1_66vxv"]
 [ext_resource type="Theme" uid="uid://dymyqo6i3f2r3" path="res://resources/ui/small_theme.tres" id="1_aodgx"]
 [ext_resource type="Texture2D" uid="uid://b64fs4i6xedgl" path="res://resources/ui/popup_bg.png" id="2_lhpwn"]
 [ext_resource type="StyleBox" uid="uid://bkalyigsp33ii" path="res://resources/ui/simple_border.tres" id="4_yc0yh"]

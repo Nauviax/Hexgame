@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://8h58bixedaho"]
 
-[ext_resource type="Script" path="res://main_scene/main_scene.gd" id="1_7msjx"]
+[ext_resource type="Script" uid="uid://547exokfhjji" path="res://main_scene/main_scene.gd" id="1_7msjx"]
 [ext_resource type="StyleBox" uid="uid://bnvadtxv76wx5" path="res://resources/ui/blank_theme.tres" id="2_7aeg7"]
 [ext_resource type="PackedScene" uid="uid://de8mh783pdkbd" path="res://grid/grid.tscn" id="2_qu1ct"]
 [ext_resource type="Theme" uid="uid://bk1llxpthaj7w" path="res://resources/ui/main_theme.tres" id="2_vp3ud"]
 [ext_resource type="PackedScene" uid="uid://dj45rcuk0lphe" path="res://docs_and_help/hexbook.tscn" id="3_hdery"]
-[ext_resource type="Script" path="res://main_scene/hex_display.gd" id="3_pett3"]
+[ext_resource type="Script" uid="uid://0ys6md7wakev" path="res://main_scene/hex_display.gd" id="3_pett3"]
 [ext_resource type="PackedScene" uid="uid://bwev5ipwpsij" path="res://main_scene/spellbook/spellbook.tscn" id="5_uu0m3"]
 
 [node name="MainScene" type="Node2D" node_paths=PackedStringArray("grid", "level_container")]
@@ -152,7 +152,7 @@ handle_input_locally = false
 canvas_item_default_texture_filter = 0
 canvas_item_default_texture_repeat = 1
 physics_object_picking = true
-size = Vector2i(1370, 1080)
+size = Vector2i(2, 2)
 render_target_update_mode = 4
 
 [node name="GridControl" type="Control" parent="HexDisplay/MainSplit/LevelArea"]
